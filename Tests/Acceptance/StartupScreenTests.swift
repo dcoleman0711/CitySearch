@@ -14,8 +14,8 @@ class StartupScreenTests: BDDTest<StartupScreenSteps> {
     // In-Progress
 //    func testStartupScreenAppTitleIsVisible() {
 //
-//        let appTitleLabel = given.appTitleLabel()
-//        let startupScreen = given.startupScreen(appTitleLabel: appTitleLabel)
+//        let startupScreen = given.startupScreen()
+//        let appTitleLabel = given.appTitleLabel(startupScreen)
 //
 //        when.startupScreenIsShown(startupScreen)
 //
@@ -25,16 +25,14 @@ class StartupScreenTests: BDDTest<StartupScreenSteps> {
 
 final class StartupScreenSteps: Steps {
 
-    func appTitleLabel() -> UILabel {
+    func appTitleLabel(_ startupScreen: StartupController) -> UILabel {
 
-        UILabel()
+        startupScreen.startupView.appTitleLabel
     }
 
-    func startupScreen(appTitleLabel: UILabel) -> StartupController {
+    func startupScreen() -> StartupController {
 
-        let factory = StartupControllerFactory(appTitleLabel: appTitleLabel)
-
-        return factory.startupController()
+        StartupController()
     }
 
     func startupScreenIsShown(_ startupScreen: StartupController) {

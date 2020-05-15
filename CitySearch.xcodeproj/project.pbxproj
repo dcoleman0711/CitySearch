@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		CC89D00C615108339BCB7F7F /* StartupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3FDB4DEB245D133848B /* StartupTests.swift */; };
-		CC89D231EDBD299BFCD14797 /* StartupScreenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D707EB99092038FC9509 /* StartupScreenFactory.swift */; };
-		CC89D512D5ED89BB65C68627 /* StartupScreenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D707EB99092038FC9509 /* StartupScreenFactory.swift */; };
+		CC89D2C2B5079A909D485A68 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
 		CC89D9D840B228CF0BF842F1 /* BDDTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DD4B77C98087B3624CC4 /* BDDTest.swift */; };
+		CC89DA15734314FC0D039354 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
 		CC89DD3A603615DD5C6B5B5D /* StartupScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */; };
 		CC89DDADEB30804FB4841C3A /* StartupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D94E70E2EF871568B85F /* StartupController.swift */; };
 		CE2C62F0246E137100C1D25A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE2C62EF246E137100C1D25A /* Assets.xcassets */; };
@@ -32,7 +32,7 @@
 
 /* Begin PBXFileReference section */
 		CC89D3FDB4DEB245D133848B /* StartupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupTests.swift; sourceTree = "<group>"; };
-		CC89D707EB99092038FC9509 /* StartupScreenFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupScreenFactory.swift; sourceTree = "<group>"; };
+		CC89D61FE647F61D7EF2AF44 /* StartupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
 		CC89D94E70E2EF871568B85F /* StartupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StartupController.swift; path = Implementation/Startup/StartupController.swift; sourceTree = SOURCE_ROOT; };
 		CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupScreenTests.swift; sourceTree = "<group>"; };
 		CC89DD4B77C98087B3624CC4 /* BDDTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BDDTest.swift; sourceTree = "<group>"; };
@@ -94,6 +94,7 @@
 			children = (
 				CE3967C4246EDBCC00478E39 /* Implementation */,
 				CE3967C3246EDBBD00478E39 /* Resources */,
+				CE3967F5246F3C7E00478E39 /* Mocks */,
 				CC89D80D9F3B73F36DA1370D /* Tests */,
 				CE2C62E1246E136D00C1D25A /* Products */,
 			);
@@ -132,7 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				CC89D94E70E2EF871568B85F /* StartupController.swift */,
-				CC89D707EB99092038FC9509 /* StartupScreenFactory.swift */,
+				CC89D61FE647F61D7EF2AF44 /* StartupView.swift */,
 			);
 			path = Startup;
 			sourceTree = "<group>";
@@ -151,6 +152,13 @@
 				CC89DD4B77C98087B3624CC4 /* BDDTest.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		CE3967F5246F3C7E00478E39 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,7 +262,7 @@
 			files = (
 				CE2C62FD246E19AE00C1D25A /* AppDelegate.swift in Sources */,
 				CC89DDADEB30804FB4841C3A /* StartupController.swift in Sources */,
-				CC89D512D5ED89BB65C68627 /* StartupScreenFactory.swift in Sources */,
+				CC89D2C2B5079A909D485A68 /* StartupView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,10 +272,10 @@
 			files = (
 				CE3967EC246F254500478E39 /* StartupController.swift in Sources */,
 				CE3967EB246F254100478E39 /* AppDelegate.swift in Sources */,
-				CC89D231EDBD299BFCD14797 /* StartupScreenFactory.swift in Sources */,
 				CC89D00C615108339BCB7F7F /* StartupTests.swift in Sources */,
 				CC89DD3A603615DD5C6B5B5D /* StartupScreenTests.swift in Sources */,
 				CC89D9D840B228CF0BF842F1 /* BDDTest.swift in Sources */,
+				CC89DA15734314FC0D039354 /* StartupView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

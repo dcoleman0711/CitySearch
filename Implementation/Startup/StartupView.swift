@@ -5,8 +5,7 @@
 
 import UIKit
 
-class StartupController: UIViewController {
+class StartupView {
 
-    public let startupView = StartupView()
+    let appTitleLabel = UILabel()
 }
-
