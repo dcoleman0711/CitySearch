@@ -10,4 +10,9 @@ class StartupView {
     let view = UIView()
 
     let appTitleLabel = UILabel()
+
+    init() {
+
+        view.addSubview(appTitleLabel)
+    }
 }

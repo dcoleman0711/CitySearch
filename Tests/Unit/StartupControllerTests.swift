@@ -33,8 +33,8 @@ class StartupControllerTests: XCTestCase {
     
     func testStartupControllerAssignsView() {
 
-        let startupView = given.startupView()
-        let startupController = given.startupController(startupView)
+        let startupController = given.startupController()
+        let startupView = given.startupView(startupController)
 
         when.startupControllerLoads(startupController)
 
@@ -44,14 +44,14 @@ class StartupControllerTests: XCTestCase {
 
 class StartupControllerSteps {
 
-    func startupView() -> StartupView {
+    func startupController() -> StartupController {
 
-        StartupView()
+        StartupController()
     }
 
-    func startupController(_ startupView: StartupView) -> StartupController {
+    func startupView(_ startupController: StartupController) -> StartupView {
 
-        StartupController(startupView: startupView)
+        startupController.startupView
     }
 
     func startupControllerLoads(_ startupController: StartupController) {
