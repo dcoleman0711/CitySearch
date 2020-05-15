@@ -12,26 +12,22 @@ import UIKit
 
 class StartupTests : XCTestCase {
 
-    var given: StartupSteps!
-    var when: StartupSteps!
-    var then: StartupSteps!
+    var steps: StartupSteps!
+
+    var given: StartupSteps { steps }
+    var when: StartupSteps { steps }
+    var then: StartupSteps { steps }
 
     override func setUp() {
 
         super.setUp()
 
-        let steps = StartupSteps()
-
-        given = steps
-        when = steps
-        then = steps
+        steps = StartupSteps()
     }
 
     override func tearDown() {
 
-        given = nil
-        when = nil
-        then = nil
+        steps = nil
 
         super.tearDown()
     }
