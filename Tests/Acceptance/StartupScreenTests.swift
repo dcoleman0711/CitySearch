@@ -31,16 +31,15 @@ class StartupScreenTests: XCTestCase {
         super.tearDown()
     }
     
-    // In-Progress
-//    func testStartupScreenAppTitleIsVisible() {
-//
-//        let startupScreen = given.startupScreen()
-//        let appTitleLabel = given.appTitleLabel(startupScreen)
-//
-//        when.startupScreenIsShown(startupScreen)
-//
-//        then.appTitleIsVisible(startupScreen, appTitleLabel)
-//    }
+    func testStartupScreenAppTitleIsVisible() {
+
+        let startupScreen = given.startupScreen()
+        let appTitleLabel = given.appTitleLabel(startupScreen)
+
+        when.startupScreenIsShown(startupScreen)
+
+        then.appTitleIsVisible(startupScreen, appTitleLabel)
+    }
 }
 
 class StartupScreenSteps {
