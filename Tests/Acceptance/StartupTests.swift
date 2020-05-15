@@ -10,27 +10,7 @@ import XCTest
 import Foundation
 import UIKit
 
-class StartupTests : XCTestCase {
-
-    var steps: StartupSteps!
-
-    var given: StartupSteps { steps }
-    var when: StartupSteps { steps }
-    var then: StartupSteps { steps }
-
-    override func setUp() {
-
-        super.setUp()
-
-        steps = StartupSteps()
-    }
-
-    override func tearDown() {
-
-        steps = nil
-
-        super.tearDown()
-    }
+class StartupTests : BDDTest<StartupSteps> {
 
     func testShowStartupOnLaunch() {
 
@@ -40,7 +20,7 @@ class StartupTests : XCTestCase {
     }
 }
 
-class StartupSteps {
+final class StartupSteps: Steps {
 
     let appDelegate = AppDelegate()
 
