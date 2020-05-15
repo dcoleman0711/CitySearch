@@ -28,6 +28,13 @@ class StartupViewTests: XCTestCase {
         super.tearDown()
     }
 
+    func testBackgroundColorIsWhite() {
+
+        let startupView = given.startupView()
+
+        then.startupViewBackgroundIsWhite(startupView)
+    }
+
     func testAppTitleLabelIsOnStartupView() {
 
         let startupView = given.startupView()
@@ -47,6 +54,11 @@ class StartupViewSteps {
     func appTitleLabel(_ startupView: StartupView) -> UILabel {
 
         startupView.appTitleLabel
+    }
+
+    func startupViewBackgroundIsWhite(_ startupView: StartupView) {
+
+        XCTAssertEqual(startupView.view.backgroundColor, UIColor.white)
     }
 
     func appTitleLabel(_ appTitleLabel: UILabel, isOnStartupView startupView: StartupView) {

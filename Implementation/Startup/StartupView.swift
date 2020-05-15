@@ -13,6 +13,8 @@ class StartupView {
 
     init() {
 
+        view.backgroundColor = UIColor.white
+
         view.addSubview(appTitleLabel)
     }
 }

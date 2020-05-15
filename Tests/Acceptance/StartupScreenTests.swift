@@ -31,15 +31,14 @@ class StartupScreenTests: XCTestCase {
         super.tearDown()
     }
     
-    // In Progress
-//    func testStartupScreenBackgroundIsWhite() {
-//
-//        let startupScreen = given.startupScreen()
-//
-//        when.startupScreenIsShown(startupScreen)
-//
-//        then.startupScreenBackgroundIsWhite(startupScreen)
-//    }
+    func testStartupScreenBackgroundIsWhite() {
+
+        let startupScreen = given.startupScreen()
+
+        when.startupScreenIsShown(startupScreen)
+
+        then.startupScreenBackgroundIsWhite(startupScreen)
+    }
     
     func testStartupScreenAppTitleIsVisible() {
 
