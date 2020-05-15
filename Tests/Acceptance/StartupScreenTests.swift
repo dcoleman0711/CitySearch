@@ -31,6 +31,16 @@ class StartupScreenTests: XCTestCase {
         super.tearDown()
     }
     
+    // In Progress
+//    func testStartupScreenBackgroundIsWhite() {
+//
+//        let startupScreen = given.startupScreen()
+//
+//        when.startupScreenIsShown(startupScreen)
+//
+//        then.startupScreenBackgroundIsWhite(startupScreen)
+//    }
+    
     func testStartupScreenAppTitleIsVisible() {
 
         let startupScreen = given.startupScreen()
@@ -57,6 +67,11 @@ class StartupScreenSteps {
     func startupScreenIsShown(_ startupScreen: StartupController) {
 
         startupScreen.loadViewIfNeeded()
+    }
+
+    func startupScreenBackgroundIsWhite(_ startupScreen: StartupController) {
+
+        XCTAssertEqual(startupScreen.view.backgroundColor, UIColor.white)
     }
 
     func appTitleIsVisible(_ startupScreen: StartupController, _ appTitleLabel: UILabel) {
