@@ -7,5 +7,7 @@ import UIKit
 
 class StartupView {
 
+    let view = UIView()
+
     let appTitleLabel = UILabel()
 }

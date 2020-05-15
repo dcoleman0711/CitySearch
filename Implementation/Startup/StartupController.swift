@@ -7,6 +7,28 @@ import UIKit
 
 class StartupController: UIViewController {
 
-    public let startupView = StartupView()
+    let startupView: StartupView
+
+    convenience init() {
+
+        self.init(startupView: StartupView())
+    }
+
+    init(startupView: StartupView) {
+
+        self.startupView = startupView
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+
+        fatalError("No Interface Builder!")
+    }
+
+    override func loadView() {
+
+        self.view = startupView.view
+    }
 }
 

@@ -9,7 +9,27 @@ import XCTest
 
 import UIKit
 
-class StartupScreenTests: BDDTest<StartupScreenSteps> {
+class StartupScreenTests: XCTestCase {
+    
+    var steps: StartupScreenSteps!
+
+    var given: StartupScreenSteps { steps }
+    var when: StartupScreenSteps { steps }
+    var then: StartupScreenSteps { steps }
+
+    override func setUp() {
+
+        super.setUp()
+
+        steps = StartupScreenSteps()
+    }
+
+    override func tearDown() {
+
+        steps = nil
+
+        super.tearDown()
+    }
     
     // In-Progress
 //    func testStartupScreenAppTitleIsVisible() {
@@ -23,7 +43,7 @@ class StartupScreenTests: BDDTest<StartupScreenSteps> {
 //    }
 }
 
-final class StartupScreenSteps: Steps {
+class StartupScreenSteps {
 
     func appTitleLabel(_ startupScreen: StartupController) -> UILabel {
 
