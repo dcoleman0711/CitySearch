@@ -50,16 +50,15 @@ class StartupScreenTests: XCTestCase {
         then.appTitleIsVisible(startupScreen, appTitleLabel)
     }
 
-    // In Progress
-//    func testAppTitleWidth() {
-//
-//        let screenSizes = given.screenSizes()
-//
-//        for screenSize in screenSizes {
-//
-//            testAppTitleWidth(screenSize: screenSize)
-//        }
-//    }
+    func testAppTitleWidth() {
+
+        let screenSizes = given.screenSizes()
+
+        for screenSize in screenSizes {
+
+            testAppTitleWidth(screenSize: screenSize)
+        }
+    }
 
     func testAppTitleWidth(screenSize: CGSize) {
 
