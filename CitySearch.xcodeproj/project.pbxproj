@@ -10,6 +10,7 @@
 		CC89D00C615108339BCB7F7F /* StartupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3FDB4DEB245D133848B /* StartupTests.swift */; };
 		CC89D1E083F1F14548E8E3FB /* ViewBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */; };
 		CC89D2C2B5079A909D485A68 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
+		CC89D7271E366504E3521EA4 /* ViewBinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */; };
 		CC89D94633296FC3B6E300C0 /* StartupModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DFC7507AABF64593C023 /* StartupModelMock.swift */; };
 		CC89DA15734314FC0D039354 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
 		CC89DB65A510EAAA2C92E015 /* StartupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3AF361140C3E6727895 /* StartupModel.swift */; };
@@ -43,6 +44,7 @@
 		CC89D61FE647F61D7EF2AF44 /* StartupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
 		CC89D8F57FB199AFB9B64C1D /* StartupViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupViewTests.swift; sourceTree = "<group>"; };
 		CC89D94E70E2EF871568B85F /* StartupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StartupController.swift; path = Implementation/Startup/StartupController.swift; sourceTree = SOURCE_ROOT; };
+		CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinderTests.swift; sourceTree = "<group>"; };
 		CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupScreenTests.swift; sourceTree = "<group>"; };
 		CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinder.swift; sourceTree = "<group>"; };
 		CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinderMock.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			children = (
 				CE396801246F49CD00478E39 /* StartupControllerTests.swift */,
 				CC89D8F57FB199AFB9B64C1D /* StartupViewTests.swift */,
+				CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				CC89DB65A510EAAA2C92E015 /* StartupModel.swift in Sources */,
 				CC89DD97540BB4AD7C9C2DB0 /* ViewBinderMock.swift in Sources */,
 				CC89D1E083F1F14548E8E3FB /* ViewBinder.swift in Sources */,
+				CC89D7271E366504E3521EA4 /* ViewBinderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

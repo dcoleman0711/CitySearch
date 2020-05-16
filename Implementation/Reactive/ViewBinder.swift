@@ -16,6 +16,6 @@ class ViewBinderImp: ViewBinder {
 
     func bindText(label: UILabel) -> ValueUpdate<String> {
 
-        { (text) in }
+        { (text) in label.text = text }
     }
 }
