@@ -13,8 +13,8 @@ class StartupScreenTestConstants {
 
     static let appTitle = "City Search"
     static let appTitleFont = UIFont.systemFont(ofSize: 48.0)
-    static let maximumTransitionStartInterval = 10.5
-    static let minimumTransitionStartInterval = 9.5
+    static let maximumTransitionStartInterval = 4.5
+    static let minimumTransitionStartInterval = 3.5
 }
 
 class StartupScreenTests: XCTestCase {

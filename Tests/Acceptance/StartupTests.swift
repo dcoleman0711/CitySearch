@@ -91,7 +91,7 @@ class StartupSteps {
     func application() -> AppDelegate {
 
         let startupViewBuilder = StartupViewBuilderMock()
-        
+
         startupViewBuilder.buildImp = { self.startupViewStub }
 
         let app = AppDelegate(startupViewBuilder: startupViewBuilder, searchView: searchViewStub, transitionCommandFactory: transitionCommandFactory)

@@ -89,7 +89,7 @@ class StartupModelSteps {
 
     func transitionStartInterval() -> TimeInterval {
 
-        10.0
+        4.0
     }
 
     func transitionIsScheduled(_ model: StartupModelImp) {

@@ -34,7 +34,7 @@ class StartupModelImp: StartupModel {
 
     func startTransitionTimer() {
 
-        self.timerType.scheduledTimer(withTimeInterval: 10.0, repeats: false, block: StartupModelImp.fireTransitionTimer(self))
+        self.timerType.scheduledTimer(withTimeInterval: 4.0, repeats: false, block: StartupModelImp.fireTransitionTimer(self))
     }
 
     private func fireTransitionTimer(timer: Timer) {
