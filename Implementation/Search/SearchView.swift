@@ -12,5 +12,29 @@ protocol SearchView {
 
 class SearchViewImp: UIViewController, SearchView {
 
+    private let searchResultsView: SearchResultsView
 
+    convenience init() {
+
+        self.init(searchResultsView: SearchResultsViewImp())
+    }
+
+    init(searchResultsView: SearchResultsView) {
+
+        self.searchResultsView = searchResultsView
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+
+        fatalError("No Interface Builder!")
+    }
+
+    override func viewDidLoad() {
+
+        super.viewDidLoad()
+
+        view.addSubview(searchResultsView.view)
+    }
 }

@@ -5,8 +5,6 @@
 
 import XCTest
 
-@testable import CitySearch
-
 import UIKit
 
 class StartupScreenTestConstants {

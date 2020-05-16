@@ -35,6 +35,8 @@ class StartupViewImp : UIViewController, StartupView {
 
     override func viewDidLoad() {
 
+        super.viewDidLoad()
+
         setupView()
         buildLayout()
 
