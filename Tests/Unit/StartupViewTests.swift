@@ -68,9 +68,49 @@ class StartupViewTests: XCTestCase {
 
         then.startupView(startupView, hasConstraints: expectedConstraints)
     }
+
+    func testAppTitleLabelIsBoundToModel() {
+
+        let startupModel = given.startupModel()
+        let binder = given.binder()
+        let startupView = given.startupView(startupModel, binder)
+        let appTitleLabel = given.appTitleLabel(startupView)
+
+        then.appTitleLabel(appTitleLabel, isBoundToModel: startupModel)
+    }
 }
 
 class StartupViewSteps {
+
+    private var labelBoundToModel: UILabel?
+    private var textUpdatePassedToModel: ValueUpdate<String>?
+
+    func binder() -> ViewBinderMock {
+
+        let binder = ViewBinderMock()
+
+        binder.bindLabelTextImp = { (label) in
+
+            { (text) in
+
+                self.labelBoundToModel = label
+            }
+        }
+
+        return binder
+    }
+
+    func startupModel() -> StartupModelMock {
+
+        let startupModel = StartupModelMock()
+
+        startupModel.observeAppTitleTextImp = { (textUpdate) in
+
+            textUpdate("")
+        }
+
+        return startupModel
+    }
 
     func constraintsForCenter(_ appTitleLabel: UILabel, equalTo startupView: StartupView) -> [NSLayoutConstraint] {
 
@@ -83,9 +123,9 @@ class StartupViewSteps {
         appTitleLabel.widthAnchor.constraint(equalTo: startupView.view.widthAnchor, multiplier: 0.5)
     }
 
-    func startupView() -> StartupView {
+    func startupView(_ startupModel: StartupModelMock = StartupModelMock(), _ binder: ViewBinderMock = ViewBinderMock()) -> StartupView {
 
-        StartupView()
+        StartupView(model: startupModel, binder: binder)
     }
 
     func appTitleLabel(_ startupView: StartupView) -> UILabel {
@@ -111,6 +151,11 @@ class StartupViewSteps {
     func startupView(_ startupView: StartupView, hasConstraints expectedConstraints: [NSLayoutConstraint]) {
 
         XCTAssertTrue(startupView.view.constraints.contains { constraint in expectedConstraints.contains { expectedConstraint in constraint.isEqualToConstraint(expectedConstraint) } }, "Startup view does not contain expected constraints")
+    }
+
+    func appTitleLabel(_ appTitleLabel: UILabel, isBoundToModel model: StartupModelMock) {
+
+        XCTAssertEqual(labelBoundToModel, appTitleLabel, "App title text is not bound to model")
     }
 }
 

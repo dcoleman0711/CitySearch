@@ -8,10 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		CC89D00C615108339BCB7F7F /* StartupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3FDB4DEB245D133848B /* StartupTests.swift */; };
+		CC89D1E083F1F14548E8E3FB /* ViewBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */; };
 		CC89D2C2B5079A909D485A68 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
+		CC89D94633296FC3B6E300C0 /* StartupModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DFC7507AABF64593C023 /* StartupModelMock.swift */; };
 		CC89DA15734314FC0D039354 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
+		CC89DB65A510EAAA2C92E015 /* StartupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3AF361140C3E6727895 /* StartupModel.swift */; };
+		CC89DD4D3ED22616EE3700C7 /* ViewBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */; };
+		CC89DD97540BB4AD7C9C2DB0 /* ViewBinderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */; };
 		CC89DDADEB30804FB4841C3A /* StartupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D94E70E2EF871568B85F /* StartupController.swift */; };
 		CC89DE2A6A2C5FA9462711F3 /* StartupViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D8F57FB199AFB9B64C1D /* StartupViewTests.swift */; };
+		CC89DF7A1C900381449E333D /* StartupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3AF361140C3E6727895 /* StartupModel.swift */; };
 		CE2C62F0246E137100C1D25A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE2C62EF246E137100C1D25A /* Assets.xcassets */; };
 		CE2C62F3246E137100C1D25A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE2C62F1246E137100C1D25A /* LaunchScreen.storyboard */; };
 		CE2C62FD246E19AE00C1D25A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2C62FC246E19AE00C1D25A /* AppDelegate.swift */; };
@@ -32,11 +38,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CC89D3AF361140C3E6727895 /* StartupModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupModel.swift; sourceTree = "<group>"; };
 		CC89D3FDB4DEB245D133848B /* StartupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupTests.swift; sourceTree = "<group>"; };
 		CC89D61FE647F61D7EF2AF44 /* StartupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
 		CC89D8F57FB199AFB9B64C1D /* StartupViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupViewTests.swift; sourceTree = "<group>"; };
 		CC89D94E70E2EF871568B85F /* StartupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StartupController.swift; path = Implementation/Startup/StartupController.swift; sourceTree = SOURCE_ROOT; };
 		CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupScreenTests.swift; sourceTree = "<group>"; };
+		CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinder.swift; sourceTree = "<group>"; };
+		CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinderMock.swift; sourceTree = "<group>"; };
+		CC89DFC7507AABF64593C023 /* StartupModelMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupModelMock.swift; sourceTree = "<group>"; };
 		CE2C62E0246E136D00C1D25A /* CitySearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CitySearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE2C62EF246E137100C1D25A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE2C62F2246E137100C1D25A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -65,6 +75,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC89D7EA5E82DA14AFB765D2 /* Reactive */ = {
+			isa = PBXGroup;
+			children = (
+				CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */,
+			);
+			path = Reactive;
+			sourceTree = "<group>";
+		};
 		CC89D80D9F3B73F36DA1370D /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +146,7 @@
 			children = (
 				CE3967EE246F25E600478E39 /* AppDelegate */,
 				CE3967C8246F1B9100478E39 /* Startup */,
+				CC89D7EA5E82DA14AFB765D2 /* Reactive */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -137,6 +156,7 @@
 			children = (
 				CC89D94E70E2EF871568B85F /* StartupController.swift */,
 				CC89D61FE647F61D7EF2AF44 /* StartupView.swift */,
+				CC89D3AF361140C3E6727895 /* StartupModel.swift */,
 			);
 			path = Startup;
 			sourceTree = "<group>";
@@ -152,6 +172,8 @@
 		CE3967F5246F3C7E00478E39 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				CC89DFC7507AABF64593C023 /* StartupModelMock.swift */,
+				CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -258,6 +280,8 @@
 				CE2C62FD246E19AE00C1D25A /* AppDelegate.swift in Sources */,
 				CC89DDADEB30804FB4841C3A /* StartupController.swift in Sources */,
 				CC89D2C2B5079A909D485A68 /* StartupView.swift in Sources */,
+				CC89DF7A1C900381449E333D /* StartupModel.swift in Sources */,
+				CC89DD4D3ED22616EE3700C7 /* ViewBinder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +296,10 @@
 				CC89DA15734314FC0D039354 /* StartupView.swift in Sources */,
 				CE5D9D69246F4FA800A45702 /* StartupScreenTests.swift in Sources */,
 				CC89DE2A6A2C5FA9462711F3 /* StartupViewTests.swift in Sources */,
+				CC89D94633296FC3B6E300C0 /* StartupModelMock.swift in Sources */,
+				CC89DB65A510EAAA2C92E015 /* StartupModel.swift in Sources */,
+				CC89DD97540BB4AD7C9C2DB0 /* ViewBinderMock.swift in Sources */,
+				CC89D1E083F1F14548E8E3FB /* ViewBinder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

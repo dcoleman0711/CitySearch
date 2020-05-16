@@ -11,13 +11,26 @@ class StartupView {
 
     let appTitleLabel = UILabel()
 
-    init() {
+    private let model: StartupModel
+    private let binder: ViewBinder
+
+    convenience init() {
+
+        self.init(model: StartupModelImp(), binder: ViewBinderImp())
+    }
+
+    init(model: StartupModel, binder: ViewBinder) {
+
+        self.model = model
+        self.binder = binder
 
         view.backgroundColor = UIColor.white
 
         view.addSubview(appTitleLabel)
 
         buildLayout()
+
+        bindViews()
     }
 
     private func buildLayout() {
@@ -32,5 +45,10 @@ class StartupView {
         let constraints = [NSLayoutConstraint]([appTitleConstraints].joined())
 
         view.addConstraints(constraints)
+    }
+
+    private func bindViews() {
+
+        model.observeAppTitleText(binder.bindText(label: appTitleLabel))
     }
 }
