@@ -13,6 +13,7 @@ class StartupTestConstants {
 
     static let appTitle = "City Search"
     static let appTitleFont = UIFont.systemFont(ofSize: 48.0)
+    static let maximumTransitionStartDuration = 10.5
 }
 
 class StartupScreenTests: XCTestCase {
@@ -27,7 +28,7 @@ class StartupScreenTests: XCTestCase {
 
         super.setUp()
 
-        steps = StartupScreenSteps()
+        steps = StartupScreenSteps(self)
     }
 
     override func tearDown() {
@@ -49,7 +50,7 @@ class StartupScreenTests: XCTestCase {
     func testAppTitleIsVisible() {
 
         let appTitleLabel = given.appTitleLabel()
-        let startupScreen = given.startupScreen(appTitleLabel)
+        let startupScreen = given.startupScreen(appTitleLabel: appTitleLabel)
 
         when.startupScreenIsShown(startupScreen)
 
@@ -69,7 +70,7 @@ class StartupScreenTests: XCTestCase {
     func testAppTitleCenter(screenSize: CGSize) {
 
         let appTitleLabel = given.appTitleLabel()
-        let startupScreen = given.startupScreen(appTitleLabel)
+        let startupScreen = given.startupScreen(appTitleLabel: appTitleLabel)
         given.startupScreenIsShown(startupScreen)
 
         when.startupScreenSizeBecomes(startupScreen, screenSize)
@@ -89,7 +90,7 @@ class StartupScreenTests: XCTestCase {
     func testAppTitleSize(screenSize: CGSize) {
 
         let appTitleLabel = given.appTitleLabel()
-        let startupScreen = given.startupScreen(appTitleLabel)
+        let startupScreen = given.startupScreen(appTitleLabel: appTitleLabel)
         given.startupScreenIsShown(startupScreen)
 
         when.startupScreenSizeBecomes(startupScreen, screenSize)
@@ -99,7 +100,7 @@ class StartupScreenTests: XCTestCase {
     func testAppTitleText() {
 
         let appTitleLabel = given.appTitleLabel()
-        let startupScreen = given.startupScreen(appTitleLabel)
+        let startupScreen = given.startupScreen(appTitleLabel: appTitleLabel)
         let appTitleText = given.appTitleText()
 
         when.startupScreenIsShown(startupScreen)
@@ -110,16 +111,73 @@ class StartupScreenTests: XCTestCase {
     func testAppTitleFont() {
 
         let appTitleLabel = given.appTitleLabel()
-        let startupScreen = given.startupScreen(appTitleLabel)
+        let startupScreen = given.startupScreen(appTitleLabel: appTitleLabel)
         let appTitleFont = given.appTitleFont()
 
         when.startupScreenIsShown(startupScreen)
 
         then.appTitleLabel(appTitleLabel, fontIs: appTitleFont)
     }
+
+    // In Progress
+//    func testStartTransitionToCitySearchScreen() {
+//
+//        let startupTransitionCommand = given.startupTransitionCommand()
+//        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand)
+//        let maximumTransitionStartDuration = given.maximumTransitionStartDuration()
+//        let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
+//
+//        when.currentTimeIs(startupScreenLoadTime + maximumTransitionStartDuration)
+//
+//        then.transitionToCitySearchScreenHasStarted()
+//    }
 }
 
 class StartupScreenSteps {
+
+    private let tests: XCTestCase
+    private var transitionStarted = false
+
+    init(_ tests: XCTestCase) {
+
+        self.tests = tests
+    }
+
+    func currentTimeIs(_ time: Date) {
+
+        let timeToWait = time.timeIntervalSinceNow
+
+        let expectation = tests.expectation(description: "")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + timeToWait, execute: {
+
+            expectation.fulfill()
+        })
+
+        tests.wait(for: [expectation], timeout: 30.0)
+    }
+
+    func startupTransitionCommand() -> StartupTransitionCommandMock {
+
+        let command = StartupTransitionCommandMock()
+
+        command.startTransitionImp = {
+
+            self.transitionStarted = true
+        }
+
+        return command
+    }
+
+    func maximumTransitionStartDuration() -> TimeInterval {
+
+        StartupTestConstants.maximumTransitionStartDuration
+    }
+
+    func startupScreenLoadedAtTime(_ startupScreen: StartupController) -> Date {
+
+        startupScreen.loadViewIfNeeded()
+        return Date()
+    }
 
     func appTitleFont() -> UIFont {
 
@@ -141,10 +199,11 @@ class StartupScreenSteps {
         UILabel()
     }
 
-    func startupScreen(_ appTitleLabel: UILabel = UILabel()) -> StartupController {
+    func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock()) -> StartupController {
 
         let builder = StartupController.Builder()
         builder.appTitleLabel = appTitleLabel
+        builder.transitionCommand = transitionCommand
 
         return builder.build()
     }
@@ -190,5 +249,10 @@ class StartupScreenSteps {
     func appTitleLabel(_ appTitleLabel: UILabel, fontIs font: UIFont) {
 
         XCTAssertEqual(appTitleLabel.font, font, "App title font is not correct")
+    }
+
+    func transitionToCitySearchScreenHasStarted() {
+
+        XCTAssertTrue(transitionStarted, "Transition to search screen has not started")
     }
 }

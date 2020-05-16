@@ -11,6 +11,8 @@
 		CC89D0CBC1454E3E20CFC45B /* ObservableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA56BF041782346D32D /* ObservableMock.swift */; };
 		CC89D1E083F1F14548E8E3FB /* ViewBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */; };
 		CC89D2C2B5079A909D485A68 /* StartupViewImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupViewImp.swift */; };
+		CC89D3305BCC2A08F46CCCAD /* StartupTransitionCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DF866E4CE19DD8975316 /* StartupTransitionCommand.swift */; };
+		CC89D60CEFA9E7EA90E7A995 /* StartupTransitionCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DF866E4CE19DD8975316 /* StartupTransitionCommand.swift */; };
 		CC89D6598F54983A93BD4384 /* StartupViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DDAC32DE740B58ED24F2 /* StartupViewFactory.swift */; };
 		CC89D6A392D180DD5D84816E /* StartupModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DF0778BA02CD9499EDDA /* StartupModelTests.swift */; };
 		CC89D7271E366504E3521EA4 /* ViewBinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */; };
@@ -25,6 +27,7 @@
 		CC89DD97540BB4AD7C9C2DB0 /* ViewBinderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */; };
 		CC89DDADEB30804FB4841C3A /* StartupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D94E70E2EF871568B85F /* StartupController.swift */; };
 		CC89DE2A6A2C5FA9462711F3 /* StartupViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D8F57FB199AFB9B64C1D /* StartupViewTests.swift */; };
+		CC89DF62720FCE1F11E68A3E /* StartupTransitionCommandMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D91DCE9F87505ECEE73A /* StartupTransitionCommandMock.swift */; };
 		CC89DF7A1C900381449E333D /* StartupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3AF361140C3E6727895 /* StartupModel.swift */; };
 		CE2C62F0246E137100C1D25A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE2C62EF246E137100C1D25A /* Assets.xcassets */; };
 		CE2C62F3246E137100C1D25A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE2C62F1246E137100C1D25A /* LaunchScreen.storyboard */; };
@@ -53,6 +56,7 @@
 		CC89D3FDB4DEB245D133848B /* StartupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupTests.swift; sourceTree = "<group>"; };
 		CC89D61FE647F61D7EF2AF44 /* StartupViewImp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupViewImp.swift; sourceTree = "<group>"; };
 		CC89D8F57FB199AFB9B64C1D /* StartupViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupViewTests.swift; sourceTree = "<group>"; };
+		CC89D91DCE9F87505ECEE73A /* StartupTransitionCommandMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupTransitionCommandMock.swift; sourceTree = "<group>"; };
 		CC89D94E70E2EF871568B85F /* StartupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StartupController.swift; path = Implementation/Startup/StartupController.swift; sourceTree = SOURCE_ROOT; };
 		CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinderTests.swift; sourceTree = "<group>"; };
 		CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupScreenTests.swift; sourceTree = "<group>"; };
@@ -63,6 +67,7 @@
 		CC89DDAC32DE740B58ED24F2 /* StartupViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupViewFactory.swift; sourceTree = "<group>"; };
 		CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinderMock.swift; sourceTree = "<group>"; };
 		CC89DF0778BA02CD9499EDDA /* StartupModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupModelTests.swift; sourceTree = "<group>"; };
+		CC89DF866E4CE19DD8975316 /* StartupTransitionCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupTransitionCommand.swift; sourceTree = "<group>"; };
 		CC89DFC7507AABF64593C023 /* StartupModelMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupModelMock.swift; sourceTree = "<group>"; };
 		CE2C62E0246E136D00C1D25A /* CitySearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CitySearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE2C62EF246E137100C1D25A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -180,6 +185,7 @@
 				CC89D61FE647F61D7EF2AF44 /* StartupViewImp.swift */,
 				CC89D3AF361140C3E6727895 /* StartupModel.swift */,
 				CC89DDAC32DE740B58ED24F2 /* StartupViewFactory.swift */,
+				CC89DF866E4CE19DD8975316 /* StartupTransitionCommand.swift */,
 			);
 			path = Startup;
 			sourceTree = "<group>";
@@ -200,6 +206,7 @@
 				CC89DAA56BF041782346D32D /* ObservableMock.swift */,
 				CC89DBA8247771E50DC535C2 /* StartupViewMock.swift */,
 				CC89D158F78D992E06AAA390 /* StartupViewFactoryMock.swift */,
+				CC89D91DCE9F87505ECEE73A /* StartupTransitionCommandMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -310,6 +317,7 @@
 				CE5D9D6C24701E1700A45702 /* Observable.swift in Sources */,
 				CC89DD4D3ED22616EE3700C7 /* ViewBinder.swift in Sources */,
 				CC89D6598F54983A93BD4384 /* StartupViewFactory.swift in Sources */,
+				CC89D60CEFA9E7EA90E7A995 /* StartupTransitionCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +344,8 @@
 				CC89D99EBD72719B95F440EC /* StartupViewMock.swift in Sources */,
 				CC89D86DEE8A67523FC1E499 /* StartupViewFactoryMock.swift in Sources */,
 				CC89D884614578CD02F4CD8D /* StartupViewFactory.swift in Sources */,
+				CC89DF62720FCE1F11E68A3E /* StartupTransitionCommandMock.swift in Sources */,
+				CC89D3305BCC2A08F46CCCAD /* StartupTransitionCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

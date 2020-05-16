@@ -26,9 +26,10 @@ class StartupController: UIViewController {
         self.view = startupView.view
     }
 
-    public class Builder {
+    class Builder {
 
-        public var appTitleLabel = UILabel()
+        var appTitleLabel = UILabel()
+        var transitionCommand: StartupTransitionCommand = StartupTransitionCommandImp()
 
         private let viewFactory: StartupViewFactory
 
