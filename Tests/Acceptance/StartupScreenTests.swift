@@ -91,17 +91,16 @@ class StartupScreenTests: XCTestCase {
         then.appTitleLabel(appTitleLabel, isCenteredIn: screenSize)
     }
 
-    // In Progress
-//    func testAppTitleText() {
-//
-//        let startupScreen = given.startupScreen()
-//        let appTitleLabel = given.appTitleLabel(startupScreen)
-//        let appTitleText = given.appTitleText()
-//
-//        when.startupScreenIsShown(startupScreen)
-//
-//        then.appTitleLabel(appTitleLabel, textIs: appTitleText)
-//    }
+    func testAppTitleText() {
+
+        let startupScreen = given.startupScreen()
+        let appTitleLabel = given.appTitleLabel(startupScreen)
+        let appTitleText = given.appTitleText()
+
+        when.startupScreenIsShown(startupScreen)
+
+        then.appTitleLabel(appTitleLabel, textIs: appTitleText)
+    }
 }
 
 class StartupScreenSteps {
@@ -155,7 +154,8 @@ class StartupScreenSteps {
 
     func appTitleLabel(_ appTitleLabel: UILabel, isCenteredIn screenSize: CGSize) {
 
-        XCTAssertEqual(appTitleLabel.center, CGPoint(x: screenSize.width / 2, y: screenSize.height / 2), "App title center is not screen center")
+        // The values aren't exact when the size of the view is non-integer.  We need to round down
+        XCTAssertEqual(CGPoint(x: floor(appTitleLabel.center.x), y: floor(appTitleLabel.center.y)), CGPoint(x: screenSize.width / 2, y: screenSize.height / 2), "App title center is not screen center")
     }
 
     func appTitleLabel(_ appTitleLabel: UILabel, textIs expectedText: String) {

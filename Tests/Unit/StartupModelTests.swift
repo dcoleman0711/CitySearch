@@ -28,6 +28,15 @@ class StartupModelTests: XCTestCase {
         super.tearDown()
     }
 
+    func testAppTitleTextIsAppTitle() {
+
+        let appTitle = given.appTitle()
+        let appTitleText = given.appTitleText()
+        _ = given.model(appTitleText)
+
+        then.appTitleText(appTitleText, textIs: appTitle)
+    }
+
     func testBindAppTitleText() {
 
         let appTitleText = given.appTitleText()
@@ -41,6 +50,11 @@ class StartupModelTests: XCTestCase {
 }
 
 class StartupModelSteps {
+
+    func appTitle() -> String {
+
+        "City Search"
+    }
 
     private var textUpdateCalled = false
 
@@ -75,6 +89,11 @@ class StartupModelSteps {
     func observerAppTitleText(_ model: StartupModelImp, _ textUpdate: @escaping ValueUpdate<String>) {
 
         model.observeAppTitleText(textUpdate)
+    }
+
+    func appTitleText(_ text: ObservableMock<String>, textIs expectedText: String) {
+
+        XCTAssertEqual(text.value, expectedText, "App Title Text value is not app title")
     }
 
     func textUpdateIsCalled(_ textUpdate: ValueUpdate<String>) {

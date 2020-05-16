@@ -7,7 +7,7 @@ import Foundation
 
 class Observable<T> {
 
-    private var value: T
+    var value: T
 
     init(_ value: T) {
 

@@ -11,12 +11,14 @@ import UIKit
 @UIApplicationMain
 class AppDelegate : NSObject, UIApplicationDelegate {
 
-    let window = UIWindow()
+    var window: UIWindow?
 
     func applicationDidFinishLaunching(_ application: UIApplication) {
 
-        window.makeKeyAndVisible()
+        window = UIWindow()
+        
+        window?.makeKeyAndVisible()
 
-        window.rootViewController = StartupController()
+        window?.rootViewController = StartupController()
     }
 }

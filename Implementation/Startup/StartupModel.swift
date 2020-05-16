@@ -22,6 +22,8 @@ class StartupModelImp: StartupModel {
     init(appTitleText: Observable<String>) {
 
         self.appTitleText = appTitleText
+
+        self.appTitleText.value = "City Search"
     }
 
     func observeAppTitleText(_ update: @escaping ValueUpdate<String>) {
