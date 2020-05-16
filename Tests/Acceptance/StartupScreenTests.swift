@@ -48,8 +48,8 @@ class StartupScreenTests: XCTestCase {
     
     func testAppTitleIsVisible() {
 
-        let startupScreen = given.startupScreen()
-        let appTitleLabel = given.appTitleLabel(startupScreen)
+        let appTitleLabel = given.appTitleLabel()
+        let startupScreen = given.startupScreen(appTitleLabel)
 
         when.startupScreenIsShown(startupScreen)
 
@@ -68,28 +68,28 @@ class StartupScreenTests: XCTestCase {
 
     func testAppTitleCenter(screenSize: CGSize) {
 
-        let startupScreen = given.startupScreen()
-        let appTitleLabel = given.appTitleLabel(startupScreen)
+        let appTitleLabel = given.appTitleLabel()
+        let startupScreen = given.startupScreen(appTitleLabel)
         given.startupScreenIsShown(startupScreen)
 
         when.startupScreenSizeBecomes(startupScreen, screenSize)
         then.appTitleLabel(appTitleLabel, isCenteredIn: screenSize)
     }
 
-    func testappTitleSize() {
+    func testAppTitleSize() {
 
         let screenSizes = given.screenSizes()
 
         for screenSize in screenSizes {
 
-            testappTitleSize(screenSize: screenSize)
+            testAppTitleSize(screenSize: screenSize)
         }
     }
 
-    func testappTitleSize(screenSize: CGSize) {
+    func testAppTitleSize(screenSize: CGSize) {
 
-        let startupScreen = given.startupScreen()
-        let appTitleLabel = given.appTitleLabel(startupScreen)
+        let appTitleLabel = given.appTitleLabel()
+        let startupScreen = given.startupScreen(appTitleLabel)
         given.startupScreenIsShown(startupScreen)
 
         when.startupScreenSizeBecomes(startupScreen, screenSize)
@@ -98,8 +98,8 @@ class StartupScreenTests: XCTestCase {
     
     func testAppTitleText() {
 
-        let startupScreen = given.startupScreen()
-        let appTitleLabel = given.appTitleLabel(startupScreen)
+        let appTitleLabel = given.appTitleLabel()
+        let startupScreen = given.startupScreen(appTitleLabel)
         let appTitleText = given.appTitleText()
 
         when.startupScreenIsShown(startupScreen)
@@ -109,8 +109,8 @@ class StartupScreenTests: XCTestCase {
 
     func testAppTitleFont() {
 
-        let startupScreen = given.startupScreen()
-        let appTitleLabel = given.appTitleLabel(startupScreen)
+        let appTitleLabel = given.appTitleLabel()
+        let startupScreen = given.startupScreen(appTitleLabel)
         let appTitleFont = given.appTitleFont()
 
         when.startupScreenIsShown(startupScreen)
@@ -136,14 +136,17 @@ class StartupScreenSteps {
         [CGSize(width: 1024, height: 768), CGSize(width: 2048, height: 768), CGSize(width: 2048, height: 1536)]
     }
 
-    func appTitleLabel(_ startupScreen: StartupController) -> UILabel {
+    func appTitleLabel() -> UILabel {
 
-        startupScreen.startupView.appTitleLabel
+        UILabel()
     }
 
-    func startupScreen() -> StartupController {
+    func startupScreen(_ appTitleLabel: UILabel = UILabel()) -> StartupController {
 
-        StartupController()
+        let builder = StartupController.Builder()
+        builder.appTitleLabel = appTitleLabel
+
+        return builder.build()
     }
 
     func startupScreenIsShown(_ startupScreen: StartupController) {

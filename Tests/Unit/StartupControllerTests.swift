@@ -33,8 +33,9 @@ class StartupControllerTests: XCTestCase {
     
     func testStartupControllerAssignsView() {
 
-        let startupController = given.startupController()
-        let startupView = given.startupView(startupController)
+        let view = given.view()
+        let startupView = given.startupView(view)
+        let startupController = given.startupController(startupView)
 
         when.startupControllerLoads(startupController)
 
@@ -44,14 +45,25 @@ class StartupControllerTests: XCTestCase {
 
 class StartupControllerSteps {
 
-    func startupController() -> StartupController {
+    let stubView = UIView()
 
-        StartupController()
+    func view() -> UIView {
+
+        stubView
     }
 
-    func startupView(_ startupController: StartupController) -> StartupView {
+    func startupController(_ startupView: StartupViewMock) -> StartupController {
 
-        startupController.startupView
+        StartupController(startupView: startupView)
+    }
+
+    func startupView(_ view: UIView) -> StartupViewMock {
+
+        let startupView = StartupViewMock()
+
+        startupView.viewGetter = { view }
+
+        return startupView
     }
 
     func startupControllerLoads(_ startupController: StartupController) {
@@ -59,8 +71,8 @@ class StartupControllerSteps {
         startupController.loadViewIfNeeded()
     }
 
-    func startupController(_ startupController: StartupController, viewIs startupView: StartupView) {
+    func startupController(_ startupController: StartupController, viewIs startupView: StartupViewMock) {
 
-        XCTAssertEqual(startupController.view, startupView.view)
+        XCTAssertEqual(startupController.view, stubView)
     }
 }

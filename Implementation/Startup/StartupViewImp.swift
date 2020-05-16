@@ -5,22 +5,23 @@
 
 import UIKit
 
-class StartupView {
+protocol StartupView {
+
+    var view: UIView { get }
+}
+
+class StartupViewImp : StartupView {
 
     let view = UIView()
 
-    let appTitleLabel = UILabel()
+    private let appTitleLabel: UILabel
 
     private let model: StartupModel
     private let binder: ViewBinder
 
-    convenience init() {
+    init(appTitleLabel: UILabel, model: StartupModel, binder: ViewBinder) {
 
-        self.init(model: StartupModelImp(), binder: ViewBinderImp())
-    }
-
-    init(model: StartupModel, binder: ViewBinder) {
-
+        self.appTitleLabel = appTitleLabel
         self.model = model
         self.binder = binder
 

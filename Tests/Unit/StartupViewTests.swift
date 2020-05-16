@@ -37,24 +37,24 @@ class StartupViewTests: XCTestCase {
 
     func testAppTitleLabelIsOnStartupView() {
 
-        let startupView = given.startupView()
-        let appTitleLabel = given.appTitleLabel(startupView)
+        let appTitleLabel = given.appTitleLabel()
+        let startupView = given.startupView(appTitleLabel: appTitleLabel)
 
         then.appTitleLabel(appTitleLabel, isOnStartupView: startupView)
     }
 
     func testAppTitleLabelAutoResizeMaskDisabled() {
 
-        let startupView = given.startupView()
-        let appTitleLabel = given.appTitleLabel(startupView)
+        let appTitleLabel = given.appTitleLabel()
+        let startupView = given.startupView(appTitleLabel: appTitleLabel)
 
         then.autoResizeMaskIsDisabled(appTitleLabel)
     }
 
     func testAppTitleLabelCenter() {
 
-        let startupView = given.startupView()
-        let appTitleLabel = given.appTitleLabel(startupView)
+        let appTitleLabel = given.appTitleLabel()
+        let startupView = given.startupView(appTitleLabel: appTitleLabel)
         let expectedConstraints = given.constraintsForCenter(appTitleLabel, equalTo: startupView)
 
         then.startupView(startupView, hasConstraints: expectedConstraints)
@@ -62,8 +62,8 @@ class StartupViewTests: XCTestCase {
 
     func testAppTitleLabelFont() {
 
-        let startupView = given.startupView()
-        let appTitleLabel = given.appTitleLabel(startupView)
+        let appTitleLabel = given.appTitleLabel()
+        let startupView = given.startupView(appTitleLabel: appTitleLabel)
         let expectedFont = given.appTitleFont(appTitleLabel)
 
         then.appTitleLabel(appTitleLabel, fontIs: expectedFont)
@@ -71,10 +71,10 @@ class StartupViewTests: XCTestCase {
 
     func testAppTitleLabelIsBoundToModel() {
 
+        let appTitleLabel = given.appTitleLabel()
         let startupModel = given.startupModel()
         let binder = given.binder()
-        let startupView = given.startupView(startupModel, binder)
-        let appTitleLabel = given.appTitleLabel(startupView)
+        let startupView = given.startupView(appTitleLabel: appTitleLabel, startupModel: startupModel, binder: binder)
 
         then.appTitleLabel(appTitleLabel, isBoundToModel: startupModel)
     }
@@ -117,28 +117,28 @@ class StartupViewSteps {
         return startupModel
     }
 
-    func constraintsForCenter(_ appTitleLabel: UILabel, equalTo startupView: StartupView) -> [NSLayoutConstraint] {
+    func constraintsForCenter(_ appTitleLabel: UILabel, equalTo startupView: StartupViewImp) -> [NSLayoutConstraint] {
 
         [appTitleLabel.centerXAnchor.constraint(equalTo: startupView.view.centerXAnchor),
          appTitleLabel.centerYAnchor.constraint(equalTo: startupView.view.centerYAnchor)]
     }
 
-    func startupView(_ startupModel: StartupModelMock = StartupModelMock(), _ binder: ViewBinderMock = ViewBinderMock()) -> StartupView {
+    func startupView(appTitleLabel: UILabel = UILabel(), startupModel: StartupModelMock = StartupModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> StartupViewImp {
 
-        StartupView(model: startupModel, binder: binder)
+        StartupViewFactoryImp().startupViewImp(appTitleLabel: appTitleLabel, startupModel: startupModel, binder: binder)
     }
 
-    func appTitleLabel(_ startupView: StartupView) -> UILabel {
+    func appTitleLabel() -> UILabel {
 
-        startupView.appTitleLabel
+        UILabel()
     }
 
-    func startupViewBackgroundIsWhite(_ startupView: StartupView) {
+    func startupViewBackgroundIsWhite(_ startupView: StartupViewImp) {
 
         XCTAssertEqual(startupView.view.backgroundColor, UIColor.white)
     }
 
-    func appTitleLabel(_ appTitleLabel: UILabel, isOnStartupView startupView: StartupView) {
+    func appTitleLabel(_ appTitleLabel: UILabel, isOnStartupView startupView: StartupViewImp) {
 
         XCTAssertTrue(startupView.view.subviews.contains(appTitleLabel), "Startup view does not contain app title label")
     }
@@ -148,7 +148,7 @@ class StartupViewSteps {
         XCTAssertFalse(view.translatesAutoresizingMaskIntoConstraints, "Autoresizing mask is not disabled")
     }
 
-    func startupView(_ startupView: StartupView, hasConstraints expectedConstraints: [NSLayoutConstraint]) {
+    func startupView(_ startupView: StartupViewImp, hasConstraints expectedConstraints: [NSLayoutConstraint]) {
 
         XCTAssertTrue(startupView.view.constraints.contains { constraint in expectedConstraints.contains { expectedConstraint in constraint.isEqualToConstraint(expectedConstraint) } }, "Startup view does not contain expected constraints")
     }

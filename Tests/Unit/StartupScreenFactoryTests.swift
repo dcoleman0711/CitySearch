@@ -32,7 +32,7 @@ final class StartupScreenFactorySteps: Steps {
     func startupViewFactory() -> StartupViewFactoryMock {
 
         let startupViewFactory = StartupViewFactoryMock()
-        startupViewFactory.startupViewImp = { (_ appTitleLabel: UILabel) -> StartupView in
+        startupViewFactory.startupViewImp = { (_ appTitleLabel: UILabel) -> StartupViewImp in
 
             self.appTitleLabelPassedToStartupViewFactory = appTitleLabel
 
