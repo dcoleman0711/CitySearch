@@ -118,15 +118,15 @@ class StartupScreenTests: XCTestCase {
 
         then.appTitleLabel(appTitleLabel, fontIs: appTitleFont)
     }
-    
-    func testStartTransitionToCitySearchScreen() {
+
+    func testTransitionStartsBeforeMaximumInterval() {
 
         let startupTransitionCommand = given.startupTransitionCommand()
         let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand)
-        let maximumTransitionStartDuration = given.maximumTransitionStartDuration()
+        let maximumTransitionStartInterval = given.maximumTransitionStartInterval()
         let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
 
-        when.currentTimeIs(startupScreenLoadTime + maximumTransitionStartDuration)
+        when.currentTimeIs(startupScreenLoadTime + maximumTransitionStartInterval)
 
         then.transitionToCitySearchScreenHasStarted()
     }
@@ -167,7 +167,7 @@ class StartupScreenSteps {
         return command
     }
 
-    func maximumTransitionStartDuration() -> TimeInterval {
+    func maximumTransitionStartInterval() -> TimeInterval {
 
         StartupTestConstants.maximumTransitionStartDuration
     }
