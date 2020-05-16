@@ -13,8 +13,9 @@ class StartupModelMock : StartupModel {
         observeAppTitleTextImp(update)
     }
 
+    var startTransitionTimerImp: () -> Void = { }
     func startTransitionTimer() {
 
-
+        startTransitionTimerImp()
     }
 }

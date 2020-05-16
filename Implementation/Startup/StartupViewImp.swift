@@ -37,6 +37,8 @@ class StartupViewImp : UIViewController, StartupView {
 
         setupView()
         buildLayout()
+
+        model.startTransitionTimer()
     }
 
     private func setupView() {

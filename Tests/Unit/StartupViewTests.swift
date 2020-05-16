@@ -87,8 +87,18 @@ class StartupViewTests: XCTestCase {
         let startupView = given.startupView(appTitleLabel: appTitleLabel, startupModel: startupModel, binder: binder)
 
         when.startupViewIsLoaded(startupView)
-        
+
         then.appTitleLabel(appTitleLabel, isBoundToModel: startupModel)
+    }
+
+    func testTransitionIsScheduled() {
+
+        let startupModel = given.startupModel()
+        let startupView = given.startupView(startupModel: startupModel)
+
+        when.startupViewIsLoaded(startupView)
+
+        then.transitionIsScheduled(startupModel)
     }
 }
 
@@ -96,6 +106,8 @@ class StartupViewSteps {
 
     private var labelBoundToModel: UILabel?
     private var textUpdatePassedToModel: ValueUpdate<String>?
+
+    private var transitionScheduled = false
 
     func appTitleFont(_ label: UILabel) -> UIFont {
 
@@ -124,6 +136,11 @@ class StartupViewSteps {
         startupModel.observeAppTitleTextImp = { (textUpdate) in
 
             textUpdate("")
+        }
+
+        startupModel.startTransitionTimerImp = {
+
+            self.transitionScheduled = true
         }
 
         return startupModel
@@ -178,6 +195,11 @@ class StartupViewSteps {
     func appTitleLabel(_ appTitleLabel: UILabel, fontIs font: UIFont) {
 
         XCTAssertEqual(appTitleLabel.font, font, "App title font is not correct")
+    }
+
+    func transitionIsScheduled(_ startupModel: StartupModelMock) {
+
+        XCTAssertTrue(transitionScheduled, "Transition was not scheduled")
     }
 }
 
