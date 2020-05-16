@@ -9,7 +9,7 @@ import XCTest
 
 import UIKit
 
-class StartupTestConstants {
+class StartupScreenTestConstants {
 
     static let appTitle = "City Search"
     static let appTitleFont = UIFont.systemFont(ofSize: 48.0)
@@ -182,12 +182,12 @@ class StartupScreenSteps {
 
     func maximumTransitionStartInterval() -> TimeInterval {
 
-        StartupTestConstants.maximumTransitionStartInterval
+        StartupScreenTestConstants.maximumTransitionStartInterval
     }
 
     func minimumTransitionStartInterval() -> TimeInterval {
 
-        StartupTestConstants.minimumTransitionStartInterval
+        StartupScreenTestConstants.minimumTransitionStartInterval
     }
 
     func startupScreenLoadedAtTime(_ startupScreen: StartupViewImp) -> Date {
@@ -198,12 +198,12 @@ class StartupScreenSteps {
 
     func appTitleFont() -> UIFont {
 
-        StartupTestConstants.appTitleFont
+        StartupScreenTestConstants.appTitleFont
     }
 
     func appTitleText() -> String {
 
-        StartupTestConstants.appTitle
+        StartupScreenTestConstants.appTitle
     }
 
     func screenSizes() -> [CGSize] {
@@ -218,7 +218,7 @@ class StartupScreenSteps {
 
     func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock()) -> StartupViewImp {
 
-        let builder = StartupViewImp.Builder()
+        let builder = StartupViewBuilderImp()
         builder.appTitleLabel = appTitleLabel
         builder.transitionCommand = transitionCommand
 

@@ -18,11 +18,6 @@ class StartupModelImp: StartupModel {
     private let timerType: Timer.Type
     private let transitionCommand: StartupTransitionCommand
 
-    convenience init() {
-
-        self.init(appTitleText: Observable<String>(""), timerType: Timer.self, transitionCommand: StartupTransitionCommandImp())
-    }
-
     init(appTitleText: Observable<String>, timerType: Timer.Type, transitionCommand: StartupTransitionCommand) {
 
         self.appTitleText = appTitleText

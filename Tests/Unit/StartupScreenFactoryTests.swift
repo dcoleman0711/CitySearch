@@ -42,7 +42,7 @@ final class StartupScreenFactorySteps: Steps {
         return startupViewFactory
     }
 
-    func startupControllerFactory(_ startupViewFactory: StartupViewFactory) -> StartupControllerFactory {
+    func startupControllerFactory(_ startupViewFactory: StartupViewBuilder) -> StartupControllerFactory {
 
         StartupControllerFactory(startupViewFactory: startupViewFactory)
     }

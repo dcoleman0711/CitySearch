@@ -111,7 +111,7 @@ class StartupModelSteps {
 
     func appTitle() -> String {
 
-        StartupTestConstants.appTitle
+        StartupScreenTestConstants.appTitle
     }
 
     private var textUpdateCalled = false

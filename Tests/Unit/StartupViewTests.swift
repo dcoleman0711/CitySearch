@@ -111,7 +111,7 @@ class StartupViewSteps {
 
     func appTitleFont(_ label: UILabel) -> UIFont {
 
-        StartupTestConstants.appTitleFont
+        StartupScreenTestConstants.appTitleFont
     }
 
     func binder() -> ViewBinderMock {

@@ -67,16 +67,4 @@ class StartupViewImp : UIViewController, StartupView {
 
         model.observeAppTitleText(binder.bindText(label: appTitleLabel))
     }
-
-    class Builder {
-
-        var appTitleLabel = UILabel()
-        var transitionCommand: StartupTransitionCommand = StartupTransitionCommandImp()
-
-        func build() -> StartupViewImp {
-
-            let model = StartupModelImp(appTitleText: Observable<String>(""), timerType: Timer.self, transitionCommand: transitionCommand)
-            return StartupViewImp(appTitleLabel: appTitleLabel, model: model, binder: ViewBinderImp())
-        }
-    }
 }
