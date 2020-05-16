@@ -118,19 +118,18 @@ class StartupScreenTests: XCTestCase {
 
         then.appTitleLabel(appTitleLabel, fontIs: appTitleFont)
     }
+    
+    func testStartTransitionToCitySearchScreen() {
 
-    // In Progress
-//    func testStartTransitionToCitySearchScreen() {
-//
-//        let startupTransitionCommand = given.startupTransitionCommand()
-//        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand)
-//        let maximumTransitionStartDuration = given.maximumTransitionStartDuration()
-//        let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
-//
-//        when.currentTimeIs(startupScreenLoadTime + maximumTransitionStartDuration)
-//
-//        then.transitionToCitySearchScreenHasStarted()
-//    }
+        let startupTransitionCommand = given.startupTransitionCommand()
+        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand)
+        let maximumTransitionStartDuration = given.maximumTransitionStartDuration()
+        let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
+
+        when.currentTimeIs(startupScreenLoadTime + maximumTransitionStartDuration)
+
+        then.transitionToCitySearchScreenHasStarted()
+    }
 }
 
 class StartupScreenSteps {
@@ -160,7 +159,7 @@ class StartupScreenSteps {
 
         let command = StartupTransitionCommandMock()
 
-        command.startTransitionImp = {
+        command.invokeImp = {
 
             self.transitionStarted = true
         }

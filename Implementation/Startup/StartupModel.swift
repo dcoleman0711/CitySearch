@@ -16,18 +16,20 @@ class StartupModelImp: StartupModel {
 
     private let appTitleText: Observable<String>
     private let timerType: Timer.Type
+    private let transitionCommand: StartupTransitionCommand
 
     convenience init() {
 
-        self.init(appTitleText: Observable<String>(""), timerType: Timer.self)
+        self.init(appTitleText: Observable<String>(""), timerType: Timer.self, transitionCommand: StartupTransitionCommandImp())
     }
 
-    init(appTitleText: Observable<String>, timerType: Timer.Type) {
+    init(appTitleText: Observable<String>, timerType: Timer.Type, transitionCommand: StartupTransitionCommand) {
 
         self.appTitleText = appTitleText
         self.timerType = timerType
 
         self.appTitleText.value = "City Search"
+        self.transitionCommand = transitionCommand
     }
 
     func observeAppTitleText(_ update: @escaping ValueUpdate<String>) {
@@ -37,6 +39,11 @@ class StartupModelImp: StartupModel {
 
     func startTransitionTimer() {
 
-        self.timerType.scheduledTimer(withTimeInterval: 10.0, repeats: false) { timer in  }
+        self.timerType.scheduledTimer(withTimeInterval: 10.0, repeats: false, block: StartupModelImp.fireTransitionTimer(self))
+    }
+
+    private func fireTransitionTimer(timer: Timer) {
+
+        transitionCommand.invoke()
     }
 }

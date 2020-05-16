@@ -75,7 +75,8 @@ class StartupViewImp : UIViewController, StartupView {
 
         func build() -> StartupViewImp {
 
-            StartupViewImp(appTitleLabel: appTitleLabel, model: StartupModelImp(), binder: ViewBinderImp())
+            let model = StartupModelImp(appTitleText: Observable<String>(""), timerType: Timer.self, transitionCommand: transitionCommand)
+            return StartupViewImp(appTitleLabel: appTitleLabel, model: model, binder: ViewBinderImp())
         }
     }
 }

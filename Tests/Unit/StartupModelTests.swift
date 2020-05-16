@@ -53,21 +53,35 @@ class StartupModelTests: XCTestCase {
         let model = given.model()
         let transitionStartInterval = given.transitionStartInterval()
 
-        when.startTransitionTimer(model)
+        when.transitionIsScheduled(model)
 
         then.timerIsScheduled(withInterval: transitionStartInterval)
+    }
+
+    func testTransitionTimerCallsTransitionCommand() {
+
+        let transitionCommand = given.transitionCommand()
+        let model = given.model(transitionCommand: transitionCommand)
+        given.transitionIsScheduled(model)
+
+        when.transitionTimerFires()
+
+        then.transitionCommandIsInvoked(transitionCommand)
     }
 }
 
 class StartupModelSteps {
 
     private var scheduledTimerInterval: TimeInterval?
+    private var transitionCommandInvoked = false
+    private var scheduledTimerBlock: ((Timer) -> Void)?
 
     init() {
 
         TimerMock.scheduledTimerImp = { (interval, repeats, block) in
 
             self.scheduledTimerInterval = interval
+            self.scheduledTimerBlock = block
 
             return TimerMock()
         }
@@ -78,9 +92,21 @@ class StartupModelSteps {
         10.0
     }
 
-    func startTransitionTimer(_ model: StartupModelImp) {
+    func transitionIsScheduled(_ model: StartupModelImp) {
 
         model.startTransitionTimer()
+    }
+
+    func transitionCommand() -> StartupTransitionCommandMock {
+
+        let transitionCommand = StartupTransitionCommandMock()
+
+        transitionCommand.invokeImp = {
+
+            self.transitionCommandInvoked = true
+        }
+
+        return transitionCommand
     }
 
     func appTitle() -> String {
@@ -105,9 +131,9 @@ class StartupModelSteps {
         return appTitleText
     }
 
-    func model(appTitleText: ObservableMock<String> = ObservableMock<String>("")) -> StartupModelImp {
+    func model(appTitleText: ObservableMock<String> = ObservableMock<String>(""), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock()) -> StartupModelImp {
 
-        StartupModelImp(appTitleText: appTitleText, timerType: TimerMock.self)
+        StartupModelImp(appTitleText: appTitleText, timerType: TimerMock.self, transitionCommand: transitionCommand)
     }
 
     func textUpdate() -> ValueUpdate<String> {
@@ -123,6 +149,11 @@ class StartupModelSteps {
         model.observeAppTitleText(textUpdate)
     }
 
+    func transitionTimerFires() {
+
+        scheduledTimerBlock?(TimerMock())
+    }
+
     func appTitleText(_ text: ObservableMock<String>, textIs expectedText: String) {
 
         XCTAssertEqual(text.value, expectedText, "App Title Text value is not app title")
@@ -136,6 +167,11 @@ class StartupModelSteps {
     func timerIsScheduled(withInterval expectedInterval: TimeInterval) {
 
         XCTAssertEqual(scheduledTimerInterval, expectedInterval)
+    }
+
+    func transitionCommandIsInvoked(_ transitionCommand: StartupTransitionCommandMock) {
+
+        XCTAssertTrue(transitionCommandInvoked, "Transition command was not invoked")
     }
 }
 

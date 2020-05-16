@@ -7,8 +7,12 @@ import Foundation
 
 protocol StartupTransitionCommand {
 
+    func invoke()
 }
 
 class StartupTransitionCommandImp : StartupTransitionCommand {
 
+    func invoke() {
+
+    }
 }
