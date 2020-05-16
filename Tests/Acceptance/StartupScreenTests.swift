@@ -13,7 +13,8 @@ class StartupTestConstants {
 
     static let appTitle = "City Search"
     static let appTitleFont = UIFont.systemFont(ofSize: 48.0)
-    static let maximumTransitionStartDuration = 10.5
+    static let maximumTransitionStartInterval = 10.5
+    static let minimumTransitionStartInterval = 9.5
 }
 
 class StartupScreenTests: XCTestCase {
@@ -130,6 +131,18 @@ class StartupScreenTests: XCTestCase {
 
         then.transitionToCitySearchScreenHasStarted()
     }
+
+    func testTransitionDoesNotStartBeforeMinimumInterval() {
+
+        let startupTransitionCommand = given.startupTransitionCommand()
+        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand)
+        let minimumTransitionStartInterval = given.minimumTransitionStartInterval()
+        let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
+
+        when.currentTimeIs(startupScreenLoadTime + minimumTransitionStartInterval)
+
+        then.transitionToCitySearchScreenHasNotStarted()
+    }
 }
 
 class StartupScreenSteps {
@@ -169,7 +182,12 @@ class StartupScreenSteps {
 
     func maximumTransitionStartInterval() -> TimeInterval {
 
-        StartupTestConstants.maximumTransitionStartDuration
+        StartupTestConstants.maximumTransitionStartInterval
+    }
+
+    func minimumTransitionStartInterval() -> TimeInterval {
+
+        StartupTestConstants.minimumTransitionStartInterval
     }
 
     func startupScreenLoadedAtTime(_ startupScreen: StartupViewImp) -> Date {
@@ -253,5 +271,10 @@ class StartupScreenSteps {
     func transitionToCitySearchScreenHasStarted() {
 
         XCTAssertTrue(transitionStarted, "Transition to search screen has not started")
+    }
+
+    func transitionToCitySearchScreenHasNotStarted() {
+
+        XCTAssertFalse(transitionStarted, "Transition to search screen has already started")
     }
 }
