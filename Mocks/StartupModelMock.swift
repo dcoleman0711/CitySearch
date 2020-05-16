@@ -12,4 +12,9 @@ class StartupModelMock : StartupModel {
 
         observeAppTitleTextImp(update)
     }
+
+    func startTransitionTimer() {
+
+
+    }
 }

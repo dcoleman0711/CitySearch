@@ -32,7 +32,7 @@ class StartupModelTests: XCTestCase {
 
         let appTitle = given.appTitle()
         let appTitleText = given.appTitleText()
-        _ = given.model(appTitleText)
+        _ = given.model(appTitleText: appTitleText)
 
         then.appTitleText(appTitleText, textIs: appTitle)
     }
@@ -40,16 +40,60 @@ class StartupModelTests: XCTestCase {
     func testBindAppTitleText() {
 
         let appTitleText = given.appTitleText()
-        let model = given.model(appTitleText)
+        let model = given.model(appTitleText: appTitleText)
         let textUpdate = given.textUpdate()
 
         when.observerAppTitleText(model, textUpdate)
 
         then.textUpdateIsCalled(textUpdate)
     }
+
+    func testScheduleTransitionTimer() {
+
+        let timerType = given.timerType()
+        let model = given.model(timerType: timerType)
+        let transitionStartInterval = given.transitionStartInterval()
+
+        when.startTransitionTimer(model)
+
+        then.timerIsScheduled(withInterval: transitionStartInterval)
+    }
 }
 
 class StartupModelSteps {
+
+    private var scheduledTimerInterval: TimeInterval?
+
+    func transitionStartInterval() -> TimeInterval {
+
+        10.0
+    }
+
+    func startTransitionTimer(_ model: StartupModelImp) {
+
+        model.startTransitionTimer()
+    }
+
+    func timerType() -> TimerMock.Type {
+
+        class TimerMockCaptureScheduled: TimerMock {
+
+            static var steps: StartupModelSteps!
+
+            override class func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> ()) -> Timer {
+
+                steps.scheduledTimerInterval = interval
+
+                return TimerMock()
+            }
+        }
+
+        let timerType = TimerMockCaptureScheduled.self
+
+        timerType.steps = self
+
+        return timerType
+    }
 
     func appTitle() -> String {
 
@@ -73,9 +117,9 @@ class StartupModelSteps {
         return appTitleText
     }
 
-    func model(_ appTitleText: ObservableMock<String>) -> StartupModelImp {
+    func model(appTitleText: ObservableMock<String> = ObservableMock<String>(""), timerType: TimerMock.Type = TimerMock.self) -> StartupModelImp {
 
-        StartupModelImp(appTitleText: appTitleText)
+        StartupModelImp(appTitleText: appTitleText, timerType: timerType)
     }
 
     func textUpdate() -> ValueUpdate<String> {
@@ -100,4 +144,14 @@ class StartupModelSteps {
 
         XCTAssertTrue(textUpdateCalled, "Text update was not called")
     }
+
+    func timerIsScheduled(withInterval expectedInterval: TimeInterval) {
+
+        XCTAssertEqual(scheduledTimerInterval, expectedInterval)
+    }
+}
+
+class TimerMock: Timer {
+
+
 }

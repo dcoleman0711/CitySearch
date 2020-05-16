@@ -8,20 +8,24 @@ import Foundation
 protocol StartupModel {
 
     func observeAppTitleText(_ update: @escaping ValueUpdate<String>)
+
+    func startTransitionTimer()
 }
 
 class StartupModelImp: StartupModel {
 
     private let appTitleText: Observable<String>
+    private let timerType: Timer.Type
 
     convenience init() {
 
-        self.init(appTitleText: Observable<String>(""))
+        self.init(appTitleText: Observable<String>(""), timerType: Timer.self)
     }
 
-    init(appTitleText: Observable<String>) {
+    init(appTitleText: Observable<String>, timerType: Timer.Type) {
 
         self.appTitleText = appTitleText
+        self.timerType = timerType
 
         self.appTitleText.value = "City Search"
     }
@@ -29,5 +33,10 @@ class StartupModelImp: StartupModel {
     func observeAppTitleText(_ update: @escaping ValueUpdate<String>) {
 
         appTitleText.subscribe(update, updateImmediately: true)
+    }
+
+    func startTransitionTimer() {
+
+        self.timerType.scheduledTimer(withTimeInterval: 10.0, repeats: false) { timer in  }
     }
 }
