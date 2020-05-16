@@ -173,7 +173,7 @@ class StartupScreenSteps {
         StartupTestConstants.maximumTransitionStartDuration
     }
 
-    func startupScreenLoadedAtTime(_ startupScreen: StartupController) -> Date {
+    func startupScreenLoadedAtTime(_ startupScreen: StartupViewImp) -> Date {
 
         startupScreen.loadViewIfNeeded()
         return Date()
@@ -199,33 +199,33 @@ class StartupScreenSteps {
         UILabel()
     }
 
-    func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock()) -> StartupController {
+    func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock()) -> StartupViewImp {
 
-        let builder = StartupController.Builder()
+        let builder = StartupViewImp.Builder()
         builder.appTitleLabel = appTitleLabel
         builder.transitionCommand = transitionCommand
 
         return builder.build()
     }
 
-    func startupScreenIsShown(_ startupScreen: StartupController) {
+    func startupScreenIsShown(_ startupScreen: StartupViewImp) {
 
         startupScreen.loadViewIfNeeded()
     }
 
-    func startupScreenSizeBecomes(_ startupScreen: StartupController, _ screenSize: CGSize) {
+    func startupScreenSizeBecomes(_ startupScreen: StartupViewImp, _ screenSize: CGSize) {
 
         startupScreen.view.frame = CGRect(origin: CGPoint.zero, size: screenSize)
         startupScreen.view.setNeedsLayout()
         startupScreen.view.layoutIfNeeded()
     }
 
-    func startupScreenBackgroundIsWhite(_ startupScreen: StartupController) {
+    func startupScreenBackgroundIsWhite(_ startupScreen: StartupViewImp) {
 
         XCTAssertEqual(startupScreen.view.backgroundColor, UIColor.white)
     }
 
-    func appTitleIsVisible(_ startupScreen: StartupController, _ appTitleLabel: UILabel) {
+    func appTitleIsVisible(_ startupScreen: StartupViewImp, _ appTitleLabel: UILabel) {
 
         XCTAssertTrue(appTitleLabel.isDescendant(of: startupScreen.view), "App title is not visible on startup screen")
     }

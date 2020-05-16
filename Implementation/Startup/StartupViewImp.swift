@@ -7,12 +7,10 @@ import UIKit
 
 protocol StartupView {
 
-    var view: UIView { get }
+    var view: UIView! { get }
 }
 
-class StartupViewImp : StartupView {
-
-    let view = UIView()
+class StartupViewImp : UIViewController, StartupView {
 
     private let appTitleLabel: UILabel
 
@@ -25,9 +23,20 @@ class StartupViewImp : StartupView {
         self.model = model
         self.binder = binder
 
+        super.init(nibName: nil, bundle: nil)
+
+        bindViews()
+    }
+
+    required init?(coder: NSCoder) {
+
+        fatalError("No Interface Builder!")
+    }
+
+    override func viewDidLoad() {
+
         setupView()
         buildLayout()
-        bindViews()
     }
 
     private func setupView() {
@@ -55,5 +64,16 @@ class StartupViewImp : StartupView {
     private func bindViews() {
 
         model.observeAppTitleText(binder.bindText(label: appTitleLabel))
+    }
+
+    class Builder {
+
+        var appTitleLabel = UILabel()
+        var transitionCommand: StartupTransitionCommand = StartupTransitionCommandImp()
+
+        func build() -> StartupViewImp {
+
+            StartupViewImp(appTitleLabel: appTitleLabel, model: StartupModelImp(), binder: ViewBinderImp())
+        }
     }
 }

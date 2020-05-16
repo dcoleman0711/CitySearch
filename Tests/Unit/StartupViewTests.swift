@@ -32,6 +32,8 @@ class StartupViewTests: XCTestCase {
 
         let startupView = given.startupView()
 
+        when.startupViewIsLoaded(startupView)
+
         then.startupViewBackgroundIsWhite(startupView)
     }
 
@@ -40,6 +42,8 @@ class StartupViewTests: XCTestCase {
         let appTitleLabel = given.appTitleLabel()
         let startupView = given.startupView(appTitleLabel: appTitleLabel)
 
+        when.startupViewIsLoaded(startupView)
+
         then.appTitleLabel(appTitleLabel, isOnStartupView: startupView)
     }
 
@@ -47,6 +51,8 @@ class StartupViewTests: XCTestCase {
 
         let appTitleLabel = given.appTitleLabel()
         let startupView = given.startupView(appTitleLabel: appTitleLabel)
+
+        when.startupViewIsLoaded(startupView)
 
         then.autoResizeMaskIsDisabled(appTitleLabel)
     }
@@ -57,6 +63,8 @@ class StartupViewTests: XCTestCase {
         let startupView = given.startupView(appTitleLabel: appTitleLabel)
         let expectedConstraints = given.constraintsForCenter(appTitleLabel, equalTo: startupView)
 
+        when.startupViewIsLoaded(startupView)
+
         then.startupView(startupView, hasConstraints: expectedConstraints)
     }
 
@@ -65,6 +73,8 @@ class StartupViewTests: XCTestCase {
         let appTitleLabel = given.appTitleLabel()
         let startupView = given.startupView(appTitleLabel: appTitleLabel)
         let expectedFont = given.appTitleFont(appTitleLabel)
+
+        when.startupViewIsLoaded(startupView)
 
         then.appTitleLabel(appTitleLabel, fontIs: expectedFont)
     }
@@ -76,6 +86,8 @@ class StartupViewTests: XCTestCase {
         let binder = given.binder()
         let startupView = given.startupView(appTitleLabel: appTitleLabel, startupModel: startupModel, binder: binder)
 
+        when.startupViewIsLoaded(startupView)
+        
         then.appTitleLabel(appTitleLabel, isBoundToModel: startupModel)
     }
 }
@@ -125,12 +137,17 @@ class StartupViewSteps {
 
     func startupView(appTitleLabel: UILabel = UILabel(), startupModel: StartupModelMock = StartupModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> StartupViewImp {
 
-        StartupViewFactoryImp().startupViewImp(appTitleLabel: appTitleLabel, startupModel: startupModel, binder: binder)
+        StartupViewImp(appTitleLabel: appTitleLabel, model: startupModel, binder: binder)
     }
 
     func appTitleLabel() -> UILabel {
 
         UILabel()
+    }
+
+    func startupViewIsLoaded(_ startupView: StartupViewImp) {
+
+        startupView.loadViewIfNeeded()
     }
 
     func startupViewBackgroundIsWhite(_ startupView: StartupViewImp) {

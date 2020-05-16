@@ -19,6 +19,6 @@ class AppDelegate : NSObject, UIApplicationDelegate {
         
         window?.makeKeyAndVisible()
 
-        window?.rootViewController = StartupController.Builder().build()
+        window?.rootViewController = StartupViewImp.Builder().build()
     }
 }

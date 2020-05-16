@@ -11,6 +11,6 @@ class StartupViewMock: StartupView {
 
     }
 
-    var viewGetter: () -> UIView = { UIView() }
-    var view: UIView { viewGetter() }
+    var viewGetter: () -> UIView? = { UIView() }
+    var view: UIView! { viewGetter() }
 }

@@ -63,6 +63,6 @@ class StartupSteps {
             return
         }
 
-        XCTAssertTrue(rootController is StartupController, "Root controller's is not StartupScreen")
+        XCTAssertTrue(rootController is StartupViewImp, "Root controller's is not Startup Screen")
     }
 }
