@@ -51,15 +51,6 @@ class StartupViewTests: XCTestCase {
         then.autoResizeMaskIsDisabled(appTitleLabel)
     }
 
-    func testAppTitleLabelWidth() {
-
-        let startupView = given.startupView()
-        let appTitleLabel = given.appTitleLabel(startupView)
-        let expectedConstraint = given.constraintForWidth(appTitleLabel, isHalfOfWidth: startupView)
-
-        then.startupView(startupView, hasConstraints: [expectedConstraint])
-    }
-    
     func testAppTitleLabelCenter() {
 
         let startupView = given.startupView()
@@ -116,11 +107,6 @@ class StartupViewSteps {
 
         [appTitleLabel.centerXAnchor.constraint(equalTo: startupView.view.centerXAnchor),
          appTitleLabel.centerYAnchor.constraint(equalTo: startupView.view.centerYAnchor)]
-    }
-
-    func constraintForWidth(_ appTitleLabel: UILabel, isHalfOfWidth startupView: StartupView) -> NSLayoutConstraint {
-
-        appTitleLabel.widthAnchor.constraint(equalTo: startupView.view.widthAnchor, multiplier: 0.5)
     }
 
     func startupView(_ startupModel: StartupModelMock = StartupModelMock(), _ binder: ViewBinderMock = ViewBinderMock()) -> StartupView {

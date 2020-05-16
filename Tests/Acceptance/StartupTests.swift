@@ -51,7 +51,10 @@ class StartupSteps {
 
     func startupScreenAppearsFullScreen() {
 
-        let window = appDelegate.window
+        guard let window = appDelegate.window else {
+            XCTFail("AppDelegate window is nil")
+            return
+        }
 
         XCTAssertTrue(window.isKeyWindow, "AppDelegate window is not key window")
 

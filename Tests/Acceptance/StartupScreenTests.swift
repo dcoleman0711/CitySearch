@@ -50,27 +50,6 @@ class StartupScreenTests: XCTestCase {
         then.appTitleIsVisible(startupScreen, appTitleLabel)
     }
 
-    func testAppTitleWidth() {
-
-        let screenSizes = given.screenSizes()
-
-        for screenSize in screenSizes {
-
-            testAppTitleWidth(screenSize: screenSize)
-        }
-    }
-
-    func testAppTitleWidth(screenSize: CGSize) {
-
-        let startupScreen = given.startupScreen()
-        let appTitleLabel = given.appTitleLabel(startupScreen)
-        given.startupScreenIsShown(startupScreen)
-
-        when.startupScreenSizeBecomes(startupScreen, screenSize)
-        
-        then.appTitleLabel(appTitleLabel, widthIs: screenSize.width / 2.0)
-    }
-
     func testAppTitleCenter() {
 
         let screenSizes = given.screenSizes()
@@ -91,6 +70,26 @@ class StartupScreenTests: XCTestCase {
         then.appTitleLabel(appTitleLabel, isCenteredIn: screenSize)
     }
 
+    func testappTitleSize() {
+
+        let screenSizes = given.screenSizes()
+
+        for screenSize in screenSizes {
+
+            testappTitleSize(screenSize: screenSize)
+        }
+    }
+
+    func testappTitleSize(screenSize: CGSize) {
+
+        let startupScreen = given.startupScreen()
+        let appTitleLabel = given.appTitleLabel(startupScreen)
+        given.startupScreenIsShown(startupScreen)
+
+        when.startupScreenSizeBecomes(startupScreen, screenSize)
+        then.appTitleLabelSizeFitsText(appTitleLabel)
+    }
+    
     func testAppTitleText() {
 
         let startupScreen = given.startupScreen()
@@ -147,11 +146,6 @@ class StartupScreenSteps {
         XCTAssertTrue(appTitleLabel.isDescendant(of: startupScreen.view), "App title is not visible on startup screen")
     }
 
-    func appTitleLabel(_ appTitleLabel: UILabel, widthIs expectedWidth: CGFloat) {
-
-        XCTAssertEqual(appTitleLabel.frame.size.width, expectedWidth, "App title center is not half the screen width")
-    }
-
     func appTitleLabel(_ appTitleLabel: UILabel, isCenteredIn screenSize: CGSize) {
 
         // The values aren't exact when the size of the view is non-integer.  We need to round down
@@ -163,4 +157,8 @@ class StartupScreenSteps {
         XCTAssertEqual(appTitleLabel.text, expectedText)
     }
 
+    func appTitleLabelSizeFitsText(_ appTitleLabel: UILabel) {
+
+        XCTAssertEqual(appTitleLabel.frame.size, appTitleLabel.sizeThatFits(CGSize.zero))
+    }
 }

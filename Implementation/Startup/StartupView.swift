@@ -37,10 +37,9 @@ class StartupView {
 
         // App Title
         appTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        let appTitleWidthConstraint = appTitleLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5)
         let appCenterXConstraint = appTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let appCenterYConstraint = appTitleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        let appTitleConstraints = [appTitleWidthConstraint, appCenterXConstraint, appCenterYConstraint]
+        let appTitleConstraints = [appCenterXConstraint, appCenterYConstraint]
 
         let constraints = [NSLayoutConstraint]([appTitleConstraints].joined())
 
