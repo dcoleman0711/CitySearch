@@ -24,13 +24,18 @@ class StartupView {
         self.model = model
         self.binder = binder
 
+        setupView()
+        buildLayout()
+        bindViews()
+    }
+
+    private func setupView() {
+
         view.backgroundColor = UIColor.white
 
         view.addSubview(appTitleLabel)
 
-        buildLayout()
-
-        bindViews()
+        appTitleLabel.font = UIFont.systemFont(ofSize: 48.0)
     }
 
     private func buildLayout() {

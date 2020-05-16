@@ -53,7 +53,7 @@ class StartupModelSteps {
 
     func appTitle() -> String {
 
-        "City Search"
+        StartupTestConstants.appTitle
     }
 
     private var textUpdateCalled = false

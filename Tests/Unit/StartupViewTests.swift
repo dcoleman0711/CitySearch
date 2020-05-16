@@ -60,6 +60,15 @@ class StartupViewTests: XCTestCase {
         then.startupView(startupView, hasConstraints: expectedConstraints)
     }
 
+    func testAppTitleLabelFont() {
+
+        let startupView = given.startupView()
+        let appTitleLabel = given.appTitleLabel(startupView)
+        let expectedFont = given.appTitleFont(appTitleLabel)
+
+        then.appTitleLabel(appTitleLabel, fontIs: expectedFont)
+    }
+
     func testAppTitleLabelIsBoundToModel() {
 
         let startupModel = given.startupModel()
@@ -75,6 +84,11 @@ class StartupViewSteps {
 
     private var labelBoundToModel: UILabel?
     private var textUpdatePassedToModel: ValueUpdate<String>?
+
+    func appTitleFont(_ label: UILabel) -> UIFont {
+
+        StartupTestConstants.appTitleFont
+    }
 
     func binder() -> ViewBinderMock {
 
@@ -142,6 +156,11 @@ class StartupViewSteps {
     func appTitleLabel(_ appTitleLabel: UILabel, isBoundToModel model: StartupModelMock) {
 
         XCTAssertEqual(labelBoundToModel, appTitleLabel, "App title text is not bound to model")
+    }
+
+    func appTitleLabel(_ appTitleLabel: UILabel, fontIs font: UIFont) {
+
+        XCTAssertEqual(appTitleLabel.font, font, "App title font is not correct")
     }
 }
 

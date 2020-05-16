@@ -9,6 +9,12 @@ import XCTest
 
 import UIKit
 
+class StartupTestConstants {
+
+    static let appTitle = "City Search"
+    static let appTitleFont = UIFont.systemFont(ofSize: 48.0)
+}
+
 class StartupScreenTests: XCTestCase {
     
     var steps: StartupScreenSteps!
@@ -101,29 +107,28 @@ class StartupScreenTests: XCTestCase {
         then.appTitleLabel(appTitleLabel, textIs: appTitleText)
     }
 
-    // In progress
-//    func testAppTitleFont() {
-//
-//        let startupScreen = given.startupScreen()
-//        let appTitleLabel = given.appTitleLabel(startupScreen)
-//        let appTitleFont = given.appTitleFont()
-//
-//        when.startupScreenIsShown(startupScreen)
-//
-//        then.appTitleLabel(appTitleLabel, fontIs: appTitleFont)
-//    }
+    func testAppTitleFont() {
+
+        let startupScreen = given.startupScreen()
+        let appTitleLabel = given.appTitleLabel(startupScreen)
+        let appTitleFont = given.appTitleFont()
+
+        when.startupScreenIsShown(startupScreen)
+
+        then.appTitleLabel(appTitleLabel, fontIs: appTitleFont)
+    }
 }
 
 class StartupScreenSteps {
 
     func appTitleFont() -> UIFont {
 
-        UIFont.systemFont(ofSize: 32.0)
+        StartupTestConstants.appTitleFont
     }
 
     func appTitleText() -> String {
 
-        "City Search"
+        StartupTestConstants.appTitle
     }
 
     func screenSizes() -> [CGSize] {
