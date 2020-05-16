@@ -16,6 +16,7 @@
 		CC89D94633296FC3B6E300C0 /* StartupModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DFC7507AABF64593C023 /* StartupModelMock.swift */; };
 		CC89DA15734314FC0D039354 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
 		CC89DB65A510EAAA2C92E015 /* StartupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3AF361140C3E6727895 /* StartupModel.swift */; };
+		CC89DD193A5250045F89B0D2 /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DD14C18D86008B0B9112 /* ObservableTests.swift */; };
 		CC89DD4D3ED22616EE3700C7 /* ViewBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */; };
 		CC89DD97540BB4AD7C9C2DB0 /* ViewBinderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */; };
 		CC89DDADEB30804FB4841C3A /* StartupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D94E70E2EF871568B85F /* StartupController.swift */; };
@@ -52,6 +53,7 @@
 		CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupScreenTests.swift; sourceTree = "<group>"; };
 		CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinder.swift; sourceTree = "<group>"; };
 		CC89DAA56BF041782346D32D /* ObservableMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableMock.swift; sourceTree = "<group>"; };
+		CC89DD14C18D86008B0B9112 /* ObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableTests.swift; sourceTree = "<group>"; };
 		CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinderMock.swift; sourceTree = "<group>"; };
 		CC89DF0778BA02CD9499EDDA /* StartupModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupModelTests.swift; sourceTree = "<group>"; };
 		CC89DFC7507AABF64593C023 /* StartupModelMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupModelMock.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				CC89D8F57FB199AFB9B64C1D /* StartupViewTests.swift */,
 				CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */,
 				CC89DF0778BA02CD9499EDDA /* StartupModelTests.swift */,
+				CC89DD14C18D86008B0B9112 /* ObservableTests.swift */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				CC89D7271E366504E3521EA4 /* ViewBinderTests.swift in Sources */,
 				CC89D6A392D180DD5D84816E /* StartupModelTests.swift in Sources */,
 				CC89D0CBC1454E3E20CFC45B /* ObservableMock.swift in Sources */,
+				CC89DD193A5250045F89B0D2 /* ObservableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

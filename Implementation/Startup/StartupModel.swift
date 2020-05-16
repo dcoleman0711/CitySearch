@@ -16,7 +16,7 @@ class StartupModelImp: StartupModel {
 
     convenience init() {
 
-        self.init(appTitleText: Observable<String>())
+        self.init(appTitleText: Observable<String>(""))
     }
 
     init(appTitleText: Observable<String>) {

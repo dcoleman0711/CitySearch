@@ -46,7 +46,7 @@ class StartupModelSteps {
 
     func appTitleText() -> ObservableMock<String> {
 
-        let appTitleText = ObservableMock<String>()
+        let appTitleText = ObservableMock<String>("")
 
         appTitleText.subscribeImp = { (listener, updateImmediately) in
 
