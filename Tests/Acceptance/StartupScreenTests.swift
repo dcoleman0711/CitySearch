@@ -100,9 +100,26 @@ class StartupScreenTests: XCTestCase {
 
         then.appTitleLabel(appTitleLabel, textIs: appTitleText)
     }
+
+    // In progress
+//    func testAppTitleFont() {
+//
+//        let startupScreen = given.startupScreen()
+//        let appTitleLabel = given.appTitleLabel(startupScreen)
+//        let appTitleFont = given.appTitleFont()
+//
+//        when.startupScreenIsShown(startupScreen)
+//
+//        then.appTitleLabel(appTitleLabel, fontIs: appTitleFont)
+//    }
 }
 
 class StartupScreenSteps {
+
+    func appTitleFont() -> UIFont {
+
+        UIFont.systemFont(ofSize: 32.0)
+    }
 
     func appTitleText() -> String {
 
@@ -154,11 +171,16 @@ class StartupScreenSteps {
 
     func appTitleLabel(_ appTitleLabel: UILabel, textIs expectedText: String) {
 
-        XCTAssertEqual(appTitleLabel.text, expectedText)
+        XCTAssertEqual(appTitleLabel.text, expectedText, "App title text is not app title")
     }
 
     func appTitleLabelSizeFitsText(_ appTitleLabel: UILabel) {
 
-        XCTAssertEqual(appTitleLabel.frame.size, appTitleLabel.sizeThatFits(CGSize.zero))
+        XCTAssertEqual(appTitleLabel.frame.size, appTitleLabel.sizeThatFits(CGSize.zero), "App title size does not fit text")
+    }
+
+    func appTitleLabel(_ appTitleLabel: UILabel, fontIs font: UIFont) {
+
+        XCTAssertEqual(appTitleLabel.font, font, "App title font is not correct")
     }
 }
