@@ -72,25 +72,25 @@ class StartupScreenTests: XCTestCase {
     }
 
     // In progress
-//    func testAppTitleCenter() {
-//
-//        let screenSizes = given.screenSizes()
-//
-//        for screenSize in screenSizes {
-//
-//            testAppTitleCenter(screenSize: screenSize)
-//        }
-//    }
-//
-//    func testAppTitleCenter(screenSize: CGSize) {
-//
-//        let startupScreen = given.startupScreen()
-//        let appTitleLabel = given.appTitleLabel(startupScreen)
-//        given.startupScreenIsShown(startupScreen)
-//
-//        when.startupScreenSizeBecomes(startupScreen, screenSize)
-//        then.appTitleLabel(appTitleLabel, isCenteredIn: screenSize)
-//    }
+    func testAppTitleCenter() {
+
+        let screenSizes = given.screenSizes()
+
+        for screenSize in screenSizes {
+
+            testAppTitleCenter(screenSize: screenSize)
+        }
+    }
+
+    func testAppTitleCenter(screenSize: CGSize) {
+
+        let startupScreen = given.startupScreen()
+        let appTitleLabel = given.appTitleLabel(startupScreen)
+        given.startupScreenIsShown(startupScreen)
+
+        when.startupScreenSizeBecomes(startupScreen, screenSize)
+        then.appTitleLabel(appTitleLabel, isCenteredIn: screenSize)
+    }
 }
 
 class StartupScreenSteps {

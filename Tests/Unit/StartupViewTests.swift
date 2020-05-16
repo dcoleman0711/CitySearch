@@ -59,13 +59,28 @@ class StartupViewTests: XCTestCase {
 
         then.startupView(startupView, hasConstraints: [expectedConstraint])
     }
+    
+    func testAppTitleLabelCenter() {
+
+        let startupView = given.startupView()
+        let appTitleLabel = given.appTitleLabel(startupView)
+        let expectedConstraints = given.constraintsForCenter(appTitleLabel, equalTo: startupView)
+
+        then.startupView(startupView, hasConstraints: expectedConstraints)
+    }
 }
 
 class StartupViewSteps {
 
+    func constraintsForCenter(_ appTitleLabel: UILabel, equalTo startupView: StartupView) -> [NSLayoutConstraint] {
+
+        [appTitleLabel.centerXAnchor.constraint(equalTo: startupView.view.centerXAnchor),
+         appTitleLabel.centerYAnchor.constraint(equalTo: startupView.view.centerYAnchor)]
+    }
+
     func constraintForWidth(_ appTitleLabel: UILabel, isHalfOfWidth startupView: StartupView) -> NSLayoutConstraint {
 
-        NSLayoutConstraint(item: appTitleLabel, attribute: .width, relatedBy: .equal, toItem: startupView.view, attribute: .width, multiplier: 0.5, constant: 0.0)
+        appTitleLabel.widthAnchor.constraint(equalTo: startupView.view.widthAnchor, multiplier: 0.5)
     }
 
     func startupView() -> StartupView {
