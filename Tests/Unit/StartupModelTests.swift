@@ -50,8 +50,7 @@ class StartupModelTests: XCTestCase {
 
     func testScheduleTransitionTimer() {
 
-        let timerType = given.timerType()
-        let model = given.model(timerType: timerType)
+        let model = given.model()
         let transitionStartInterval = given.transitionStartInterval()
 
         when.startTransitionTimer(model)
@@ -64,6 +63,16 @@ class StartupModelSteps {
 
     private var scheduledTimerInterval: TimeInterval?
 
+    init() {
+
+        TimerMock.scheduledTimerImp = { (interval, repeats, block) in
+
+            self.scheduledTimerInterval = interval
+
+            return TimerMock()
+        }
+    }
+
     func transitionStartInterval() -> TimeInterval {
 
         10.0
@@ -72,27 +81,6 @@ class StartupModelSteps {
     func startTransitionTimer(_ model: StartupModelImp) {
 
         model.startTransitionTimer()
-    }
-
-    func timerType() -> TimerMock.Type {
-
-        class TimerMockCaptureScheduled: TimerMock {
-
-            static var steps: StartupModelSteps!
-
-            override class func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> ()) -> Timer {
-
-                steps.scheduledTimerInterval = interval
-
-                return TimerMock()
-            }
-        }
-
-        let timerType = TimerMockCaptureScheduled.self
-
-        timerType.steps = self
-
-        return timerType
     }
 
     func appTitle() -> String {
@@ -117,9 +105,9 @@ class StartupModelSteps {
         return appTitleText
     }
 
-    func model(appTitleText: ObservableMock<String> = ObservableMock<String>(""), timerType: TimerMock.Type = TimerMock.self) -> StartupModelImp {
+    func model(appTitleText: ObservableMock<String> = ObservableMock<String>("")) -> StartupModelImp {
 
-        StartupModelImp(appTitleText: appTitleText, timerType: timerType)
+        StartupModelImp(appTitleText: appTitleText, timerType: TimerMock.self)
     }
 
     func textUpdate() -> ValueUpdate<String> {
@@ -153,5 +141,9 @@ class StartupModelSteps {
 
 class TimerMock: Timer {
 
+    static var scheduledTimerImp: (_ interval: TimeInterval, _ repeats: Bool, _ block: @escaping (Timer) -> ()) -> Timer = { (interval, repeats, block) in TimerMock() }
+    override class func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> ()) -> Timer {
 
+        scheduledTimerImp(interval, repeats, block)
+    }
 }
