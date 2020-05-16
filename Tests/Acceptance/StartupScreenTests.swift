@@ -71,7 +71,6 @@ class StartupScreenTests: XCTestCase {
         then.appTitleLabel(appTitleLabel, widthIs: screenSize.width / 2.0)
     }
 
-    // In progress
     func testAppTitleCenter() {
 
         let screenSizes = given.screenSizes()
@@ -91,9 +90,26 @@ class StartupScreenTests: XCTestCase {
         when.startupScreenSizeBecomes(startupScreen, screenSize)
         then.appTitleLabel(appTitleLabel, isCenteredIn: screenSize)
     }
+
+    // In Progress
+//    func testAppTitleText() {
+//
+//        let startupScreen = given.startupScreen()
+//        let appTitleLabel = given.appTitleLabel(startupScreen)
+//        let appTitleText = given.appTitleText()
+//
+//        when.startupScreenIsShown(startupScreen)
+//
+//        then.appTitleLabel(appTitleLabel, textIs: appTitleText)
+//    }
 }
 
 class StartupScreenSteps {
+
+    func appTitleText() -> String {
+
+        "City Search"
+    }
 
     func screenSizes() -> [CGSize] {
 
@@ -141,4 +157,10 @@ class StartupScreenSteps {
 
         XCTAssertEqual(appTitleLabel.center, CGPoint(x: screenSize.width / 2, y: screenSize.height / 2), "App title center is not screen center")
     }
+
+    func appTitleLabel(_ appTitleLabel: UILabel, textIs expectedText: String) {
+
+        XCTAssertEqual(appTitleLabel.text, expectedText)
+    }
+
 }
