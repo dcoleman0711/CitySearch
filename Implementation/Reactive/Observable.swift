@@ -7,4 +7,8 @@ import Foundation
 
 class Observable<T> {
 
+    func subscribe(_ listener: ValueUpdate<T>, updateImmediately: Bool = false) {
+
+
+    }
 }

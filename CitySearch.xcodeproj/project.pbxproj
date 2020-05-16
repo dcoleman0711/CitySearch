@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		CC89D00C615108339BCB7F7F /* StartupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3FDB4DEB245D133848B /* StartupTests.swift */; };
+		CC89D0CBC1454E3E20CFC45B /* ObservableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA56BF041782346D32D /* ObservableMock.swift */; };
 		CC89D1E083F1F14548E8E3FB /* ViewBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */; };
 		CC89D2C2B5079A909D485A68 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
+		CC89D6A392D180DD5D84816E /* StartupModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DF0778BA02CD9499EDDA /* StartupModelTests.swift */; };
 		CC89D7271E366504E3521EA4 /* ViewBinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */; };
 		CC89D94633296FC3B6E300C0 /* StartupModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DFC7507AABF64593C023 /* StartupModelMock.swift */; };
 		CC89DA15734314FC0D039354 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
@@ -26,6 +28,8 @@
 		CE3967EC246F254500478E39 /* StartupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D94E70E2EF871568B85F /* StartupController.swift */; };
 		CE5D9D69246F4FA800A45702 /* StartupScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */; };
 		CE5D9D6A246F4FAB00A45702 /* StartupControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE396801246F49CD00478E39 /* StartupControllerTests.swift */; };
+		CE5D9D6C24701E1700A45702 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D9D6B24701E1700A45702 /* Observable.swift */; };
+		CE5D9D6D24701F5700A45702 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D9D6B24701E1700A45702 /* Observable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +51,9 @@
 		CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinderTests.swift; sourceTree = "<group>"; };
 		CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupScreenTests.swift; sourceTree = "<group>"; };
 		CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinder.swift; sourceTree = "<group>"; };
+		CC89DAA56BF041782346D32D /* ObservableMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableMock.swift; sourceTree = "<group>"; };
 		CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBinderMock.swift; sourceTree = "<group>"; };
+		CC89DF0778BA02CD9499EDDA /* StartupModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupModelTests.swift; sourceTree = "<group>"; };
 		CC89DFC7507AABF64593C023 /* StartupModelMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupModelMock.swift; sourceTree = "<group>"; };
 		CE2C62E0246E136D00C1D25A /* CitySearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CitySearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE2C62EF246E137100C1D25A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,6 +63,7 @@
 		CE3967B9246EDBB300478E39 /* CitySearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CitySearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE3967BD246EDBB300478E39 /* TestInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = TestInfo.plist; sourceTree = "<group>"; };
 		CE396801246F49CD00478E39 /* StartupControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupControllerTests.swift; sourceTree = "<group>"; };
+		CE5D9D6B24701E1700A45702 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +87,7 @@
 		CC89D7EA5E82DA14AFB765D2 /* Reactive */ = {
 			isa = PBXGroup;
 			children = (
+				CE5D9D6B24701E1700A45702 /* Observable.swift */,
 				CC89DAA54512CD7F00AD83F5 /* ViewBinder.swift */,
 			);
 			path = Reactive;
@@ -109,6 +117,7 @@
 				CE396801246F49CD00478E39 /* StartupControllerTests.swift */,
 				CC89D8F57FB199AFB9B64C1D /* StartupViewTests.swift */,
 				CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */,
+				CC89DF0778BA02CD9499EDDA /* StartupModelTests.swift */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -177,6 +186,7 @@
 			children = (
 				CC89DFC7507AABF64593C023 /* StartupModelMock.swift */,
 				CC89DEE9037E1BCF9BA1EBBC /* ViewBinderMock.swift */,
+				CC89DAA56BF041782346D32D /* ObservableMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -284,6 +294,7 @@
 				CC89DDADEB30804FB4841C3A /* StartupController.swift in Sources */,
 				CC89D2C2B5079A909D485A68 /* StartupView.swift in Sources */,
 				CC89DF7A1C900381449E333D /* StartupModel.swift in Sources */,
+				CE5D9D6C24701E1700A45702 /* Observable.swift in Sources */,
 				CC89DD4D3ED22616EE3700C7 /* ViewBinder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -293,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE3967EC246F254500478E39 /* StartupController.swift in Sources */,
+				CE5D9D6D24701F5700A45702 /* Observable.swift in Sources */,
 				CE5D9D6A246F4FAB00A45702 /* StartupControllerTests.swift in Sources */,
 				CE3967EB246F254100478E39 /* AppDelegate.swift in Sources */,
 				CC89D00C615108339BCB7F7F /* StartupTests.swift in Sources */,
@@ -304,6 +316,8 @@
 				CC89DD97540BB4AD7C9C2DB0 /* ViewBinderMock.swift in Sources */,
 				CC89D1E083F1F14548E8E3FB /* ViewBinder.swift in Sources */,
 				CC89D7271E366504E3521EA4 /* ViewBinderTests.swift in Sources */,
+				CC89D6A392D180DD5D84816E /* StartupModelTests.swift in Sources */,
+				CC89D0CBC1454E3E20CFC45B /* ObservableMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
