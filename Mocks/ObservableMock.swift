@@ -7,8 +7,8 @@ import Foundation
 
 class ObservableMock<T> : Observable<T> {
 
-    var subscribeImp: (_ listener: ValueUpdate<T>, _ updateImmediately: Bool) -> Void = { (listener, updateImmediately) in }
-    override func subscribe(_ listener: ValueUpdate<T>, updateImmediately: Bool) {
+    var subscribeImp: (_ listener: @escaping ValueUpdate<T>, _ updateImmediately: Bool) -> Void = { (listener, updateImmediately) in }
+    override func subscribe(_ listener: @escaping ValueUpdate<T>, updateImmediately: Bool) {
 
         subscribeImp(listener, updateImmediately)
     }

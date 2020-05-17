@@ -62,7 +62,7 @@ class ObservableSteps {
         }
     }
 
-    func subscribeAndUpdateImmediately(_ observable: Observable<String>, _ valueUpdate: ValueUpdate<String>) {
+    func subscribeAndUpdateImmediately(_ observable: Observable<String>, _ valueUpdate: @escaping ValueUpdate<String>) {
 
         observable.subscribe(valueUpdate, updateImmediately: true)
     }

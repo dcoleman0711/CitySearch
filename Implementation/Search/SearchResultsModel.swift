@@ -18,10 +18,10 @@ class SearchResultsModelImp: SearchResultsModel {
 
     convenience init() {
 
-        self.init(modelFactory: CitySearchResultModelFactoryImp())
+        self.init(modelFactory: CitySearchResultModelFactoryImp(), resultModels: Observable<[CitySearchResultModel]>([]))
     }
 
-    init(modelFactory: CitySearchResultModelFactory) {
+    init(modelFactory: CitySearchResultModelFactory, resultModels: Observable<[CitySearchResultModel]>) {
 
         self.modelFactory = modelFactory
     }

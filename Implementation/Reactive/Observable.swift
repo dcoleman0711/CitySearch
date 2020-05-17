@@ -14,7 +14,7 @@ class Observable<T> {
         self.value = value
     }
 
-    func subscribe(_ listener: ValueUpdate<T>, updateImmediately: Bool = false) {
+    func subscribe(_ listener: @escaping ValueUpdate<T>, updateImmediately: Bool = false) {
 
         listener(self.value)
     }

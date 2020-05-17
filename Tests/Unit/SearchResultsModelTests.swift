@@ -30,10 +30,11 @@ class SearchResultsModelTests: XCTestCase {
 
     func testObserveSearchResultsInitial() {
 
-        let initialData = given.searchResults()
-        let expectedSearchModels = given.models(for: initialData)
-        let searchModel = given.searchResultsModelCreated()
-        given.searchResultsModel(searchModel, dataIsSetTo: initialData)
+        let resultModels = given.resultModels()
+        let searchResults = given.searchResults()
+        let expectedSearchModels = given.models(for: searchResults)
+        let searchModel = given.searchResultsModelCreated(resultModels: resultModels)
+        given.searchResultsModel(searchModel, dataIsSetTo: searchResults)
         let observer = given.resultsObserver()
 
         when.observeSearchResults(searchModel, observer)
@@ -47,6 +48,31 @@ class SearchResultsModelSteps {
     private let resultModelFactory = CitySearchResultModelFactoryMock()
 
     private var valuePassedToObserver: [CitySearchResultModel]?
+
+    func resultModels() -> ObservableMock<[CitySearchResultModel]> {
+
+        let resultModels = ObservableMock<[CitySearchResultModel]>([])
+
+        resultModels.subscribeImp = { (listener, updateImmediately) in
+
+            if updateImmediately {
+
+                listener(resultModels.value)
+            }
+        }
+
+        return resultModels
+    }
+
+    func emptyResults() -> CitySearchResults {
+
+        CitySearchResults.emptyResults()
+    }
+
+    func searchResults() -> CitySearchResults {
+
+        CitySearchResultsStub.stubResults()
+    }
 
     func models(for searchResults: CitySearchResults) -> [CitySearchResultModelMock] {
 
@@ -72,14 +98,9 @@ class SearchResultsModelSteps {
         }
     }
 
-    func searchResults() -> CitySearchResults {
+    func searchResultsModelCreated(resultModels: ObservableMock<[CitySearchResultModel]>) -> SearchResultsModelImp {
 
-        CitySearchResultsStub.stubResults()
-    }
-
-    func searchResultsModelCreated() -> SearchResultsModelImp {
-
-        SearchResultsModelImp(modelFactory: resultModelFactory)
+        SearchResultsModelImp(modelFactory: resultModelFactory, resultModels: resultModels)
     }
 
     func searchResultsModel(_ searchResultsModel: SearchResultsModelImp, dataIsSetTo searchResults: CitySearchResults) {
