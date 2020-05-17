@@ -7,7 +7,15 @@ import Foundation
 
 class Observable<T> {
 
-    var value: T
+    var value: T {
+
+        didSet {
+
+            self.listener?(value)
+        }
+    }
+
+    private var listener: ValueUpdate<T>?
 
     init(_ value: T) {
 
@@ -15,6 +23,8 @@ class Observable<T> {
     }
 
     func subscribe(_ listener: @escaping ValueUpdate<T>, updateImmediately: Bool = false) {
+
+        self.listener = listener
 
         listener(self.value)
     }

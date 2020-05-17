@@ -29,18 +29,17 @@ class SearchResultsTests: XCTestCase {
         super.tearDown()
     }
 
-    // In Progress
-//    func testInitialSearchResultsDisplayed() {
-//
-//        let searchResults = given.searchResults()
-//        let searchModels = given.searchCellData(for: searchResults)
-//        let searchViewModels = given.searchCellPresentation(for: searchModels)
-//        let searchResultCells = given.searchResultCells(for: searchViewModels)
-//
-//        let searchView = when.createSearchView(initialData: searchResults)
-//
-//        then.searchResultsCells(searchResultCells, areDisplayedIn: searchView)
-//    }
+    func testInitialSearchResultsDisplayed() {
+
+        let searchResults = given.searchResults()
+        let searchModels = given.searchCellData(for: searchResults)
+        let searchViewModels = given.searchCellPresentation(for: searchModels)
+        let searchResultCells = given.searchResultCells(for: searchViewModels)
+
+        let searchView = when.createSearchResults(initialData: searchResults)
+
+        then.searchResultsCells(searchResultCells, areDisplayedIn: searchView)
+    }
 }
 
 class SearchResultsSteps {
@@ -105,13 +104,13 @@ class SearchResultsSteps {
         })
     }
 
-    func createSearchView(initialData: CitySearchResults = CitySearchResults(items: [])) -> SearchResultsViewImp {
+    func createSearchResults(initialData: CitySearchResults = CitySearchResults(items: [])) -> SearchResultsViewImp {
 
         let model = SearchResultsModelImp(modelFactory: resultModelFactory, resultModels: Observable<[CitySearchResultModel]>([]))
         let viewModel = SearchResultsViewModelImp(model: model, viewModelFactory: resultViewModelFactory)
         model.setResults(initialData)
 
-        return SearchResultsViewImp(viewModel: viewModel)
+        return SearchResultsViewImp(collectionView: collectionView, viewModel: viewModel, binder: CollectionViewBinderImp<CitySearchResultViewModel, CitySearchResultCell>())
     }
 
     func searchScreenIsLoaded(_ searchView: SearchView) {

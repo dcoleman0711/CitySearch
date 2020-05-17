@@ -38,15 +38,38 @@ class ObservableTests: XCTestCase {
 
         then.value(valueUpdate, wasUpdatedTo: value)
     }
+
+    func testSubscribeAndUpdate() {
+
+        let value = given.value()
+        let observable = given.observable(value)
+        let valueUpdate = given.valueUpdate()
+        given.subscribe(observable, valueUpdate)
+        let newValue = given.newValue()
+
+        when.observable(observable, isSetTo: newValue)
+
+        then.value(valueUpdate, wasUpdatedTo: newValue)
+    }
 }
 
 class ObservableSteps {
+
+    func observable(_ observable: Observable<String>, isSetTo newValue: String) {
+
+        observable.value = newValue
+    }
 
     private var updatedValue = ""
 
     func value() -> String {
 
         "testValue"
+    }
+
+    func newValue() -> String {
+
+        value() + "New"
     }
 
     func observable(_ value: String) -> Observable<String> {
@@ -65,6 +88,11 @@ class ObservableSteps {
     func subscribeAndUpdateImmediately(_ observable: Observable<String>, _ valueUpdate: @escaping ValueUpdate<String>) {
 
         observable.subscribe(valueUpdate, updateImmediately: true)
+    }
+
+    func subscribe(_ observable: Observable<String>, _ update: @escaping ValueUpdate<String>) {
+
+        observable.subscribe(update)
     }
 
     func value(_ valueUpdate: ValueUpdate<String>, wasUpdatedTo expectedValue: String) {
