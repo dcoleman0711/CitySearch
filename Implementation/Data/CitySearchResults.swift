@@ -5,6 +5,9 @@
 
 import Foundation
 
-class CitySearchResults {
+struct CitySearchResults: Equatable {
 
+    static func emptyResults() -> CitySearchResults { CitySearchResults(items: []) }
+
+    let items: [CitySearchResult]
 }

@@ -97,7 +97,7 @@ class SearchScreenSteps {
 
     func initialData() -> CitySearchResults {
 
-        CitySearchResults()
+        CitySearchResultsStub.stubResults()
     }
 
     func screenSizes() -> [CGSize] {
@@ -110,7 +110,7 @@ class SearchScreenSteps {
         SearchResultsViewImp(model: searchResultsModel)
     }
 
-    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(), initialData: CitySearchResults = CitySearchResults()) -> SearchViewImp {
+    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchViewImp {
 
         SearchViewImp(searchResultsView: searchResults, modelFactory: SearchModelFactoryImp(), initialData: initialData)
     }
@@ -144,6 +144,6 @@ class SearchScreenSteps {
 
     func searchResults(_ searchResults: SearchResultsView, isDisplayingData expectedData: CitySearchResults) {
 
-        XCTAssertTrue(displayedSearchResults === expectedData, "Search results is not displaying expected data")
+        XCTAssertEqual(displayedSearchResults, expectedData, "Search results is not displaying expected data")
     }
 }

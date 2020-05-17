@@ -45,7 +45,7 @@ class SearchModelSteps {
 
     func initialData() -> CitySearchResults {
 
-        CitySearchResults()
+        CitySearchResultsStub.stubResults()
     }
 
     func searchResultsModel() -> SearchResultsModelMock {
@@ -67,6 +67,6 @@ class SearchModelSteps {
 
     func searchResultsModel(_ searchResultsModel: SearchResultsModelMock, isDisplayingData expectedData: CitySearchResults) {
 
-        XCTAssertTrue(displayedSearchResults === expectedData, "Search results model is not displaying expected data")
+        XCTAssertEqual(displayedSearchResults, expectedData, "Search results model is not displaying expected data")
     }
 }

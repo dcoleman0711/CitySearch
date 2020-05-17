@@ -93,7 +93,7 @@ class SearchViewSteps {
 
     func initialData() -> CitySearchResults {
 
-        CitySearchResults()
+        CitySearchResultsStub.stubResults()
     }
 
     func modelFactory() -> SearchModelFactoryMock {
@@ -128,7 +128,7 @@ class SearchViewSteps {
          view.bottomAnchor.constraint(equalTo: searchView.view.bottomAnchor)]
     }
 
-    func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), modelFactory: SearchModelFactoryMock = SearchModelFactoryMock(), initialData: CitySearchResults = CitySearchResults()) -> SearchViewImp {
+    func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), modelFactory: SearchModelFactoryMock = SearchModelFactoryMock(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchViewImp {
 
         SearchViewImp(searchResultsView: searchResultsView, modelFactory: modelFactory, initialData: initialData)
     }
@@ -155,7 +155,7 @@ class SearchViewSteps {
 
     func initialData(_ initialData: CitySearchResults, isPassedTo modelFactory: SearchModelFactoryMock) {
 
-        XCTAssertTrue(initialDataPassedToModelFactory === initialData, "Initial data was not passed to model factory")
+        XCTAssertEqual(initialDataPassedToModelFactory, initialData, "Initial data was not passed to model factory")
     }
 
     func searchResultsModel(_ searchResultsModel: SearchResultsModelMock, isPassedTo modelFactory: SearchModelFactoryMock) {
