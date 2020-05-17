@@ -18,12 +18,14 @@ class SearchViewImp: UIViewController, SearchView {
 
     convenience init() {
 
-        self.init(searchResultsView: SearchResultsViewImp(), initialData: CitySearchResults())
+        self.init(searchResultsView: SearchResultsViewImp(), modelFactory: SearchModelFactoryImp(), initialData: CitySearchResults())
     }
 
-    init(searchResultsView: SearchResultsView, initialData: CitySearchResults) {
+    init(searchResultsView: SearchResultsView, modelFactory: SearchModelFactory, initialData: CitySearchResults) {
 
         self.searchResultsView = searchResultsView
+
+        modelFactory.searchModel(initialData: initialData)
 
         super.init(nibName: nil, bundle: nil)
     }
