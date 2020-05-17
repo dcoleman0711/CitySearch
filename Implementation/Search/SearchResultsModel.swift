@@ -12,8 +12,27 @@ protocol SearchResultsModel: class {
 
 class SearchResultsModelImp: SearchResultsModel {
 
+    private let modelFactory: CitySearchResultModelFactory
+
+    private var results: [CitySearchResultModel] = []
+
+    convenience init() {
+
+        self.init(modelFactory: CitySearchResultModelFactoryImp())
+    }
+
+    init(modelFactory: CitySearchResultModelFactory) {
+
+        self.modelFactory = modelFactory
+    }
+
     func setResults(_ results: CitySearchResults) {
 
+        self.results = results.items.map({ modelFactory.resultModel(searchResult: $0) })
+    }
 
+    func observeResultsModels(_ observer: ValueUpdate<[CitySearchResultModel]>) {
+
+        observer(results)
     }
 }

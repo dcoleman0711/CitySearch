@@ -9,3 +9,11 @@ protocol CitySearchResultModelFactory {
 
     func resultModel(searchResult: CitySearchResult) -> CitySearchResultModel
 }
+
+class CitySearchResultModelFactoryImp: CitySearchResultModelFactory {
+
+    func resultModel(searchResult: CitySearchResult) -> CitySearchResultModel {
+
+        fatalError("Implement")
+    }
+}
