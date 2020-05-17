@@ -14,17 +14,29 @@ protocol SearchResultsView {
 
 class SearchResultsViewImp : SearchResultsView {
 
-    let view = UIView()
+    var view: UIView { collectionView }
 
-    let model: SearchResultsModel
+    var model: SearchResultsModel { viewModel.model }
+
+    private let collectionView: UICollectionView
+    private let viewModel: SearchResultsViewModel
 
     convenience init() {
 
         self.init(model: SearchResultsModelImp())
     }
 
-    init(model: SearchResultsModel) {
+    convenience init(model: SearchResultsModel) {
 
-        self.model = model
+        let viewModel = SearchResultsViewModelImp(model: model, viewModelFactory: CitySearchResultViewModelFactoryImp())
+        self.init(collectionView: UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout()), viewModel: viewModel, binder: CollectionViewBinderImp<CitySearchResultViewModel>())
+    }
+
+    init(collectionView: UICollectionView, viewModel: SearchResultsViewModel, binder: CollectionViewBinder<CitySearchResultViewModel>) {
+
+        self.collectionView = collectionView
+        self.viewModel = viewModel
+
+        self.viewModel.observeResultsViewModels(binder.bindCells(collectionView: self.collectionView))
     }
 }

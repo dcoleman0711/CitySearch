@@ -7,12 +7,15 @@ import Foundation
 
 protocol SearchResultsViewModel {
 
+    var model: SearchResultsModel { get }
+
     func observeResultsViewModels(_ observer: @escaping ValueUpdate<[CitySearchResultViewModel]>)
 }
 
 class SearchResultsViewModelImp: SearchResultsViewModel {
 
-    private let model: SearchResultsModel
+    let model: SearchResultsModel
+
     private let viewModelFactory: CitySearchResultViewModelFactory
 
     private var resultViewModels: [CitySearchResultViewModel] = [] {

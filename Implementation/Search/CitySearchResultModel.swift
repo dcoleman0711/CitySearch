@@ -7,3 +7,7 @@ import Foundation
 
 protocol CitySearchResultModel: class {
 }
+
+class CitySearchResultModelImp: CitySearchResultModel {
+
+}

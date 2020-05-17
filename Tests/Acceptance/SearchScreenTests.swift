@@ -77,7 +77,7 @@ class SearchScreenTests: XCTestCase {
 
         when.searchScreenIsLoaded(searchView)
 
-        then.searchResults(searchResults, isDisplayingData: initialData)
+        then.searchResultsAreDisplayed(initialData)
     }
 }
 
@@ -142,7 +142,7 @@ class SearchScreenSteps {
         XCTAssertEqual(searchScreen.view.frame, searchScreen.view.bounds, "Search results are not full screen")
     }
 
-    func searchResults(_ searchResults: SearchResultsView, isDisplayingData expectedData: CitySearchResults) {
+    func searchResultsAreDisplayed(_ expectedData: CitySearchResults) {
 
         XCTAssertEqual(displayedSearchResults, expectedData, "Search results is not displaying expected data")
     }

@@ -1,0 +1,15 @@
+//
+// Created by Daniel Coleman on 5/17/20.
+// Copyright (c) 2020 Daniel Coleman. All rights reserved.
+//
+
+import UIKit
+
+class CollectionViewBinderMock<ViewModel>: CollectionViewBinder<ViewModel> {
+
+    var bindCellsImp: (_ collectionView: UICollectionView) -> ValueUpdate<[ViewModel]> = { (collectionView) in { (viewModels) in } }
+    override func bindCells(collectionView: UICollectionView) -> ValueUpdate<[ViewModel]> {
+
+        bindCellsImp(collectionView)
+    }
+}
