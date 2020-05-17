@@ -7,6 +7,10 @@ import Foundation
 
 class SearchResultsModelMock : SearchResultsModel {
 
+    func observeResultsModels(_ observer: @escaping ValueUpdate<[CitySearchResultModel]>) {
+
+    }
+
     var setResultsImp: (_ results: CitySearchResults) -> Void = { (results) in }
     func setResults(_ results: CitySearchResults) {
 

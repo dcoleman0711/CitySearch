@@ -28,18 +28,41 @@ class SearchResultsModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func testObserveSearchResultsInitial() {
+    func testObserveSearchResultsImmediate() {
 
-        let resultModels = given.resultModels()
-        let searchResults = given.searchResults()
-        let expectedSearchModels = given.models(for: searchResults)
-        let searchModel = given.searchResultsModelCreated(resultModels: resultModels)
-        given.searchResultsModel(searchModel, dataIsSetTo: searchResults)
+        let resultModelsObservable = given.resultModelsObservable()
+        let searchModel = given.searchResultsModelCreated(resultModels: resultModelsObservable)
         let observer = given.resultsObserver()
 
         when.observeSearchResults(searchModel, observer)
 
-        then.observerIsNotified(observer, withValue: expectedSearchModels)
+        then.observerIsNotifiedImmediately(observer)
+    }
+
+    func testObserveSearchResultsUpdate() {
+
+        let resultModelsObservable = given.resultModelsObservable()
+        let resultModels = given.resultModels()
+        let searchModel = given.searchResultsModelCreated(resultModels: resultModelsObservable)
+        let observer = given.resultsObserver()
+        given.observeSearchResults(searchModel, observer)
+
+        when.resultModels(resultModelsObservable, isUpdatedTo: resultModels)
+
+        then.observerIsNotified(observer, ofNewValue: resultModels)
+    }
+
+    func testSetResults() {
+
+        let searchResults = given.searchResults()
+        let expectedResultModels = given.models(for: searchResults)
+        let resultModels = given.resultModelsObservable()
+        let searchModel = given.searchResultsModelCreated(resultModels: resultModels)
+
+        when.setResults(searchModel, searchResults)
+
+        // Good example of the same step being a "when" in one test (the previous one) and a "then" in another test (this one).  Making something happen isn't the same as checking that it did happen, so I made a slightly renamed function.  There are other ways to handle this, like separating the assertions into another class (but then you have to deal with passing state between these classes)
+        then.resultModels(resultModels, isSetTo: expectedResultModels)
     }
 }
 
@@ -49,16 +72,24 @@ class SearchResultsModelSteps {
 
     private var valuePassedToObserver: [CitySearchResultModel]?
 
-    func resultModels() -> ObservableMock<[CitySearchResultModel]> {
+    private var listenerPassedToObservable: ValueUpdate<[CitySearchResultModel]>?
+    private var listenerIsNotifiedImmediately = false
+
+    private var resultModelsValue: [CitySearchResultModel] = []
+
+    func resultModelsObservable() -> ObservableMock<[CitySearchResultModel]> {
 
         let resultModels = ObservableMock<[CitySearchResultModel]>([])
 
         resultModels.subscribeImp = { (listener, updateImmediately) in
 
-            if updateImmediately {
+            self.listenerPassedToObservable = listener
+            self.listenerIsNotifiedImmediately = updateImmediately
+        }
 
-                listener(resultModels.value)
-            }
+        resultModels.valueSetter = { (newValue) in
+
+            self.resultModelsValue = newValue
         }
 
         return resultModels
@@ -72,6 +103,11 @@ class SearchResultsModelSteps {
     func searchResults() -> CitySearchResults {
 
         CitySearchResultsStub.stubResults()
+    }
+
+    func resultModels() -> [CitySearchResultModelMock] {
+
+        (0..<5).map({ _ in CitySearchResultModelMock() })
     }
 
     func models(for searchResults: CitySearchResults) -> [CitySearchResultModelMock] {
@@ -108,13 +144,33 @@ class SearchResultsModelSteps {
         searchResultsModel.setResults(searchResults)
     }
 
-    func observeSearchResults(_ model: SearchResultsModelImp, _ observer: ValueUpdate<[CitySearchResultModel]>) {
+    func resultModels(_ resultModelsObservable: ObservableMock<[CitySearchResultModel]>, isUpdatedTo resultModels: [CitySearchResultModel]) {
+
+        listenerPassedToObservable?(resultModels)
+    }
+
+    func observeSearchResults(_ model: SearchResultsModelImp, _ observer: @escaping ValueUpdate<[CitySearchResultModel]>) {
 
         model.observeResultsModels(observer)
     }
 
-    func observerIsNotified(_ observer: ValueUpdate<[CitySearchResultModel]>, withValue expectedValue: [CitySearchResultModel]) {
+    func setResults(_ model: SearchResultsModelImp, _ results: CitySearchResults) {
 
-        XCTAssertTrue(valuePassedToObserver?.elementsEqual(expectedValue) { (firstModel, secondModel) in firstModel === secondModel } ?? false, "Observer was not notified of correct results")
+        model.setResults(results)
+    }
+
+    func observerIsNotifiedImmediately(_ observer: ValueUpdate<[CitySearchResultModel]>) {
+
+        XCTAssertTrue(listenerIsNotifiedImmediately, "Observer was not notified immediately")
+    }
+
+    func observerIsNotified(_ observer: ValueUpdate<[CitySearchResultModel]>, ofNewValue newValue: [CitySearchResultModel]) {
+
+        XCTAssertTrue(valuePassedToObserver?.elementsEqual(newValue) { (firstModel, secondModel) in firstModel === secondModel } ?? false, "Observer was not notified of correct results")
+    }
+
+    func resultModels(_ resultModels: ObservableMock<[CitySearchResultModel]>, isSetTo expectedResults: [CitySearchResultModelMock]) {
+
+        XCTAssertTrue(resultModelsValue.elementsEqual(expectedResults) { (firstModel, secondModel) in firstModel === secondModel } ?? false, "Result models was not set to expected value")
     }
 }

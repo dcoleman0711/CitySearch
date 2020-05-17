@@ -7,6 +7,8 @@ import Foundation
 
 protocol SearchResultsModel: class {
 
+    func observeResultsModels(_ observer: @escaping ValueUpdate<[CitySearchResultModel]>)
+
     func setResults(_ results: CitySearchResults)
 }
 
@@ -14,7 +16,7 @@ class SearchResultsModelImp: SearchResultsModel {
 
     private let modelFactory: CitySearchResultModelFactory
 
-    private var results: [CitySearchResultModel] = []
+    private var resultModels: Observable<[CitySearchResultModel]>
 
     convenience init() {
 
@@ -24,15 +26,17 @@ class SearchResultsModelImp: SearchResultsModel {
     init(modelFactory: CitySearchResultModelFactory, resultModels: Observable<[CitySearchResultModel]>) {
 
         self.modelFactory = modelFactory
+
+        self.resultModels = resultModels
+    }
+
+    func observeResultsModels(_ observer: @escaping ValueUpdate<[CitySearchResultModel]>) {
+
+        resultModels.subscribe(observer, updateImmediately: true)
     }
 
     func setResults(_ results: CitySearchResults) {
 
-        self.results = results.items.map({ modelFactory.resultModel(searchResult: $0) })
-    }
-
-    func observeResultsModels(_ observer: ValueUpdate<[CitySearchResultModel]>) {
-
-        observer(results)
+        self.resultModels.value = results.items.map({ modelFactory.resultModel(searchResult: $0) })
     }
 }

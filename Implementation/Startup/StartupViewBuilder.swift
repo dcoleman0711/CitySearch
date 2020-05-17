@@ -19,7 +19,7 @@ class StartupViewBuilderImp: StartupViewBuilder {
 
     func build() -> StartupViewImp {
 
-        let model = StartupModelImp(appTitleText: Observable<String>(""), timerType: Timer.self, transitionCommand: transitionCommand)
+        let model = StartupModelImp(timerType: Timer.self, transitionCommand: transitionCommand)
         return StartupViewImp(appTitleLabel: appTitleLabel, model: model, binder: ViewBinderImp())
     }
 }

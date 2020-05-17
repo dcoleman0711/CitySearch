@@ -14,22 +14,21 @@ protocol StartupModel {
 
 class StartupModelImp: StartupModel {
 
-    private let appTitleText: Observable<String>
+    private let appTitleText: String
     private let timerType: Timer.Type
     private let transitionCommand: StartupTransitionCommand
 
-    init(appTitleText: Observable<String>, timerType: Timer.Type, transitionCommand: StartupTransitionCommand) {
+    init(timerType: Timer.Type, transitionCommand: StartupTransitionCommand) {
 
-        self.appTitleText = appTitleText
+        self.appTitleText = "City Search"
         self.timerType = timerType
 
-        self.appTitleText.value = "City Search"
         self.transitionCommand = transitionCommand
     }
 
     func observeAppTitleText(_ update: @escaping ValueUpdate<String>) {
 
-        appTitleText.subscribe(update, updateImmediately: true)
+        update(appTitleText)
     }
 
     func startTransitionTimer() {
