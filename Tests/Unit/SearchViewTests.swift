@@ -68,23 +68,41 @@ class SearchViewTests: XCTestCase {
 
         then.initialData(initialData, isPassedTo: modelFactory)
     }
+
+    func testPassSearchResultsModelToModelFactory() {
+
+        let searchResultsModel = given.searchResultsModel()
+        let searchResultsView = given.searchResultsView(searchResultsModel)
+        let modelFactory = given.modelFactory()
+
+        let searchView = when.searchViewIsCreated(searchResultsView: searchResultsView, modelFactory: modelFactory)
+
+        then.searchResultsModel(searchResultsModel, isPassedTo: modelFactory)
+    }
 }
 
 class SearchViewSteps {
+
+    private var initialDataPassedToModelFactory: CitySearchResults?
+    private var searchResultsModelPassedToFactory: SearchResultsModel?
+
+    func searchResultsModel() -> SearchResultsModelMock {
+
+        SearchResultsModelMock()
+    }
 
     func initialData() -> CitySearchResults {
 
         CitySearchResults()
     }
 
-    private var initialDataPassedToModelFactory: CitySearchResults?
-
     func modelFactory() -> SearchModelFactoryMock {
 
         let model = SearchModelFactoryMock()
 
-        model.searchModelImp = { (initialData) in
+        model.searchModelImp = { (searchResultsModel, initialData) in
 
+            self.searchResultsModelPassedToFactory = searchResultsModel
             self.initialDataPassedToModelFactory = initialData
 
             return SearchModelMock()
@@ -93,9 +111,13 @@ class SearchViewSteps {
         return model
     }
 
-    func searchResultsView() -> SearchResultsViewMock {
+    func searchResultsView(_ searchResultsModel: SearchResultsModelMock = SearchResultsModelMock()) -> SearchResultsViewMock {
 
-        SearchResultsViewMock()
+        let searchResultsView = SearchResultsViewMock()
+
+        searchResultsView.model = searchResultsModel
+
+        return searchResultsView
     }
 
     func constraintsFor(_ view: UIView, toFillParent searchView: SearchViewImp) -> [NSLayoutConstraint] {
@@ -134,5 +156,10 @@ class SearchViewSteps {
     func initialData(_ initialData: CitySearchResults, isPassedTo modelFactory: SearchModelFactoryMock) {
 
         XCTAssertTrue(initialDataPassedToModelFactory === initialData, "Initial data was not passed to model factory")
+    }
+
+    func searchResultsModel(_ searchResultsModel: SearchResultsModelMock, isPassedTo modelFactory: SearchModelFactoryMock) {
+
+        XCTAssertTrue(searchResultsModelPassedToFactory === searchResultsModel, "SearchResultsModel was not passed to model factory")
     }
 }

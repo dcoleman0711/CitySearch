@@ -7,12 +7,12 @@ import Foundation
 
 protocol SearchModelFactory {
 
-    func searchModel(initialData: CitySearchResults) -> SearchModel
+    func searchModel(searchResultsModel: SearchResultsModel, initialData: CitySearchResults) -> SearchModel
 }
 
 class SearchModelFactoryImp: SearchModelFactory {
 
-    func searchModel(initialData: CitySearchResults) -> SearchModel {
+    func searchModel(searchResultsModel: SearchResultsModel, initialData: CitySearchResults) -> SearchModel {
 
         fatalError("Not Implemented")
     }

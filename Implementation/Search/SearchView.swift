@@ -25,7 +25,7 @@ class SearchViewImp: UIViewController, SearchView {
 
         self.searchResultsView = searchResultsView
 
-        modelFactory.searchModel(initialData: initialData)
+        modelFactory.searchModel(searchResultsModel: self.searchResultsView.model, initialData: initialData)
 
         super.init(nibName: nil, bundle: nil)
     }

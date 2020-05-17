@@ -5,7 +5,7 @@
 
 import Foundation
 
-protocol SearchResultsModel {
+protocol SearchResultsModel: class {
 
     func setResults(_ results: CitySearchResults)
 }

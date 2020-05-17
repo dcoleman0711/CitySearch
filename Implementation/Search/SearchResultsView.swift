@@ -8,11 +8,15 @@ import UIKit
 protocol SearchResultsView {
 
     var view: UIView { get }
+
+    var model: SearchResultsModel { get }
 }
 
 class SearchResultsViewImp : SearchResultsView {
 
     let view = UIView()
+
+    let model: SearchResultsModel
 
     convenience init() {
 
@@ -21,5 +25,6 @@ class SearchResultsViewImp : SearchResultsView {
 
     init(model: SearchResultsModel) {
 
+        self.model = model
     }
 }
