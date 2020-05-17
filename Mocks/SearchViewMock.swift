@@ -7,6 +7,5 @@ import UIKit
 
 class SearchViewMock : SearchView {
 
-    var viewGetter: () -> UIView? = { UIView() }
-    var view: UIView! { viewGetter() }
+    var view: UIView! = UIView()
 }

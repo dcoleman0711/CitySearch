@@ -35,6 +35,29 @@ class SearchViewImp: UIViewController, SearchView {
 
         super.viewDidLoad()
 
+        setupView()
+        buildLayout()
+    }
+
+    private func setupView() {
+
+        view.backgroundColor = UIColor.white
+
         view.addSubview(searchResultsView.view)
+    }
+
+    private func buildLayout() {
+
+        // App Title
+        searchResultsView.view.translatesAutoresizingMaskIntoConstraints = false
+        let searchResultsLeftConstraint = searchResultsView.view.leftAnchor.constraint(equalTo: view.leftAnchor)
+        let searchResultsRightConstraint = searchResultsView.view.rightAnchor.constraint(equalTo: view.rightAnchor)
+        let searchResultsTopConstraint = searchResultsView.view.topAnchor.constraint(equalTo: view.topAnchor)
+        let searchResultsBottomConstraint = searchResultsView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        let searchResultsViewContraints = [searchResultsLeftConstraint, searchResultsRightConstraint, searchResultsTopConstraint, searchResultsBottomConstraint]
+
+        let constraints = [NSLayoutConstraint]([searchResultsViewContraints].joined())
+
+        view.addConstraints(constraints)
     }
 }
