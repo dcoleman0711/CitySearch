@@ -223,17 +223,10 @@
 		CC89D9E59E93BCD494134CBF /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				CE5D9D712471FB1100A45702 /* SearchResults */,
 				CC89D1C38E2D239CE04D226F /* SearchView.swift */,
-				CC89D3E44FBBC5A28919165D /* SearchResultsView.swift */,
-				CC89D4A0CE9BF85983175517 /* SearchResultsModel.swift */,
 				CC89D82308943896F1BE16AF /* SearchModelFactory.swift */,
 				CC89D4828E4A55266BE3998B /* SearchModel.swift */,
-				CC89DDED87D00E409217CD41 /* CitySearchResultCell.swift */,
-				CC89D8A5AC65CAFCC36816D0 /* CitySearchResultViewModel.swift */,
-				CC89D28BF65040868D7C44EC /* CitySearchResultModel.swift */,
-				CC89DA3F2ADCDFCA55A62912 /* CitySearchResultModelFactory.swift */,
-				CC89D4E1A0B356504D776EF6 /* CitySearchResultViewModelFactory.swift */,
-				CC89DB139501C2DE52BB87F5 /* SearchResultsViewModel.swift */,
 				CC89DE6BADB9C502D535F11D /* SearchViewFactory.swift */,
 			);
 			path = Search;
@@ -315,8 +308,8 @@
 			children = (
 				CE3967EE246F25E600478E39 /* AppDelegate */,
 				CE3967C8246F1B9100478E39 /* Startup */,
-				CC89D7EA5E82DA14AFB765D2 /* Reactive */,
 				CC89D9E59E93BCD494134CBF /* Search */,
+				CC89D7EA5E82DA14AFB765D2 /* Reactive */,
 				CC89DC10E8CB5C24011D5A9B /* Data */,
 			);
 			path = Implementation;
@@ -366,6 +359,29 @@
 				CC89D0DB08E903A996DCEEA6 /* CollectionViewBinderMock.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		CE5D9D712471FB1100A45702 /* SearchResults */ = {
+			isa = PBXGroup;
+			children = (
+				CE5D9D722471FB1C00A45702 /* CitySearchResultCell */,
+				CC89D3E44FBBC5A28919165D /* SearchResultsView.swift */,
+				CC89D4A0CE9BF85983175517 /* SearchResultsModel.swift */,
+				CC89DB139501C2DE52BB87F5 /* SearchResultsViewModel.swift */,
+			);
+			path = SearchResults;
+			sourceTree = "<group>";
+		};
+		CE5D9D722471FB1C00A45702 /* CitySearchResultCell */ = {
+			isa = PBXGroup;
+			children = (
+				CC89DDED87D00E409217CD41 /* CitySearchResultCell.swift */,
+				CC89D8A5AC65CAFCC36816D0 /* CitySearchResultViewModel.swift */,
+				CC89D28BF65040868D7C44EC /* CitySearchResultModel.swift */,
+				CC89DA3F2ADCDFCA55A62912 /* CitySearchResultModelFactory.swift */,
+				CC89D4E1A0B356504D776EF6 /* CitySearchResultViewModelFactory.swift */,
+			);
+			path = CitySearchResultCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
