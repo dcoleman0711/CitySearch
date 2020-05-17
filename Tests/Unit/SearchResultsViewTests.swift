@@ -61,9 +61,9 @@ class SearchResultsViewSteps {
         return viewModel
     }
 
-    func viewBinder() -> CollectionViewBinderMock<CitySearchResultViewModel> {
+    func viewBinder() -> CollectionViewBinderMock<CitySearchResultViewModel, CitySearchResultCell> {
 
-        let viewBinder = CollectionViewBinderMock<CitySearchResultViewModel>()
+        let viewBinder = CollectionViewBinderMock<CitySearchResultViewModel, CitySearchResultCell>()
 
         viewBinder.bindCellsImp = { (collectionView) in
 
@@ -76,7 +76,7 @@ class SearchResultsViewSteps {
         return viewBinder
     }
 
-    func searchResultsViewCreated(collectionView: UICollectionViewMock, viewModel: SearchResultsViewModelMock, binder: CollectionViewBinderMock<CitySearchResultViewModel>) -> SearchResultsViewImp {
+    func searchResultsViewCreated(collectionView: UICollectionViewMock, viewModel: SearchResultsViewModelMock, binder: CollectionViewBinderMock<CitySearchResultViewModel, CitySearchResultCell>) -> SearchResultsViewImp {
 
         SearchResultsViewImp(collectionView: collectionView, viewModel: viewModel, binder: binder)
     }

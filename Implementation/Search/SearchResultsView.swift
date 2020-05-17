@@ -23,16 +23,17 @@ class SearchResultsViewImp : SearchResultsView {
 
     convenience init() {
 
-        self.init(model: SearchResultsModelImp())
-    }
-
-    convenience init(model: SearchResultsModel) {
-
+        let model = SearchResultsModelImp()
         let viewModel = SearchResultsViewModelImp(model: model, viewModelFactory: CitySearchResultViewModelFactoryImp())
-        self.init(collectionView: UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout()), viewModel: viewModel, binder: CollectionViewBinderImp<CitySearchResultViewModel>())
+        self.init(viewModel: viewModel)
     }
 
-    init(collectionView: UICollectionView, viewModel: SearchResultsViewModel, binder: CollectionViewBinder<CitySearchResultViewModel>) {
+    convenience init(viewModel: SearchResultsViewModel) {
+
+        self.init(collectionView: UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout()), viewModel: viewModel, binder: CollectionViewBinderImp<CitySearchResultViewModel, CitySearchResultCell>())
+    }
+
+    init(collectionView: UICollectionView, viewModel: SearchResultsViewModel, binder: CollectionViewBinder<CitySearchResultViewModel, CitySearchResultCell>) {
 
         self.collectionView = collectionView
         self.viewModel = viewModel

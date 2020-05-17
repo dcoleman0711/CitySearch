@@ -77,30 +77,7 @@ class SearchResultsSteps {
             }()
         }
 
-        collectionView.reloadDataImp = {
-
-            // Capture the data that the collection view would display, by imitating the calls that a real collection view would make
-            guard let dataSource = self.collectionView.dataSource else {
-                self.displayedResults = []
-                return
-            }
-
-            let sectionCount = dataSource.numberOfSections?(in: self.collectionView) ?? 0
-            let sectionIndices = [Int](0..<sectionCount)
-
-            self.displayedResults = sectionIndices.map { sectionIndex -> [CitySearchResultCell] in
-
-                let itemCount = dataSource.collectionView(self.collectionView, numberOfItemsInSection: sectionIndex)
-                let itemIndices = [Int](0..<itemCount)
-
-                return itemIndices.map { itemIndex -> CitySearchResultCell in
-
-                    let cell = dataSource.collectionView(self.collectionView, cellForItemAt: IndexPath(item: itemIndex, section: sectionIndex)) as? CitySearchResultCell
-
-                    return cell ?? CitySearchResultCellMock()
-                }
-            }
-        }
+        CollectionViewTestUtilities.captureDisplayedData(from: collectionView, andStoreIn: &displayedResults)
     }
 
     func searchResults() -> CitySearchResults {
@@ -130,9 +107,11 @@ class SearchResultsSteps {
 
     func createSearchView(initialData: CitySearchResults = CitySearchResults(items: [])) -> SearchResultsViewImp {
 
-        let model = SearchResultsModelImp()
+        let model = SearchResultsModelImp(modelFactory: resultModelFactory, resultModels: Observable<[CitySearchResultModel]>([]))
+        let viewModel = SearchResultsViewModelImp(model: model, viewModelFactory: resultViewModelFactory)
         model.setResults(initialData)
-        return SearchResultsViewImp(model: model)
+
+        return SearchResultsViewImp(viewModel: viewModel)
     }
 
     func searchScreenIsLoaded(_ searchView: SearchView) {
@@ -173,5 +152,34 @@ class UICollectionViewMock : UICollectionView {
     override func reloadData() {
 
         reloadDataImp()
+    }
+}
+
+class CollectionViewTestUtilities {
+
+    static func captureDisplayedData<CellType: UICollectionViewCell>(from collectionView: UICollectionViewMock, andStoreIn results: UnsafeMutablePointer<[[CellType]]?>) {
+
+        collectionView.reloadDataImp = {
+
+            // Capture the data that the collection view would display, by imitating the calls that a real collection view would make
+            guard let dataSource = collectionView.dataSource else {
+                results.pointee = []
+                return
+            }
+
+            let sectionCount = dataSource.numberOfSections?(in: collectionView) ?? 0
+            let sectionIndices = [Int](0..<sectionCount)
+
+            results.pointee = sectionIndices.map { sectionIndex -> [CellType] in
+
+                let itemCount = dataSource.collectionView(collectionView, numberOfItemsInSection: sectionIndex)
+                let itemIndices = [Int](0..<itemCount)
+
+                return itemIndices.map { itemIndex -> CellType in
+
+                    dataSource.collectionView(collectionView, cellForItemAt: IndexPath(item: itemIndex, section: sectionIndex)) as! CellType
+                }
+            }
+        }
     }
 }

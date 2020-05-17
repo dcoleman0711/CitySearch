@@ -5,7 +5,7 @@
 
 import UIKit
 
-class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
+class MVVMCollectionViewCell<ViewModel>: UICollectionViewCell {
 
-
+    var viewModel: ViewModel?
 }

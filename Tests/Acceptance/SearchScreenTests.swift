@@ -107,7 +107,8 @@ class SearchScreenSteps {
 
     func searchResults() -> SearchResultsView {
 
-        SearchResultsViewImp(model: searchResultsModel)
+        let viewModel = SearchResultsViewModelImp(model: searchResultsModel, viewModelFactory: CitySearchResultViewModelFactoryImp())
+        return SearchResultsViewImp(viewModel: viewModel)
     }
 
     func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchViewImp {
