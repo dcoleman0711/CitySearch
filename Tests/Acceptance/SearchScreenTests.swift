@@ -69,17 +69,16 @@ class SearchScreenTests: XCTestCase {
         then.searchResults(searchResults, isFullScreenIn: searchView)
     }
 
-    // In progress
-//    func testSearchResultsDisplaysInitialData() {
-//
-//        let initialData = given.initialData()
-//        let searchResults = given.searchResults()
-//        let searchView = given.searchScreen(searchResults: searchResults, initialData: initialData)
-//
-//        when.searchScreenIsLoaded(searchView)
-//
-//        then.searchResults(searchResults, isDisplayingData: initialData)
-//    }
+    func testSearchResultsDisplaysInitialData() {
+
+        let initialData = given.initialData()
+        let searchResults = given.searchResults()
+        let searchView = given.searchScreen(searchResults: searchResults, initialData: initialData)
+
+        when.searchScreenIsLoaded(searchView)
+
+        then.searchResults(searchResults, isDisplayingData: initialData)
+    }
 }
 
 class SearchScreenSteps {

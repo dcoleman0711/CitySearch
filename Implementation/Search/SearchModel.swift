@@ -7,3 +7,11 @@ import Foundation
 
 protocol SearchModel {
 }
+
+class SearchModelImp : SearchModel {
+
+    init(searchResultsModel: SearchResultsModel, initialData: CitySearchResults) {
+
+        searchResultsModel.setResults(initialData)
+    }
+}

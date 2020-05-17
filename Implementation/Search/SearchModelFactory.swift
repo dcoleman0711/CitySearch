@@ -14,6 +14,6 @@ class SearchModelFactoryImp: SearchModelFactory {
 
     func searchModel(searchResultsModel: SearchResultsModel, initialData: CitySearchResults) -> SearchModel {
 
-        fatalError("Not Implemented")
+        SearchModelImp(searchResultsModel: searchResultsModel, initialData: initialData)
     }
 }
