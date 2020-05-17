@@ -13,4 +13,13 @@ protocol SearchResultsView {
 class SearchResultsViewImp : SearchResultsView {
 
     let view = UIView()
+
+    convenience init() {
+
+        self.init(model: SearchResultsModelImp())
+    }
+
+    init(model: SearchResultsModel) {
+
+    }
 }

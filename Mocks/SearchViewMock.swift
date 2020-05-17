@@ -8,4 +8,8 @@ import UIKit
 class SearchViewMock : SearchView {
 
     var view: UIView! = UIView()
+
+    func loadViewIfNeeded() {
+
+    }
 }

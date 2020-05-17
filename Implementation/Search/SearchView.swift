@@ -8,6 +8,8 @@ import UIKit
 protocol SearchView {
 
     var view: UIView! { get }
+
+    func loadViewIfNeeded()
 }
 
 class SearchViewImp: UIViewController, SearchView {

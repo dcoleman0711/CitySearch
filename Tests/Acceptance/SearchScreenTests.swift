@@ -32,7 +32,7 @@ class SearchScreenTests: XCTestCase {
     func testSearchResultsDisplayed() {
 
         let searchResults = given.searchResults()
-        let searchView = given.searchScreen(searchResults)
+        let searchView = given.searchScreen(searchResults: searchResults)
 
         when.searchScreenIsLoaded(searchView)
 
@@ -61,56 +61,90 @@ class SearchScreenTests: XCTestCase {
     func testSearchResultsFullScreen(screenSize: CGSize) {
 
         let searchResults = given.searchResults()
-        let searchView = given.searchScreen(searchResults)
+        let searchView = given.searchScreen(searchResults: searchResults)
         given.searchScreenIsLoaded(searchView)
 
         when.searchView(searchView, sizeBecomes: screenSize)
 
         then.searchResults(searchResults, isFullScreenIn: searchView)
     }
+
+    // In progress
+//    func testSearchResultsDisplaysInitialData() {
+//
+//        let initialData = given.initialData()
+//        let searchResults = given.searchResults()
+//        let searchView = given.searchScreen(searchResults: searchResults, initialData: initialData)
+//
+//        when.searchScreenIsLoaded(searchView)
+//
+//        then.searchResults(searchResults, isDisplayingData: initialData)
+//    }
 }
 
 class SearchScreenSteps {
+
+    private let searchResultsModel = SearchResultsModelMock()
+
+    private var displayedSearchResults: CitySearchResults?
+
+    init() {
+
+        searchResultsModel.setResultsImp = { (results) in
+
+            self.displayedSearchResults = results
+        }
+    }
+
+    func initialData() -> CitySearchResults {
+
+        CitySearchResults()
+    }
 
     func screenSizes() -> [CGSize] {
 
         [CGSize(width: 1024, height: 768), CGSize(width: 2048, height: 768), CGSize(width: 2048, height: 1536)]
     }
 
-    func searchResults() -> SearchResultsViewMock {
+    func searchResults() -> SearchResultsView {
 
-        SearchResultsViewMock()
+        SearchResultsViewImp(model: searchResultsModel)
     }
 
-    func searchScreen(_ searchResults: SearchResultsViewMock = SearchResultsViewMock()) -> SearchViewImp {
+    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(), initialData: CitySearchResults = CitySearchResults()) -> SearchViewImp {
 
         SearchViewImp(searchResultsView: searchResults)
     }
 
-    func searchScreenIsLoaded(_ searchView: SearchViewImp) {
+    func searchScreenIsLoaded(_ searchView: SearchView) {
 
         searchView.loadViewIfNeeded()
     }
 
-    func searchView(_ searchView: SearchViewImp, sizeBecomes size: CGSize) {
+    func searchView(_ searchView: SearchView, sizeBecomes size: CGSize) {
 
         searchView.view.frame = CGRect(origin: CGPoint.zero, size: size)
         searchView.view.setNeedsLayout()
         searchView.view.layoutIfNeeded()
     }
 
-    func searchResults(_ searchResults: SearchResultsViewMock, isDisplayedIn searchView: SearchViewImp) {
+    func searchResults(_ searchResults: SearchResultsView, isDisplayedIn searchView: SearchViewImp) {
 
         XCTAssertTrue(searchResults.view.isDescendant(of: searchView.view), "Search results are not displayed in search view")
     }
 
-    func searchResults(_ searchResults: SearchResultsViewMock, isFullScreenIn searchView: SearchViewImp) {
+    func searchResults(_ searchResults: SearchResultsView, isFullScreenIn searchView: SearchViewImp) {
 
         XCTAssertEqual(searchResults.view.frame, searchView.view.bounds, "Search results are not full screen")
     }
 
-    func searchScreenBackgroundIsWhite(_ searchScreen: SearchViewImp) {
+    func searchScreenBackgroundIsWhite(_ searchScreen: SearchView) {
 
         XCTAssertEqual(searchScreen.view.frame, searchScreen.view.bounds, "Search results are not full screen")
+    }
+
+    func searchResults(_ searchResults: SearchResultsView, isDisplayingData expectedData: CitySearchResults) {
+
+        XCTAssertTrue(displayedSearchResults === expectedData, "Search results is not displaying expected data")
     }
 }
