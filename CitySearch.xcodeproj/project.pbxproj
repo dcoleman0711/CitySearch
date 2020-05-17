@@ -241,7 +241,6 @@
 				CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */,
 				CC89D5D5C3F903E7FC905BF9 /* SearchScreenTests.swift */,
 				CC89DA28AD0D6430FB6F7D8B /* SearchResultsTests.swift */,
-				CC89D065B8EB77B0CA2F1CB4 /* SearchViewFactoryMock.swift */,
 				CE5D9D752472042800A45702 /* SearchResultCellTests.swift */,
 			);
 			path = Acceptance;
@@ -360,6 +359,7 @@
 				CC89D2E058169AA0C6A5D534 /* CitySearchResultViewModelFactoryMock.swift */,
 				CC89DB772343FDE7C612BD49 /* SearchResultsViewModelMock.swift */,
 				CC89D0DB08E903A996DCEEA6 /* CollectionViewBinderMock.swift */,
+				CC89D065B8EB77B0CA2F1CB4 /* SearchViewFactoryMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
