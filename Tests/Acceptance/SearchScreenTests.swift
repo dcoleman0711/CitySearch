@@ -113,7 +113,7 @@ class SearchScreenSteps {
 
     func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(), initialData: CitySearchResults = CitySearchResults()) -> SearchViewImp {
 
-        SearchViewImp(searchResultsView: searchResults)
+        SearchViewImp(searchResultsView: searchResults, initialData: initialData)
     }
 
     func searchScreenIsLoaded(_ searchView: SearchView) {

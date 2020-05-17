@@ -18,10 +18,10 @@ class SearchViewImp: UIViewController, SearchView {
 
     convenience init() {
 
-        self.init(searchResultsView: SearchResultsViewImp())
+        self.init(searchResultsView: SearchResultsViewImp(), initialData: CitySearchResults())
     }
 
-    init(searchResultsView: SearchResultsView) {
+    init(searchResultsView: SearchResultsView, initialData: CitySearchResults) {
 
         self.searchResultsView = searchResultsView
 
