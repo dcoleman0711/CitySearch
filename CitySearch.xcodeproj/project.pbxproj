@@ -93,6 +93,7 @@
 		CE5D9D6D24701F5700A45702 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D9D6B24701E1700A45702 /* Observable.swift */; };
 		CE5D9D6E2471C9DB00A45702 /* SearchResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DB139501C2DE52BB87F5 /* SearchResultsViewModel.swift */; };
 		CE5D9D702471F1ED00A45702 /* MVVMCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DBAA4BE3547602C06DE7 /* MVVMCollectionViewCell.swift */; };
+		CE5D9D762472042800A45702 /* SearchResultCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D9D752472042800A45702 /* SearchResultCellTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,6 +173,7 @@
 		CE3967B9246EDBB300478E39 /* CitySearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CitySearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE3967BD246EDBB300478E39 /* TestInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = TestInfo.plist; sourceTree = "<group>"; };
 		CE5D9D6B24701E1700A45702 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		CE5D9D752472042800A45702 /* SearchResultCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCellTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 				CC89D5D5C3F903E7FC905BF9 /* SearchScreenTests.swift */,
 				CC89DA28AD0D6430FB6F7D8B /* SearchResultsTests.swift */,
 				CC89D065B8EB77B0CA2F1CB4 /* SearchViewFactoryMock.swift */,
+				CE5D9D752472042800A45702 /* SearchResultCellTests.swift */,
 			);
 			path = Acceptance;
 			sourceTree = "<group>";
@@ -541,6 +544,7 @@
 				CC89D601862F7B3825122962 /* SearchScreenTests.swift in Sources */,
 				CC89DAFF83E9C9C35CBD8858 /* SearchResultsViewMock.swift in Sources */,
 				CC89D05815406F3841CFD56D /* SearchResultsView.swift in Sources */,
+				CE5D9D762472042800A45702 /* SearchResultCellTests.swift in Sources */,
 				CC89D5030C5BB132A7A3BEA0 /* SearchViewTests.swift in Sources */,
 				CC89D2B9A9A52C736F6AC2BD /* CitySearchResults.swift in Sources */,
 				CC89DF83A2EDEAAE7283046F /* SearchResultsModelMock.swift in Sources */,

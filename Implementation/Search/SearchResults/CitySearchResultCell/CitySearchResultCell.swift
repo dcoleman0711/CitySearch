@@ -7,4 +7,18 @@ import UIKit
 
 class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
+    convenience override init(frame: CGRect) {
+
+        self.init(titleLabel: UILabel())
+    }
+
+    init(titleLabel: UILabel) {
+
+        super.init(frame: CGRect.zero)
+    }
+
+    required init?(coder: NSCoder) {
+
+        fatalError("No Interface Builder!")
+    }
 }
