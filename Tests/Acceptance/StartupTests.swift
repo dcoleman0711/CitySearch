@@ -12,6 +12,14 @@ class StartupTestConstants {
 
     static let transitionDuration = 1.0
     static let transitionType = UIView.AnimationOptions.transitionFlipFromRight
+
+    static let initialData = CitySearchResults(items: [
+        CitySearchResult(name: "Test City 1"),
+        CitySearchResult(name: "Test City 2"),
+        CitySearchResult(name: "Test City 3"),
+        CitySearchResult(name: "Test City 4"),
+        CitySearchResult(name: "Test City 5")
+    ])
 }
 
 class StartupTests : XCTestCase {
@@ -58,17 +66,26 @@ class StartupTests : XCTestCase {
 
         then.transition(ofType: transitionType, isAppliedFrom: startupView, to: searchView, with: duration)
     }
+
+    func testTransitionToSearchViewInitialData() {
+
+        let initialData = given.initialData()
+        let searchView = given.searchView()
+        let app = given.application()
+        given.appIsLaunched(app: app)
+
+        when.transitionToSearchViewBegins()
+
+        then.searchView(searchView, initialDataIs: initialData)
+    }
 }
 
 class StartupSteps {
 
-    func transitionDuration() -> TimeInterval {
-
-        StartupTestConstants.transitionDuration
-    }
-
     private var startupViewStub = StartupViewBuilderImp().build()
-    private let searchViewStub = SearchViewImp()
+
+    private let searchViewFactory = SearchViewFactoryMock()
+    private let searchViewStub = SearchViewImp(initialData: CitySearchResults.emptyResults())
 
     private let transitionCommandFactory = StartupTransitionCommandFactoryMock()
     private var transitionCommand: StartupTransitionCommand?
@@ -78,7 +95,16 @@ class StartupSteps {
     private var transitionOldView: UIViewController?
     private var transitionNewView: UIViewController?
 
+    private var searchViewInitialData: CitySearchResults?
+
     init() {
+
+        searchViewFactory.searchViewImp = { (initialData) in
+
+            self.searchViewInitialData = initialData
+
+            return self.searchViewStub
+        }
 
         transitionCommandFactory.startupTransitionCommandImp = { (window, newRoot, viewType) in
 
@@ -94,7 +120,7 @@ class StartupSteps {
 
         startupViewBuilder.buildImp = { self.startupViewStub }
 
-        let app = AppDelegate(startupViewBuilder: startupViewBuilder, searchView: searchViewStub, transitionCommandFactory: transitionCommandFactory)
+        let app = AppDelegate(startupViewBuilder: startupViewBuilder, searchViewFactory: searchViewFactory, transitionCommandFactory: transitionCommandFactory)
 
         UIViewMock.transitionImp = { (view, duration, options, animations, completion) in
 
@@ -125,6 +151,16 @@ class StartupSteps {
     func transitionType() -> UIView.AnimationOptions {
 
         StartupTestConstants.transitionType
+    }
+
+    func transitionDuration() -> TimeInterval {
+
+        StartupTestConstants.transitionDuration
+    }
+
+    func initialData() -> CitySearchResults {
+
+        StartupTestConstants.initialData
     }
 
     func appIsLaunched(app: AppDelegate) {
@@ -160,6 +196,11 @@ class StartupSteps {
         XCTAssertEqual(transitionTypeUsedInAnimation, expectedTransitionType)
         XCTAssertEqual(transitionOldView, expectedOldView)
         XCTAssertEqual(transitionNewView, expectedNewView)
+    }
+
+    func searchView(_ view: SearchViewImp, initialDataIs expectedInitialData: CitySearchResults) {
+
+        XCTAssertEqual(searchViewInitialData, expectedInitialData)
     }
 }
 

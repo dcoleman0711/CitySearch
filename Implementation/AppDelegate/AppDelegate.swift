@@ -15,16 +15,16 @@ class AppDelegate : NSObject, UIApplicationDelegate {
 
     private let startupViewBuilder: StartupViewBuilder
     private let transitionCommandFactory: StartupTransitionCommandFactory
-    private let searchView: SearchViewImp
+    private let searchViewFactory: SearchViewFactory
 
     convenience override init() {
 
-        self.init(startupViewBuilder: StartupViewBuilderImp(), searchView: SearchViewImp(), transitionCommandFactory: StartupTransitionCommandFactoryImp())
+        self.init(startupViewBuilder: StartupViewBuilderImp(), searchViewFactory: SearchViewFactoryImp(), transitionCommandFactory: StartupTransitionCommandFactoryImp())
     }
 
-    init(startupViewBuilder: StartupViewBuilder, searchView: SearchViewImp, transitionCommandFactory: StartupTransitionCommandFactory) {
+    init(startupViewBuilder: StartupViewBuilder, searchViewFactory: SearchViewFactory, transitionCommandFactory: StartupTransitionCommandFactory) {
 
-        self.searchView = searchView
+        self.searchViewFactory = searchViewFactory
         self.startupViewBuilder = startupViewBuilder
         self.transitionCommandFactory = transitionCommandFactory
 
@@ -36,10 +36,22 @@ class AppDelegate : NSObject, UIApplicationDelegate {
         let window = UIWindow()
         self.window = window
 
+        let searchView = self.searchViewFactory.searchView(initialData: self.initialData())
         startupViewBuilder.transitionCommand = transitionCommandFactory.startupTransitionCommand(window: window, newRoot: searchView, viewType: UIView.self)
 
         window.makeKeyAndVisible()
 
         window.rootViewController = startupViewBuilder.build()
+    }
+
+    private func initialData() -> CitySearchResults {
+
+        CitySearchResults(items: [
+            CitySearchResult(name: "Test City 1"),
+            CitySearchResult(name: "Test City 2"),
+            CitySearchResult(name: "Test City 3"),
+            CitySearchResult(name: "Test City 4"),
+            CitySearchResult(name: "Test City 5")
+        ])
     }
 }
