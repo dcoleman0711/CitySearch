@@ -67,17 +67,18 @@ class StartupTests : XCTestCase {
         then.transition(ofType: transitionType, isAppliedFrom: startupView, to: searchView, with: duration)
     }
 
-    func testTransitionToSearchViewInitialData() {
-
-        let initialData = given.initialData()
-        let searchView = given.searchView()
-        let app = given.application()
-        given.appIsLaunched(app: app)
-
-        when.transitionToSearchViewBegins()
-
-        then.searchView(searchView, initialDataIs: initialData)
-    }
+    // In Progress
+//    func testTransitionToSearchViewInitialData() {
+//
+//        let initialData = given.initialData()
+//        let searchView = given.searchView()
+//        let app = given.application()
+//        given.appIsLaunched(app: app)
+//
+//        when.transitionToSearchViewBegins()
+//
+//        then.searchView(searchView, initialDataIs: initialData)
+//    }
 }
 
 class StartupSteps {
@@ -86,6 +87,8 @@ class StartupSteps {
 
     private let searchViewFactory = SearchViewFactoryMock()
     private let searchViewStub = SearchViewFactoryImp().searchView(initialData: CitySearchResults.emptyResults())
+
+    private let searchService = CitySearchServiceMock()
 
     private let transitionCommandFactory = StartupTransitionCommandFactoryMock()
     private var transitionCommand: StartupTransitionCommand?
@@ -120,7 +123,7 @@ class StartupSteps {
 
         startupViewBuilder.buildImp = { self.startupViewStub }
 
-        let app = AppDelegate(startupViewBuilder: startupViewBuilder, searchViewFactory: searchViewFactory, transitionCommandFactory: transitionCommandFactory)
+        let app = AppDelegate(startupViewBuilder: startupViewBuilder, searchViewFactory: searchViewFactory, searchService: searchService, transitionCommandFactory: transitionCommandFactory)
 
         UIViewMock.transitionImp = { (view, duration, options, animations, completion) in
 
@@ -160,7 +163,16 @@ class StartupSteps {
 
     func initialData() -> CitySearchResults {
 
-        StartupTestConstants.initialData
+        let initialData = StartupTestConstants.initialData
+
+        let future = CitySearchService.SearchFuture({ promise in
+
+            promise(.success(initialData))
+        })
+
+        searchService.citySearchImp = { future }
+
+        return initialData
     }
 
     func appIsLaunched(app: AppDelegate) {
@@ -212,3 +224,19 @@ class UIViewMock: UIView {
         transitionImp(view, duration, options, animations, completion)
     }
 }
+
+//class URLSessionDataTaskMock: URLSessionDataTask {
+//
+//    override init() {
+//
+//    }
+//}
+//
+//class URLSessionMock: URLSession {
+//
+//    var dataTaskImp: (_ request: URLRequest, _ completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask = { (request, completionHandler) in URLSessionDataTaskMock() }
+//    override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
+//
+//        dataTaskImp(request, completionHandler)
+//    }
+//}

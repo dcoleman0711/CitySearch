@@ -19,10 +19,10 @@ class AppDelegate : NSObject, UIApplicationDelegate {
 
     convenience override init() {
 
-        self.init(startupViewBuilder: StartupViewBuilderImp(), searchViewFactory: SearchViewFactoryImp(), transitionCommandFactory: StartupTransitionCommandFactoryImp())
+        self.init(startupViewBuilder: StartupViewBuilderImp(), searchViewFactory: SearchViewFactoryImp(), searchService: CitySearchServiceImp(), transitionCommandFactory: StartupTransitionCommandFactoryImp())
     }
 
-    init(startupViewBuilder: StartupViewBuilder, searchViewFactory: SearchViewFactory, transitionCommandFactory: StartupTransitionCommandFactory) {
+    init(startupViewBuilder: StartupViewBuilder, searchViewFactory: SearchViewFactory, searchService: CitySearchService, transitionCommandFactory: StartupTransitionCommandFactory) {
 
         self.searchViewFactory = searchViewFactory
         self.startupViewBuilder = startupViewBuilder
@@ -36,22 +36,11 @@ class AppDelegate : NSObject, UIApplicationDelegate {
         let window = UIWindow()
         self.window = window
 
-        let searchView = self.searchViewFactory.searchView(initialData: self.initialData())
+        let searchView = self.searchViewFactory.searchView(initialData: CitySearchResults.emptyResults())
         startupViewBuilder.transitionCommand = transitionCommandFactory.startupTransitionCommand(window: window, newRoot: searchView, viewType: UIView.self)
 
         window.makeKeyAndVisible()
 
         window.rootViewController = startupViewBuilder.build()
-    }
-
-    private func initialData() -> CitySearchResults {
-
-        CitySearchResults(items: [
-            CitySearchResult(name: "Test City 1"),
-            CitySearchResult(name: "Test City 2"),
-            CitySearchResult(name: "Test City 3"),
-            CitySearchResult(name: "Test City 4"),
-            CitySearchResult(name: "Test City 5")
-        ])
     }
 }
