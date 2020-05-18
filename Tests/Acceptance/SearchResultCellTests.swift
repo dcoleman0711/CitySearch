@@ -32,7 +32,40 @@ class SearchResultCellTests: XCTestCase {
         super.tearDown()
     }
 
-    func testCellTitleLabel() {
+    func testCellTitleLabelCenter() {
+
+        let searchResult = given.searchResult()
+        let titleText = given.titleText(for: searchResult)
+        let titleLabel = given.titleLabel()
+        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel)
+
+        when.assignResult(searchResult, toCell: searchResultCell)
+
+        then.titleLabel(titleLabel, textIs: titleText)
+    }
+
+    // In Progress
+//    func testTitleCenter() {
+//
+//        let cellSizes = given.cellSizes()
+//
+//        for cellSize in cellSizes {
+//
+//            testTitleCenter(cellSize: cellSize)
+//        }
+//    }
+//
+//    func testTitleCenter(cellSize: CGSize) {
+//
+//        let titleLabel = given.titleLabel()
+//        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel)
+//
+//        when.cellSizeBecomes(searchResultCell, cellSize)
+//
+//        then.titleLabel(titleLabel, isCenteredIn: searchResultCell)
+//    }
+
+    func testCellTitleLabelText() {
 
         let searchResult = given.searchResult()
         let titleText = given.titleText(for: searchResult)
@@ -62,6 +95,11 @@ class SearchResultCellSteps {
         UILabel()
     }
 
+    func cellSizes() -> [CGSize] {
+
+        [CGSize(width: 128, height: 128), CGSize(width: 64, height: 64), CGSize(width: 32, height: 32)]
+    }
+
     func searchResultCellIsCreated(titleLabel: UILabel) -> CitySearchResultCell {
 
         CitySearchResultCell(titleLabel: titleLabel, binder: ViewBinderImp())
@@ -78,8 +116,30 @@ class SearchResultCellSteps {
         cell.viewModel = viewModel
     }
 
+    func cellSizeBecomes(_ cell: CitySearchResultCell, _ size: CGSize) {
+
+        cell.frame = CGRect(origin: CGPoint.zero, size: size)
+
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
+    }
+
     func titleLabel(_ titleLabel: UILabel, textIs expectedText: String) {
 
         XCTAssertEqual(titleLabel.text, expectedText, "Title label text is not expected text")
+    }
+
+    func titleLabel(_ titleLabel: UILabel, isCenteredIn cell: CitySearchResultCell) {
+
+        XCTAssertEqual(titleLabel.frame.center, cell.frame.center, "Title label is not centered in frame")
+    }
+
+}
+
+extension CGRect {
+
+    var center: CGPoint {
+
+        return CGPoint(x: origin.x + size.width / 2.0, y: origin.y + size.height / 2.0)
     }
 }
