@@ -29,6 +29,13 @@ class SearchResultsTests: XCTestCase {
         super.tearDown()
     }
 
+    func testClearBackground() {
+
+        let searchResultsView = when.createSearchResults()
+
+        then.searchResultsViewHasClearBackground(searchResultsView)
+    }
+
     func testInitialSearchResultsDisplayed() {
 
         let searchResults = given.searchResults()
@@ -46,8 +53,8 @@ class SearchResultsSteps {
 
     private let collectionView = UICollectionViewMock()
 
-    let resultModelFactory = CitySearchResultModelFactoryMock()
-    let resultViewModelFactory = CitySearchResultViewModelFactoryMock()
+    private let resultModelFactory = CitySearchResultModelFactoryMock()
+    private let resultViewModelFactory = CitySearchResultViewModelFactoryMock()
 
     private var displayedResults: [[CitySearchResultCell]]?
 
@@ -135,6 +142,11 @@ class SearchResultsSteps {
         let flattenedResults = [CitySearchResultCell](displayedResults.joined())
 
         XCTAssertTrue(flattenedResults.elementsEqual(expectedCells) { firstCell, secondCell in firstCell.viewModel === secondCell.viewModel }, "Displayed cells are not the expected cells")
+    }
+
+    func searchResultsViewHasClearBackground(_ searchView: SearchResultsViewImp) {
+
+        XCTAssertEqual(searchView.view.backgroundColor, UIColor.clear, "Search Results background is not clear")
     }
 }
 

@@ -39,5 +39,12 @@ class SearchResultsViewImp : SearchResultsView {
         self.viewModel = viewModel
 
         self.viewModel.observeResultsViewModels(binder.bindCells(collectionView: self.collectionView))
+
+        setupView()
+    }
+
+    private func setupView() {
+
+        collectionView.backgroundColor = .clear
     }
 }
