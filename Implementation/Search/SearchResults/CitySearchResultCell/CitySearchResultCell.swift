@@ -26,7 +26,9 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
     convenience override init(frame: CGRect) {
 
-        self.init(titleLabel: UILabel(), imageView: UIImageView(), binder: ViewBinderImp())
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "TestImage.jpg")
+        self.init(titleLabel: UILabel(), imageView: imageView, binder: ViewBinderImp())
     }
 
     init(titleLabel: UILabel, imageView: UIImageView, binder: ViewBinder) {
@@ -46,9 +48,13 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
         self.contentView.addSubview(self.titleLabel)
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.titleLabel.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
 
         self.contentView.addSubview(self.imageView)
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
+        self.imageView.layer.masksToBounds = true
+        self.imageView.layer.cornerRadius = 32.0
+        self.imageView.backgroundColor = .black
     }
 
     private func buildLayout() {

@@ -52,6 +52,27 @@ class SearchResultCellTests: XCTestCase {
         then.titleLabel(titleLabel, isBottomCenteredIn: searchResultCell)
     }
 
+    func testTitleFitsText() {
+
+        let cellSizes = given.cellSizes()
+
+        for cellSize in cellSizes {
+
+            testTitleFitsText(cellSize: cellSize)
+        }
+    }
+
+    func testTitleFitsText(cellSize: CGSize) {
+
+        let titleText = given.titleText()
+        let titleLabel = given.titleLabel(titleText)
+        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel)
+
+        when.cellSizeBecomes(searchResultCell, cellSize)
+
+        then.titleLabelFitsText(titleLabel)
+    }
+
     func testCellTitleLabelText() {
 
         let searchResult = given.searchResult()
@@ -125,6 +146,16 @@ class SearchResultCellTests: XCTestCase {
 
         then.imageView(imageView, isFittedFromTopOf: searchResultCell, toTopOf: titleLabel)
     }
+
+    func testImageViewCornerRadius() {
+
+        let imageView = given.imageView()
+        let cornerRadius = given.cornerRadius()
+
+        let searchResultCell = when.searchResultCellIsCreated(imageView: imageView)
+
+        then.imageView(imageView, cornerRadiusIs: cornerRadius)
+    }
 }
 
 class SearchResultCellSteps {
@@ -139,14 +170,26 @@ class SearchResultCellSteps {
         searchResult.name
     }
 
-    func titleLabel() -> UILabel {
+    func titleText() -> String {
 
-        UILabel()
+        "Test Title"
+    }
+
+    func titleLabel(_ text: String = "") -> UILabel {
+
+        let label = UILabel()
+        label.text = text
+        return label
     }
 
     func imageView() -> UIImageView {
 
         UIImageView()
+    }
+
+    func cornerRadius() -> CGFloat {
+
+        32.0
     }
 
     func cellSizes() -> [CGSize] {
@@ -156,7 +199,8 @@ class SearchResultCellSteps {
 
     func searchResultCellIsCreated(titleLabel: UILabel = UILabel(), imageView: UIImageView = UIImageView()) -> CitySearchResultCell {
 
-        CitySearchResultCell(titleLabel: titleLabel, imageView: imageView, binder: ViewBinderImp())
+        imageView.image = UIImage(named: "TestImage.jpg", in: Bundle(for: SearchResultCellSteps.self), with: nil)
+        return CitySearchResultCell(titleLabel: titleLabel, imageView: imageView, binder: ViewBinderImp())
     }
 
     func assignResult(_ result: CitySearchResult, toCell cell: CitySearchResultCell) {
@@ -189,6 +233,11 @@ class SearchResultCellSteps {
         XCTAssertEqual(titleLabel.frame.maxY, cell.bounds.maxY, "Title label is not in bottom of frame")
     }
 
+    func titleLabelFitsText(_ titleLabel: UILabel) {
+
+        XCTAssertEqual(titleLabel.frame.size, titleLabel.sizeThatFits(CGSize.zero), "Title label size does not fit text")
+    }
+
     func imageViewIsSquare(_ imageView: UIImageView) {
 
         XCTAssertEqual(imageView.frame.size.width, imageView.frame.size.height, "Image view is not square")
@@ -203,6 +252,12 @@ class SearchResultCellSteps {
 
         XCTAssertEqual(imageView.frame.minY, cell.bounds.minY, "Image view top is not cell top")
         XCTAssertEqual(imageView.frame.maxY, titleLabel.frame.minY, "Image view bottom is not title label top")
+    }
+
+    func imageView(_ imageView: UIImageView, cornerRadiusIs cornerRadius: CGFloat) {
+
+        XCTAssertTrue(imageView.layer.masksToBounds, "Image view must be masked to bounds to have rounded corners")
+        XCTAssertEqual(imageView.layer.cornerRadius, cornerRadius, "Image view corner radius is not correct")
     }
 }
 
