@@ -7,10 +7,13 @@ import UIKit
 
 struct BindingCellReuseId { static let reuseId = "BindingCell " }
 
+protocol CellTapCommand: class { func invoke() }
+
 struct CellData<ViewModel> {
 
     let viewModel: ViewModel
     let size: CGSize
+    let tapCommand: CellTapCommand?
 }
 
 class CollectionViewBinder<ViewModel, CellType: MVVMCollectionViewCell<ViewModel>> {

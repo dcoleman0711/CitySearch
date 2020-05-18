@@ -8,11 +8,13 @@ import UIKit
 protocol CitySearchResultViewModel: class {
 
     var titleData: LabelViewModel { get }
+    var tapCommand: OpenDetailsCommand { get }
 }
 
 class CitySearchResultViewModelImp : CitySearchResultViewModel {
 
     let titleData: LabelViewModel
+    let tapCommand: OpenDetailsCommand = OpenDetailsCommandImp()
 
     init(model: CitySearchResultModel) {
 

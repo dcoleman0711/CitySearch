@@ -42,7 +42,11 @@ class SearchResultsViewModelImp: SearchResultsViewModel {
 
     private func resultsModelsUpdated(models: [CitySearchResultModel]) {
 
-        resultsData = models.map({ CellData<CitySearchResultViewModel>(viewModel: self.viewModelFactory.resultViewModel(model: $0), size: cellSize()) })
+        resultsData = models.map({ model in
+
+            let viewModel = self.viewModelFactory.resultViewModel(model: model)
+            return CellData<CitySearchResultViewModel>(viewModel: viewModel, size: cellSize(), tapCommand: viewModel.tapCommand)
+        })
     }
 
     private func cellSize() -> CGSize {

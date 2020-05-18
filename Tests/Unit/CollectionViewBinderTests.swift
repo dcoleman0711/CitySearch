@@ -86,7 +86,7 @@ class CollectionViewBinderSteps {
 
     func cellData(_ viewModels: [String]) -> [CellData<String>] {
 
-        viewModels.enumerated().map { (index, viewModel) in CellData<String>(viewModel: viewModel, size: CGSize(width: CGFloat(index) * 32.0, height: CGFloat(index) * 64.0)) }
+        viewModels.enumerated().map { (index, viewModel) in CellData<String>(viewModel: viewModel, size: CGSize(width: CGFloat(index) * 32.0, height: CGFloat(index) * 64.0), tapCommand: CellTapCommandMock()) }
     }
 
     func cellSizes(_ cellData: [CellData<String>]) -> [CGSize] {
@@ -145,4 +145,11 @@ class CollectionViewBinderSteps {
 class TestMVVMCell: MVVMCollectionViewCell<String> {
 
 
+}
+
+class CellTapCommandMock: CellTapCommand {
+
+    func invoke() {
+
+    }
 }

@@ -127,7 +127,7 @@ class SearchResultsViewModelSteps {
 
     func resultsData(for viewModels: [CitySearchResultViewModelMock], _ cellSize: CGSize) -> [CellData<CitySearchResultViewModel>] {
 
-        viewModels.map({ viewModel in CellData<CitySearchResultViewModel>(viewModel: viewModel, size: cellSize) })
+        viewModels.map({ viewModel in CellData<CitySearchResultViewModel>(viewModel: viewModel, size: cellSize, tapCommand: viewModel.tapCommand) })
     }
 
     func observeSearchResults(_ viewModel: SearchResultsViewModelImp, _ observer: @escaping ValueUpdate<[CellData<CitySearchResultViewModel>]>) {
@@ -137,6 +137,6 @@ class SearchResultsViewModelSteps {
 
     func observer(_ observer: ValueUpdate<[CellData<CitySearchResultViewModel>]>, isNotifiedWith expectedResults: [CellData<CitySearchResultViewModel>]) {
 
-        XCTAssertTrue(valuePassedToObserver?.elementsEqual(expectedResults) { first, second in first.viewModel === second.viewModel && first.size == second.size } ?? false, "Observer was not notified of correct results")
+        XCTAssertTrue(valuePassedToObserver?.elementsEqual(expectedResults) { first, second in first.viewModel === second.viewModel && first.size == second.size && first.tapCommand === second.tapCommand } ?? false, "Observer was not notified of correct results")
     }
 }

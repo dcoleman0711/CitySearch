@@ -8,4 +8,5 @@ import Foundation
 class CitySearchResultViewModelMock : CitySearchResultViewModel {
 
     var titleData: LabelViewModel = LabelViewModel.emptyData
+    var tapCommand: OpenDetailsCommand = OpenDetailsCommandMock()
 }

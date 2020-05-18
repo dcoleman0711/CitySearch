@@ -5,7 +5,14 @@
 
 import Foundation
 
-protocol OpenDetailsCommand {
+protocol OpenDetailsCommand: CellTapCommand {
 
     func invoke()
+}
+
+class OpenDetailsCommandImp: OpenDetailsCommand {
+
+    func invoke() {
+
+    }
 }
