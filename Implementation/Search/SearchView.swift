@@ -48,6 +48,11 @@ class SearchViewImp: UIViewController, SearchView {
         buildLayout()
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+
+        UIInterfaceOrientationMask.landscape
+    }
+
     private func setupView() {
 
         view.backgroundColor = UIColor.white

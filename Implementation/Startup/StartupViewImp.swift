@@ -43,6 +43,11 @@ class StartupViewImp : UIViewController, StartupView {
         viewModel.model.startTransitionTimer()
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+
+        UIInterfaceOrientationMask.landscape
+    }
+
     private func setupView() {
 
         view.backgroundColor = UIColor.white

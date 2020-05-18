@@ -47,6 +47,16 @@ class SearchScreenTests: XCTestCase {
 
         then.searchScreenBackgroundIsWhite(searchScreen)
     }
+
+    func testOrientations() {
+
+        let searchScreen = given.searchScreen()
+        let landscapeOrientations = given.landscapeOrientations()
+
+        when.searchScreenIsLoaded(searchScreen)
+
+        then.searchScreen(searchScreen, supportedOrientationsAre: landscapeOrientations)
+    }
     
     func testSearchResultsFullScreenSafeArea() {
 
@@ -95,6 +105,11 @@ class SearchScreenSteps {
     func screenSizes() -> [CGSize] {
 
         [CGSize(width: 1024, height: 768), CGSize(width: 2048, height: 768), CGSize(width: 2048, height: 1536)]
+    }
+
+    func landscapeOrientations() -> UIInterfaceOrientationMask {
+
+        UIInterfaceOrientationMask.landscape
     }
 
     func searchResults() -> SearchResultsView {
@@ -155,5 +170,10 @@ class SearchScreenSteps {
     func searchResultsAreDisplayed(_ expectedData: CitySearchResults) {
 
         XCTAssertEqual(displayedSearchResults, expectedData, "Search results is not displaying expected data")
+    }
+
+    func searchScreen(_ searchScreen: SearchViewImp, supportedOrientationsAre expectedOrientations: UIInterfaceOrientationMask) {
+
+        XCTAssertEqual(searchScreen.supportedInterfaceOrientations, expectedOrientations, "Supported orientations are not the expected orientations")
     }
 }

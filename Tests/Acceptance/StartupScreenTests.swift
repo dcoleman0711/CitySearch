@@ -45,6 +45,16 @@ class StartupScreenTests: XCTestCase {
 
         then.startupScreenBackgroundIsWhite(startupScreen)
     }
+
+    func testOrientations() {
+
+        let startupScreen = given.startupScreen()
+        let landscapeOrientations = given.landscapeOrientations()
+
+        when.startupScreenIsShown(startupScreen)
+
+        then.startupScreen(startupScreen, supportedOrientationsAre: landscapeOrientations)
+    }
     
     func testAppTitleIsVisible() {
 
@@ -214,6 +224,11 @@ class StartupScreenSteps {
         UILabel()
     }
 
+    func landscapeOrientations() -> UIInterfaceOrientationMask {
+
+        UIInterfaceOrientationMask.landscape
+    }
+
     func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock()) -> StartupViewImp {
 
         let builder = StartupViewBuilderImp()
@@ -238,6 +253,11 @@ class StartupScreenSteps {
     func startupScreenBackgroundIsWhite(_ startupScreen: StartupViewImp) {
 
         XCTAssertEqual(startupScreen.view.backgroundColor, UIColor.white)
+    }
+
+    func startupScreen(_ startupScreen: StartupViewImp, supportedOrientationsAre expectedOrientations: UIInterfaceOrientationMask) {
+
+        XCTAssertEqual(startupScreen.supportedInterfaceOrientations, expectedOrientations)
     }
 
     func appTitleIsVisible(_ startupScreen: StartupViewImp, _ appTitleLabel: UILabel) {
