@@ -57,6 +57,31 @@ class CitySearchResultCellTests: XCTestCase {
 
         then.titleLabel(titleLabel, isConstrainedToBottomCenterOf: searchResultCell)
     }
+
+    func testImageViewAutoResizeMaskDisabled() {
+
+        let imageView = given.imageView()
+        let searchResultCell = when.searchResultCellIsCreated(imageView: imageView)
+
+        then.autoResizeMaskIsDisabled(for: imageView)
+    }
+
+    func testImageViewSizeConstraints() {
+
+        let imageView = given.imageView()
+        let searchResultCell = when.searchResultCellIsCreated(imageView: imageView)
+
+        then.imageView(imageView, isConstrainedToSquareIn: searchResultCell)
+    }
+
+    func testImageViewPositionConstraints() {
+
+        let imageView = given.imageView()
+        let titleLabel = given.titleLabel()
+        let searchResultCell = when.searchResultCellIsCreated(titleLabel: titleLabel, imageView: imageView)
+
+        then.imageView(imageView, isCenteredAndFittedIn: searchResultCell, above: titleLabel)
+    }
 }
 
 class CitySearchResultCellSteps {
@@ -88,6 +113,11 @@ class CitySearchResultCellSteps {
         UILabel()
     }
 
+    func imageView() -> UIImageView {
+
+        UIImageView()
+    }
+
     func viewModel(_ titleData: LabelViewModel) -> CitySearchResultViewModelMock {
 
         let viewModel = CitySearchResultViewModelMock()
@@ -97,9 +127,9 @@ class CitySearchResultCellSteps {
         return viewModel
     }
 
-    func searchResultCellIsCreated(titleLabel: UILabel, binder: ViewBinderMock = ViewBinderMock()) -> CitySearchResultCell {
+    func searchResultCellIsCreated(titleLabel: UILabel = UILabel(), imageView: UIImageView = UIImageView(), binder: ViewBinderMock = ViewBinderMock()) -> CitySearchResultCell {
 
-        CitySearchResultCell(titleLabel: titleLabel, binder: binder)
+        CitySearchResultCell(titleLabel: titleLabel, imageView: imageView, binder: binder)
     }
 
     func assignViewModel(_ viewModel: CitySearchResultViewModelMock, toCell cell: CitySearchResultCell) {
@@ -117,11 +147,32 @@ class CitySearchResultCellSteps {
         let expectedConstraints = [titleLabel.centerXAnchor.constraint(equalTo: cell.centerXAnchor),
                                    titleLabel.bottomAnchor.constraint(equalTo: cell.bottomAnchor)]
 
-        XCTAssertTrue(expectedConstraints.allSatisfy( { (first) in cell.constraints.contains(where: { (second) in first.isEqualToConstraint(second)}) }), "Title label is not constraint to bottom center of cell")
+        validateConstraints(expectedConstraints: expectedConstraints, cell: cell, message: "Title label is not constrained to bottom center of cell")
     }
 
     func autoResizeMaskIsDisabled(for view: UIView) {
 
         XCTAssertFalse(view.translatesAutoresizingMaskIntoConstraints, "Autoresize mask is not disabled")
+    }
+
+    func imageView(_ imageView: UIImageView, isConstrainedToSquareIn cell: CitySearchResultCell) {
+
+        let expectedConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 1.0)
+
+        validateConstraints(expectedConstraints: [expectedConstraint], cell: cell, message: "Image view is not constrained to be square")
+    }
+
+    func imageView(_ imageView: UIImageView, isCenteredAndFittedIn cell: CitySearchResultCell, above titleLabel: UILabel) {
+
+        let expectedConstraints = [imageView.centerXAnchor.constraint(equalTo: cell.centerXAnchor),
+                                   imageView.topAnchor.constraint(equalTo: cell.topAnchor),
+                                   imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor)]
+
+        validateConstraints(expectedConstraints: expectedConstraints, cell: cell, message: "Image view is not constrained to horizontal center and above title label")
+    }
+
+    private func validateConstraints(expectedConstraints: [NSLayoutConstraint], cell: CitySearchResultCell, message: String) {
+
+        XCTAssertTrue(expectedConstraints.allSatisfy( { (first) in cell.constraints.contains(where: { (second) in first.isEqualToConstraint(second)}) }), message)
     }
 }

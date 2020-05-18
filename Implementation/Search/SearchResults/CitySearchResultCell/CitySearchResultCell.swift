@@ -20,17 +20,19 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
     }
 
     private let titleLabel: UILabel
+    private let imageView: UIImageView
 
     private let updateTitle: ValueUpdate<LabelViewModel>
 
     convenience override init(frame: CGRect) {
 
-        self.init(titleLabel: UILabel(), binder: ViewBinderImp())
+        self.init(titleLabel: UILabel(), imageView: UIImageView(), binder: ViewBinderImp())
     }
 
-    init(titleLabel: UILabel, binder: ViewBinder) {
+    init(titleLabel: UILabel, imageView: UIImageView, binder: ViewBinder) {
 
         self.titleLabel = titleLabel
+        self.imageView = imageView
 
         self.updateTitle = binder.bindText(label: self.titleLabel)
 
@@ -44,6 +46,9 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
         self.contentView.addSubview(self.titleLabel)
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        self.contentView.addSubview(self.imageView)
+        self.imageView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buildLayout() {
@@ -53,7 +58,14 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
         let titleLabelYConstraint = titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         let titleLabelConstraints = [titleLabelXConstraint, titleLabelYConstraint]
 
-        let constraints = [NSLayoutConstraint]([titleLabelConstraints].joined())
+        // ImageView
+        let imageViewAspectRatioConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
+        let imageViewXConstraint = imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        let imageViewTopConstraint = imageView.topAnchor.constraint(equalTo: self.topAnchor)
+        let imageViewBottomConstraint = imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor)
+        let imageViewConstraints = [imageViewAspectRatioConstraint, imageViewXConstraint, imageViewTopConstraint, imageViewBottomConstraint]
+
+        let constraints = [NSLayoutConstraint]([titleLabelConstraints, imageViewConstraints].joined())
 
         self.addConstraints(constraints)
     }

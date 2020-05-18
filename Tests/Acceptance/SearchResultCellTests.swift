@@ -83,6 +83,48 @@ class SearchResultCellTests: XCTestCase {
 
         then.imageViewIsSquare(imageView)
     }
+
+    func testImageViewCenteredHorizontally() {
+
+        let cellSizes = given.cellSizes()
+
+        for cellSize in cellSizes {
+
+            testImageViewCenteredHorizontally(cellSize: cellSize)
+        }
+    }
+
+    func testImageViewCenteredHorizontally(cellSize: CGSize) {
+
+        let titleLabel = given.titleLabel()
+        let imageView = given.imageView()
+        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel, imageView: imageView)
+
+        when.cellSizeBecomes(searchResultCell, cellSize)
+
+        then.imageView(imageView, isCenteredHorizontallyIn: searchResultCell)
+    }
+    
+    func testImageViewFitsVertically() {
+
+        let cellSizes = given.cellSizes()
+
+        for cellSize in cellSizes {
+
+            testImageViewFitsVertically(cellSize: cellSize)
+        }
+    }
+
+    func testImageViewFitsVertically(cellSize: CGSize) {
+
+        let titleLabel = given.titleLabel()
+        let imageView = given.imageView()
+        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel, imageView: imageView)
+
+        when.cellSizeBecomes(searchResultCell, cellSize)
+
+        then.imageView(imageView, isFittedFromTopOf: searchResultCell, toTopOf: titleLabel)
+    }
 }
 
 class SearchResultCellSteps {
@@ -114,7 +156,7 @@ class SearchResultCellSteps {
 
     func searchResultCellIsCreated(titleLabel: UILabel = UILabel(), imageView: UIImageView = UIImageView()) -> CitySearchResultCell {
 
-        CitySearchResultCell(titleLabel: titleLabel, binder: ViewBinderImp())
+        CitySearchResultCell(titleLabel: titleLabel, imageView: imageView, binder: ViewBinderImp())
     }
 
     func assignResult(_ result: CitySearchResult, toCell cell: CitySearchResultCell) {
@@ -150,6 +192,17 @@ class SearchResultCellSteps {
     func imageViewIsSquare(_ imageView: UIImageView) {
 
         XCTAssertEqual(imageView.frame.size.width, imageView.frame.size.height, "Image view is not square")
+    }
+
+    func imageView(_ imageView: UIImageView, isCenteredHorizontallyIn cell: CitySearchResultCell) {
+
+        XCTAssertEqual(imageView.frame.center.x, cell.bounds.center.x, "Image view top is not centered horizontally in cell")
+    }
+
+    func imageView(_ imageView: UIImageView, isFittedFromTopOf cell: CitySearchResultCell, toTopOf titleLabel: UILabel) {
+
+        XCTAssertEqual(imageView.frame.minY, cell.bounds.minY, "Image view top is not cell top")
+        XCTAssertEqual(imageView.frame.maxY, titleLabel.frame.minY, "Image view bottom is not title label top")
     }
 }
 
