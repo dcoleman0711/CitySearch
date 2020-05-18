@@ -50,7 +50,7 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
         // Title Label
         let titleLabelXConstraint = titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-        let titleLabelYConstraint = titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        let titleLabelYConstraint = titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         let titleLabelConstraints = [titleLabelXConstraint, titleLabelYConstraint]
 
         let constraints = [NSLayoutConstraint]([titleLabelConstraints].joined())

@@ -55,7 +55,7 @@ class CitySearchResultCellTests: XCTestCase {
         let titleLabel = given.titleLabel()
         let searchResultCell = when.searchResultCellIsCreated(titleLabel: titleLabel)
 
-        then.titleLabel(titleLabel, isConstrainedToCenterOf: searchResultCell)
+        then.titleLabel(titleLabel, isConstrainedToBottomCenterOf: searchResultCell)
     }
 }
 
@@ -112,12 +112,12 @@ class CitySearchResultCellSteps {
         XCTAssertEqual(labelBindings[label], expectedData, "Title label text is not correct")
     }
 
-    func titleLabel(_ titleLabel: UILabel, isConstrainedToCenterOf cell: CitySearchResultCell) {
+    func titleLabel(_ titleLabel: UILabel, isConstrainedToBottomCenterOf cell: CitySearchResultCell) {
 
         let expectedConstraints = [titleLabel.centerXAnchor.constraint(equalTo: cell.centerXAnchor),
-                                   titleLabel.centerYAnchor.constraint(equalTo: cell.centerYAnchor)]
+                                   titleLabel.bottomAnchor.constraint(equalTo: cell.bottomAnchor)]
 
-        XCTAssertTrue(expectedConstraints.allSatisfy( { (first) in cell.constraints.contains(where: { (second) in first.isEqualToConstraint(second)}) }), "Title label is not constraint to center of cell")
+        XCTAssertTrue(expectedConstraints.allSatisfy( { (first) in cell.constraints.contains(where: { (second) in first.isEqualToConstraint(second)}) }), "Title label is not constraint to bottom center of cell")
     }
 
     func autoResizeMaskIsDisabled(for view: UIView) {

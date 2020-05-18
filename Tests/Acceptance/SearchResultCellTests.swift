@@ -32,37 +32,25 @@ class SearchResultCellTests: XCTestCase {
         super.tearDown()
     }
 
-    func testCellTitleLabelCenter() {
-
-        let searchResult = given.searchResult()
-        let titleText = given.titleText(for: searchResult)
-        let titleLabel = given.titleLabel()
-        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel)
-
-        when.assignResult(searchResult, toCell: searchResultCell)
-
-        then.titleLabel(titleLabel, textIs: titleText)
-    }
-
     // In Progress
-    func testTitleCenter() {
+    func testTitleBottomCenter() {
 
         let cellSizes = given.cellSizes()
 
         for cellSize in cellSizes {
 
-            testTitleCenter(cellSize: cellSize)
+            testTitleBottomCenter(cellSize: cellSize)
         }
     }
 
-    func testTitleCenter(cellSize: CGSize) {
+    func testTitleBottomCenter(cellSize: CGSize) {
 
         let titleLabel = given.titleLabel()
         let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel)
 
         when.cellSizeBecomes(searchResultCell, cellSize)
 
-        then.titleLabel(titleLabel, isCenteredIn: searchResultCell)
+        then.titleLabel(titleLabel, isBottomCenteredIn: searchResultCell)
     }
 
     func testCellTitleLabelText() {
@@ -129,9 +117,10 @@ class SearchResultCellSteps {
         XCTAssertEqual(titleLabel.text, expectedText, "Title label text is not expected text")
     }
 
-    func titleLabel(_ titleLabel: UILabel, isCenteredIn cell: CitySearchResultCell) {
-
-        XCTAssertEqual(titleLabel.frame.center, cell.frame.center, "Title label is not centered in frame")
+    func titleLabel(_ titleLabel: UILabel, isBottomCenteredIn cell: CitySearchResultCell) {
+        
+        XCTAssertEqual(titleLabel.frame.center.x, cell.bounds.center.x, "Title label is not horizontally centered in frame")
+        XCTAssertEqual(titleLabel.frame.maxY, cell.bounds.maxY, "Title label is not in bottom of frame")
     }
 
 }
@@ -140,6 +129,6 @@ extension CGRect {
 
     var center: CGPoint {
 
-        return CGPoint(x: origin.x + size.width / 2.0, y: origin.y + size.height / 2.0)
+        CGPoint(x: origin.x + size.width / 2.0, y: origin.y + size.height / 2.0)
     }
 }
