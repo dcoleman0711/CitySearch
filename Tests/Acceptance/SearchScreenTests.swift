@@ -48,25 +48,15 @@ class SearchScreenTests: XCTestCase {
         then.searchScreenBackgroundIsWhite(searchScreen)
     }
     
-    func testSearchResultsFullScreen() {
-
-        let screenSizes = given.screenSizes()
-
-        for screenSize in screenSizes {
-
-            testSearchResultsFullScreen(screenSize: screenSize)
-        }
-    }
-
-    func testSearchResultsFullScreen(screenSize: CGSize) {
+    func testSearchResultsFullScreenSafeArea() {
 
         let searchResults = given.searchResults()
         let searchView = given.searchScreen(searchResults: searchResults)
         given.searchScreenIsLoaded(searchView)
 
-        when.searchView(searchView, sizeBecomes: screenSize)
+        when.searchViewAppearsOnScreen(searchView)
 
-        then.searchResults(searchResults, isFullScreenIn: searchView)
+        then.searchResultsIsFullScreenInSafeArea(searchResults)
     }
 
     func testSearchResultsDisplaysInitialData() {
@@ -86,6 +76,8 @@ class SearchScreenSteps {
     private let searchResultsModel = SearchResultsModelMock()
 
     private var displayedSearchResults: CitySearchResults?
+
+    private var safeAreaFrame = CGRect.zero
 
     init() {
 
@@ -121,11 +113,28 @@ class SearchScreenSteps {
         searchView.loadViewIfNeeded()
     }
 
-    func searchView(_ searchView: SearchView, sizeBecomes size: CGSize) {
+    func searchViewAppearsOnScreen(_ searchView: SearchView) {
 
-        searchView.view.frame = CGRect(origin: CGPoint.zero, size: size)
+        // Testing the safe area insets requires placing the view into a hierarchy all the way up to a window.
+        let window = UIWindow()
+        window.makeKeyAndVisible()
+        window.rootViewController = searchView as? UIViewController
         searchView.view.setNeedsLayout()
         searchView.view.layoutIfNeeded()
+
+        var safeAreaFrame = searchView.view.bounds
+        let safeAreaInsets = searchView.view.safeAreaInsets
+
+        safeAreaFrame.origin.x += safeAreaInsets.left
+        safeAreaFrame.size.width -= (safeAreaInsets.left + safeAreaInsets.right)
+        safeAreaFrame.origin.y += safeAreaInsets.top
+        safeAreaFrame.size.height -= (safeAreaInsets.top + safeAreaInsets.bottom)
+
+        self.safeAreaFrame = safeAreaFrame
+
+        // Reset the window to avoid breaking other tests
+        window.isHidden = true
+        window.windowScene = nil
     }
 
     func searchResults(_ searchResults: SearchResultsView, isDisplayedIn searchView: SearchViewImp) {
@@ -133,9 +142,9 @@ class SearchScreenSteps {
         XCTAssertTrue(searchResults.view.isDescendant(of: searchView.view), "Search results are not displayed in search view")
     }
 
-    func searchResults(_ searchResults: SearchResultsView, isFullScreenIn searchView: SearchViewImp) {
+    func searchResultsIsFullScreenInSafeArea(_ searchResults: SearchResultsView) {
 
-        XCTAssertEqual(searchResults.view.frame, searchView.view.bounds, "Search results are not full screen")
+        XCTAssertEqual(searchResults.view.frame, safeAreaFrame, "Search results are not full screen")
     }
 
     func searchScreenBackgroundIsWhite(_ searchScreen: SearchView) {

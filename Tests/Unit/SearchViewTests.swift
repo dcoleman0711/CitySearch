@@ -48,11 +48,11 @@ class SearchViewTests: XCTestCase {
         then.autoResizeMaskIsDisabled(searchResultsView.view)
     }
 
-    func testSearchResultsViewFillsParent() {
+    func testSearchResultsViewFillsParentSafeArea() {
 
         let searchResultsView = given.searchResultsView()
         let searchView = given.searchViewIsCreated(searchResultsView: searchResultsView)
-        let expectedConstraints = given.constraintsFor(searchResultsView.view, toFillParent: searchView)
+        let expectedConstraints = given.constraintsFor(searchResultsView.view, toFillParentSafeArea: searchView)
 
         when.searchViewIsLoaded(searchView)
 
@@ -120,12 +120,12 @@ class SearchViewSteps {
         return searchResultsView
     }
 
-    func constraintsFor(_ view: UIView, toFillParent searchView: SearchViewImp) -> [NSLayoutConstraint] {
+    func constraintsFor(_ view: UIView, toFillParentSafeArea searchView: SearchViewImp) -> [NSLayoutConstraint] {
 
-        [view.leftAnchor.constraint(equalTo: searchView.view.leftAnchor),
-         view.rightAnchor.constraint(equalTo: searchView.view.rightAnchor),
-         view.topAnchor.constraint(equalTo: searchView.view.topAnchor),
-         view.bottomAnchor.constraint(equalTo: searchView.view.bottomAnchor)]
+        [view.leftAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.leftAnchor),
+         view.rightAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.rightAnchor),
+         view.topAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.topAnchor),
+         view.bottomAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.bottomAnchor)]
     }
 
     func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), modelFactory: SearchModelFactoryMock = SearchModelFactoryMock(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchViewImp {
