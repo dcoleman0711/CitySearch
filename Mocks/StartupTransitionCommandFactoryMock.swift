@@ -7,9 +7,9 @@ import UIKit
 
 class StartupTransitionCommandFactoryMock: StartupTransitionCommandFactory {
 
-    var startupTransitionCommandImp: (_ window: UIWindow, _ newRoot: UIViewController, _ viewType: UIView.Type) -> StartupTransitionCommand = { (window, newRoot, viewType) in StartupTransitionCommandMock() }
-    func startupTransitionCommand(window: UIWindow, newRoot: UIViewController, viewType: UIView.Type) -> StartupTransitionCommand {
+    var startupTransitionCommandImp: (_ window: UIWindow, _ searchViewFactory: SearchViewFactory, _ viewType: UIView.Type) -> StartupTransitionCommand = { (window, searchViewFactory, viewType) in StartupTransitionCommandMock() }
+    func startupTransitionCommand(window: UIWindow, searchViewFactory: SearchViewFactory, viewType: UIView.Type) -> StartupTransitionCommand {
 
-        startupTransitionCommandImp(window, newRoot, viewType)
+        startupTransitionCommandImp(window, searchViewFactory, viewType)
     }
 }

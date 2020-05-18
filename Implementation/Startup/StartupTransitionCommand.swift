@@ -20,18 +20,18 @@ class StartupTransitionCommandNull : StartupTransitionCommand {
 class StartupTransitionCommandImp : StartupTransitionCommand {
 
     private let window: UIWindow
-    private let newRoot: UIViewController
+    private let searchViewFactory: SearchViewFactory
     private let viewType: UIView.Type
 
-    init(window: UIWindow, newRoot: UIViewController, viewType: UIView.Type) {
+    init(window: UIWindow, searchViewFactory: SearchViewFactory, viewType: UIView.Type) {
 
         self.window = window
-        self.newRoot = newRoot
+        self.searchViewFactory = searchViewFactory
         self.viewType = viewType
     }
 
     func invoke(initialResults: CitySearchResults) {
 
-        viewType.transition(with: window, duration: 1.0, options: UIView.AnimationOptions.transitionFlipFromRight, animations: { self.window.rootViewController = self.newRoot }, completion: nil)
+        viewType.transition(with: window, duration: 1.0, options: UIView.AnimationOptions.transitionFlipFromRight, animations: { self.window.rootViewController = self.searchViewFactory.searchView(initialData: initialResults) }, completion: nil)
     }
 }

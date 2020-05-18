@@ -112,7 +112,7 @@ class StartupSteps {
 
         transitionCommandFactory.startupTransitionCommandImp = { (window, newRoot, viewType) in
 
-            let transitionCommand = StartupTransitionCommandImp(window: window, newRoot: newRoot, viewType: UIViewMock.self)
+            let transitionCommand = StartupTransitionCommandImp(window: window, searchViewFactory: newRoot, viewType: UIViewMock.self)
             self.transitionCommand = transitionCommand
             return transitionCommand
         }

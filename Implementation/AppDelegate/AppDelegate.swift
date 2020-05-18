@@ -38,8 +38,7 @@ class AppDelegate : NSObject, UIApplicationDelegate {
         let window = UIWindow()
         self.window = window
 
-        let searchView = self.searchViewFactory.searchView(initialData: CitySearchResults.emptyResults())
-        startupViewBuilder.transitionCommand = transitionCommandFactory.startupTransitionCommand(window: window, newRoot: searchView, viewType: UIView.self)
+        startupViewBuilder.transitionCommand = transitionCommandFactory.startupTransitionCommand(window: window, searchViewFactory: self.searchViewFactory, viewType: UIView.self)
 
         window.makeKeyAndVisible()
 

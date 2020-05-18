@@ -7,18 +7,13 @@ import UIKit
 
 protocol StartupTransitionCommandFactory {
 
-    func startupTransitionCommand(window: UIWindow, newRoot: UIViewController, viewType: UIView.Type) -> StartupTransitionCommand
+    func startupTransitionCommand(window: UIWindow, searchViewFactory: SearchViewFactory, viewType: UIView.Type) -> StartupTransitionCommand
 }
 
 class StartupTransitionCommandFactoryImp: StartupTransitionCommandFactory {
 
-    func startupTransitionCommand(window: UIWindow, newRoot: UIViewController, viewType: UIView.Type) -> StartupTransitionCommand {
+    func startupTransitionCommand(window: UIWindow, searchViewFactory: SearchViewFactory, viewType: UIView.Type) -> StartupTransitionCommand {
 
-        startupTransitionCommandImp(window: window, newRoot: newRoot, viewType: viewType)
-    }
-
-    func startupTransitionCommandImp(window: UIWindow, newRoot: UIViewController, viewType: UIView.Type) -> StartupTransitionCommandImp {
-
-        StartupTransitionCommandImp(window: window, newRoot: newRoot, viewType: viewType)
+        StartupTransitionCommandImp(window: window, searchViewFactory: searchViewFactory, viewType: viewType)
     }
 }

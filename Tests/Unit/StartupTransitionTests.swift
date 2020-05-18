@@ -74,13 +74,28 @@ class StartupTransitionTests : XCTestCase {
     func testTransitionRootAfterAnimations() {
 
         let window = given.window()
-        let newRoot = given.newRoot()
-        let transitionCommand = given.transitionCommand(window: window, newRoot: newRoot)
+        let searchViewFactory = given.searchViewFactory()
+        let searchView = given.searchView(createdBy: searchViewFactory)
+        let transitionCommand = given.transitionCommand(window: window, searchViewFactory: searchViewFactory)
         given.transitionCommandIsInvoked(transitionCommand)
 
         when.performTransitionAnimations()
 
-        then.rootOfWindow(window, isSetTo: newRoot)
+        then.rootOfWindow(window, isSetTo: searchView)
+    }
+
+    func testTransitionInitialData() {
+
+        let window = given.window()
+        let initialResults = given.initialResults()
+        let searchViewFactory = given.searchViewFactory()
+        let searchView = given.searchView(createdBy: searchViewFactory)
+        let transitionCommand = given.transitionCommand(window: window, searchViewFactory: searchViewFactory)
+        given.transitionCommand(transitionCommand, isInvokedWith: initialResults)
+
+        when.performTransitionAnimations()
+
+        then.searchView(searchView, isCreatedWith: initialResults)
     }
 }
 
@@ -91,6 +106,8 @@ class StartupTransitionSteps {
     private var transitionView: UIView!
 
     private var transitionAnimations: (() -> Void)?
+
+    private var initialResultsPassedToSearchView: CitySearchResults?
 
     init() {
 
@@ -118,14 +135,14 @@ class StartupTransitionSteps {
         UIWindow()
     }
 
-    func newRoot() -> UIViewController {
+    func searchViewFactory() -> SearchViewFactoryMock {
 
-        UIViewController()
+        SearchViewFactoryMock()
     }
 
-    func transitionCommand(window: UIWindow = UIWindow(), newRoot: UIViewController = UIViewController()) -> StartupTransitionCommandImp {
+    func transitionCommand(window: UIWindow = UIWindow(), searchViewFactory: SearchViewFactoryMock = SearchViewFactoryMock()) -> StartupTransitionCommandImp {
 
-        StartupTransitionCommandFactoryImp().startupTransitionCommandImp(window: window, newRoot: newRoot, viewType: UIViewMock.self)
+        StartupTransitionCommandFactoryImp().startupTransitionCommand(window: window, searchViewFactory: searchViewFactory, viewType: UIViewMock.self) as! StartupTransitionCommandImp
     }
 
     func windowRoot(_ window: UIWindow) -> UIViewController {
@@ -133,6 +150,11 @@ class StartupTransitionSteps {
         let root = UIViewController()
         window.rootViewController = root
         return root
+    }
+
+    func initialResults() -> CitySearchResults {
+
+        CitySearchResultsStub.stubResults()
     }
 
     func transitionCommandIsInvoked(_ command: StartupTransitionCommandImp) {
@@ -143,6 +165,24 @@ class StartupTransitionSteps {
     func performTransitionAnimations() {
 
         transitionAnimations?()
+    }
+
+    func searchView(createdBy factory: SearchViewFactoryMock) -> SearchViewImp {
+
+        let searchView = SearchViewImp()
+
+        factory.searchViewImp = { initialData in
+
+            self.initialResultsPassedToSearchView = initialData
+            return searchView
+        }
+
+        return searchView
+    }
+
+    func transitionCommand(_ transitionCommand: StartupTransitionCommandImp, isInvokedWith initialResults: CitySearchResults) {
+
+        transitionCommand.invoke(initialResults: initialResults)
     }
 
     func transitionIsAppliedOn(_ window: UIWindow) {
@@ -163,5 +203,10 @@ class StartupTransitionSteps {
     func rootOfWindow(_ window: UIWindow, isSetTo expectedNewRoot: UIViewController) {
 
         XCTAssertEqual(window.rootViewController, expectedNewRoot)
+    }
+
+    func searchView(_ searchView: SearchViewImp, isCreatedWith expectedResults: CitySearchResults) {
+
+        XCTAssertEqual(initialResultsPassedToSearchView, expectedResults, "Search view was not created with initial results")
     }
 }
