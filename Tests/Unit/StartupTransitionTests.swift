@@ -81,7 +81,7 @@ class StartupTransitionTests : XCTestCase {
 
         when.performTransitionAnimations()
 
-        then.rootOfWindow(window, isSetTo: searchView)
+        then.rootOfWindow(window, isNavigationStackContaining: searchView)
     }
 
     func testTransitionInitialData() {
@@ -202,7 +202,17 @@ class StartupTransitionSteps {
 
     func rootOfWindow(_ window: UIWindow, isSetTo expectedNewRoot: UIViewController) {
 
-        XCTAssertEqual(window.rootViewController, expectedNewRoot)
+        XCTAssertEqual(window.rootViewController, expectedNewRoot, "Window root is not expected root")
+    }
+
+    func rootOfWindow(_ window: UIWindow, isNavigationStackContaining expectedNewRoot: UIViewController) {
+
+        guard let navigationController = window.rootViewController as? UINavigationController else {
+            XCTFail("Window root is not navigation controller")
+            return
+        }
+
+        XCTAssertEqual(navigationController.viewControllers, [expectedNewRoot], "Navigation stack is not the expected root")
     }
 
     func searchView(_ searchView: SearchViewImp, isCreatedWith expectedResults: CitySearchResults) {

@@ -32,6 +32,13 @@ class StartupTransitionCommandImp : StartupTransitionCommand {
 
     func invoke(initialResults: CitySearchResults) {
 
-        viewType.transition(with: window, duration: 1.0, options: UIView.AnimationOptions.transitionFlipFromRight, animations: { self.window.rootViewController = self.searchViewFactory.searchView(initialData: initialResults) }, completion: nil)
+        viewType.transition(with: window, duration: 1.0, options: UIView.AnimationOptions.transitionFlipFromRight, animations: { self.applyTransition(initialResults: initialResults) }, completion: nil)
+    }
+
+    private func applyTransition(initialResults: CitySearchResults) {
+
+        let searchView = self.searchViewFactory.searchView(initialData: initialResults)
+        let navigationController = UINavigationController(rootViewController: searchView)
+        self.window.rootViewController = navigationController
     }
 }
