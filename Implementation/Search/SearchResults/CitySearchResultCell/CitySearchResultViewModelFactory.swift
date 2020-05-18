@@ -14,6 +14,6 @@ class CitySearchResultViewModelFactoryImp: CitySearchResultViewModelFactory {
 
     func resultViewModel(model: CitySearchResultModel) -> CitySearchResultViewModel {
 
-        fatalError("Implement")
+        CitySearchResultViewModelImp(model: model)
     }
 }

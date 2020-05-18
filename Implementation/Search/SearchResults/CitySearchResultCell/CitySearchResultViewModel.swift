@@ -10,7 +10,12 @@ protocol CitySearchResultViewModel: class {
     var titleText: String { get }
 }
 
-class CitySearchResultViewModelNull : CitySearchResultViewModel {
+class CitySearchResultViewModelImp : CitySearchResultViewModel {
 
-    let titleText: String = ""
+    let titleText: String
+
+    init(model: CitySearchResultModel) {
+
+        self.titleText = model.titleText
+    }
 }

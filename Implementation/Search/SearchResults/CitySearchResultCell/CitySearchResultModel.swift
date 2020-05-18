@@ -6,8 +6,11 @@
 import Foundation
 
 protocol CitySearchResultModel: class {
+
+    var titleText: String { get }
 }
 
 class CitySearchResultModelImp: CitySearchResultModel {
 
+    let titleText: String = ""
 }
