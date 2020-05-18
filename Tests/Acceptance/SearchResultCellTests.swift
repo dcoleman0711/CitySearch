@@ -32,7 +32,6 @@ class SearchResultCellTests: XCTestCase {
         super.tearDown()
     }
 
-    // In Progress
     func testTitleBottomCenter() {
 
         let cellSizes = given.cellSizes()
@@ -64,6 +63,26 @@ class SearchResultCellTests: XCTestCase {
 
         then.titleLabel(titleLabel, textIs: titleText)
     }
+
+    func testImageViewSquare() {
+
+        let cellSizes = given.cellSizes()
+
+        for cellSize in cellSizes {
+
+            testImageViewSquare(cellSize: cellSize)
+        }
+    }
+
+    func testImageViewSquare(cellSize: CGSize) {
+
+        let imageView = given.imageView()
+        let searchResultCell = given.searchResultCellIsCreated(imageView: imageView)
+
+        when.cellSizeBecomes(searchResultCell, cellSize)
+
+        then.imageViewIsSquare(imageView)
+    }
 }
 
 class SearchResultCellSteps {
@@ -83,12 +102,17 @@ class SearchResultCellSteps {
         UILabel()
     }
 
+    func imageView() -> UIImageView {
+
+        UIImageView()
+    }
+
     func cellSizes() -> [CGSize] {
 
         [CGSize(width: 128, height: 128), CGSize(width: 64, height: 64), CGSize(width: 32, height: 32)]
     }
 
-    func searchResultCellIsCreated(titleLabel: UILabel) -> CitySearchResultCell {
+    func searchResultCellIsCreated(titleLabel: UILabel = UILabel(), imageView: UIImageView = UIImageView()) -> CitySearchResultCell {
 
         CitySearchResultCell(titleLabel: titleLabel, binder: ViewBinderImp())
     }
@@ -123,6 +147,10 @@ class SearchResultCellSteps {
         XCTAssertEqual(titleLabel.frame.maxY, cell.bounds.maxY, "Title label is not in bottom of frame")
     }
 
+    func imageViewIsSquare(_ imageView: UIImageView) {
+
+        XCTAssertEqual(imageView.frame.size.width, imageView.frame.size.height, "Image view is not square")
+    }
 }
 
 extension CGRect {
