@@ -21,7 +21,7 @@ class StartupViewBuilderImp: StartupViewBuilder {
 
     func build() -> StartupViewImp {
 
-        let model = StartupModelImp(timerType: Timer.self, transitionCommand: transitionCommand)
+        let model = StartupModelImp(timerType: Timer.self, transitionCommand: transitionCommand, searchService: searchService)
         let viewModel = StartupViewModelImp(model: model)
         return StartupViewImp(appTitleLabel: appTitleLabel, viewModel: viewModel, binder: ViewBinderImp())
     }

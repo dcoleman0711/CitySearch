@@ -31,7 +31,7 @@ class StartupModelTests: XCTestCase {
     func testObserveAppTitleText() {
 
         let appTitle = given.appTitle()
-        let model = given.model()
+        let model = given.modelIsCreated()
         let textUpdate = given.textUpdate()
 
         when.observerAppTitleText(model, textUpdate)
@@ -41,7 +41,7 @@ class StartupModelTests: XCTestCase {
 
     func testScheduleTransitionTimer() {
 
-        let model = given.model()
+        let model = given.modelIsCreated()
         let transitionStartInterval = given.transitionStartInterval()
 
         when.transitionIsScheduled(model)
@@ -52,12 +52,21 @@ class StartupModelTests: XCTestCase {
     func testTransitionTimerCallsTransitionCommand() {
 
         let transitionCommand = given.transitionCommand()
-        let model = given.model(transitionCommand: transitionCommand)
+        let model = given.modelIsCreated(transitionCommand: transitionCommand)
         given.transitionIsScheduled(model)
 
         when.transitionTimerFires()
 
         then.transitionCommandIsInvoked(transitionCommand)
+    }
+
+    func testRequestInitialResults() {
+
+        let searchService = given.searchService()
+
+        let model = when.modelIsCreated(searchService: searchService)
+
+        then.searchServiceResultsWereRequested(searchService)
     }
 }
 
@@ -68,6 +77,8 @@ class StartupModelSteps {
     private var scheduledTimerBlock: ((Timer) -> Void)?
 
     private var observedAppTitleText: String?
+
+    private var searchServiceThatReceivedRequest: CitySearchServiceMock?
 
     init() {
 
@@ -107,9 +118,9 @@ class StartupModelSteps {
         StartupScreenTestConstants.appTitle
     }
 
-    func model(transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock()) -> StartupModelImp {
+    func modelIsCreated(transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock(), searchService: CitySearchServiceMock = CitySearchServiceMock()) -> StartupModelImp {
 
-        StartupModelImp(timerType: TimerMock.self, transitionCommand: transitionCommand)
+        StartupModelImp(timerType: TimerMock.self, transitionCommand: transitionCommand, searchService: searchService)
     }
 
     func textUpdate() -> ValueUpdate<String> {
@@ -130,6 +141,20 @@ class StartupModelSteps {
         scheduledTimerBlock?(TimerMock())
     }
 
+    func searchService() -> CitySearchServiceMock {
+
+        let searchService = CitySearchServiceMock()
+
+        searchService.citySearchImp = {
+
+            self.searchServiceThatReceivedRequest = searchService
+
+            return CitySearchService.SearchFuture { promise in }
+        }
+
+        return searchService
+    }
+
     func appTitleTextIsUpdated(_ textUpdate: ValueUpdate<String>, toValue expectedText: String) {
 
         XCTAssertEqual(observedAppTitleText, expectedText, "App title text was not updated immediately")
@@ -143,6 +168,11 @@ class StartupModelSteps {
     func transitionCommandIsInvoked(_ transitionCommand: StartupTransitionCommandMock) {
 
         XCTAssertTrue(transitionCommandInvoked, "Transition command was not invoked")
+    }
+
+    func searchServiceResultsWereRequested(_ searchService: CitySearchServiceMock) {
+
+        XCTAssertTrue(searchServiceThatReceivedRequest === searchService, "Search service did not receive initial results request")
     }
 }
 

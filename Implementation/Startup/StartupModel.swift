@@ -18,12 +18,14 @@ class StartupModelImp: StartupModel {
     private let timerType: Timer.Type
     private let transitionCommand: StartupTransitionCommand
 
-    init(timerType: Timer.Type, transitionCommand: StartupTransitionCommand) {
+    init(timerType: Timer.Type, transitionCommand: StartupTransitionCommand, searchService: CitySearchService) {
 
         self.appTitleText = "City Search"
         self.timerType = timerType
 
         self.transitionCommand = transitionCommand
+
+        searchService.citySearch()
     }
 
     func observeAppTitleText(_ update: @escaping ValueUpdate<String>) {
