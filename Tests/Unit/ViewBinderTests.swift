@@ -53,23 +53,23 @@ class ViewBinderSteps {
         ViewBinderImp()
     }
 
-    func bindLabelText(_ binder: ViewBinderImp, _ label: UILabel) -> ValueUpdate<String> {
+    func bindLabelText(_ binder: ViewBinderImp, _ label: UILabel) -> ValueUpdate<NSAttributedString> {
 
         binder.bindText(label: label)
     }
 
-    func text() -> String {
+    func text() -> NSAttributedString {
 
-        "textText"
+        NSAttributedString(string: "textText")
     }
 
-    func updateText(_ textUpdate: ValueUpdate<String>, _ text: String) {
+    func updateText(_ textUpdate: ValueUpdate<NSAttributedString>, _ text: NSAttributedString) {
 
         textUpdate(text)
     }
 
-    func label(_ label: UILabel, textEquals expectedText: String) {
+    func label(_ label: UILabel, textEquals expectedText: NSAttributedString) {
 
-        XCTAssertEqual(label.text, expectedText, "Text update did not update bound label")
+        XCTAssertEqual(label.attributedText, expectedText, "Text update did not update bound label")
     }
 }

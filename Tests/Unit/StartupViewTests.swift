@@ -96,7 +96,7 @@ class StartupViewTests: XCTestCase {
 class StartupViewSteps {
 
     private var labelBoundToModel: UILabel?
-    private var textUpdatePassedToModel: ValueUpdate<String>?
+    private var textUpdatePassedToModel: ValueUpdate<NSAttributedString>?
 
     private var transitionScheduled = false
 
@@ -126,7 +126,7 @@ class StartupViewSteps {
 
         startupModel.observeAppTitleTextImp = { (textUpdate) in
 
-            textUpdate("")
+            textUpdate(NSAttributedString())
         }
 
         startupModel.startTransitionTimerImp = {

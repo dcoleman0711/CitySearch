@@ -9,13 +9,13 @@ typealias ValueUpdate<T> = (_ value: T) -> Void
 
 protocol ViewBinder {
 
-    func bindText(label: UILabel) -> ValueUpdate<String>
+    func bindText(label: UILabel) -> ValueUpdate<NSAttributedString>
 }
 
 class ViewBinderImp: ViewBinder {
 
-    func bindText(label: UILabel) -> ValueUpdate<String> {
+    func bindText(label: UILabel) -> ValueUpdate<NSAttributedString> {
 
-        { (text) in label.text = text }
+        { (text) in label.attributedText = text }
     }
 }
