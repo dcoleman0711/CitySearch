@@ -6,4 +6,6 @@
 import Foundation
 
 class CitySearchResultViewModelMock : CitySearchResultViewModel {
+
+    var titleText: String = ""
 }

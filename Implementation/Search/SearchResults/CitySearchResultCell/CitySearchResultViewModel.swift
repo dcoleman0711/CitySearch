@@ -7,8 +7,10 @@ import Foundation
 
 protocol CitySearchResultViewModel: class {
 
+    var titleText: String { get }
 }
 
 class CitySearchResultViewModelNull : CitySearchResultViewModel {
 
+    let titleText: String = ""
 }
