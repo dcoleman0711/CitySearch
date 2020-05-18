@@ -156,6 +156,15 @@ class SearchResultCellTests: XCTestCase {
 
         then.imageView(imageView, cornerRadiusIs: cornerRadius)
     }
+
+    func testImageViewImageIsAspectFill() {
+
+        let imageView = given.imageView()
+
+        let searchResultCell = when.searchResultCellIsCreated(imageView: imageView)
+
+        then.imageViewDisplayImageWithAspectFill(imageView)
+    }
 }
 
 class SearchResultCellSteps {
@@ -258,6 +267,11 @@ class SearchResultCellSteps {
 
         XCTAssertTrue(imageView.layer.masksToBounds, "Image view must be masked to bounds to have rounded corners")
         XCTAssertEqual(imageView.layer.cornerRadius, cornerRadius, "Image view corner radius is not correct")
+    }
+
+    func imageViewDisplayImageWithAspectFill(_ imageView: UIImageView) {
+
+        XCTAssertEqual(imageView.contentMode, UIView.ContentMode.scaleAspectFill, "Image view does not display image with aspect fill")
     }
 }
 

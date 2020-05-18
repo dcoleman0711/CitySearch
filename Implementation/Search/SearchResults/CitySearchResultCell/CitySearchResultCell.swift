@@ -54,7 +54,7 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
         self.imageView.layer.masksToBounds = true
         self.imageView.layer.cornerRadius = 32.0
-        self.imageView.backgroundColor = .black
+        self.imageView.contentMode = .scaleAspectFill
     }
 
     private func buildLayout() {
