@@ -32,11 +32,21 @@ class CitySearchResultModelTests: XCTestCase {
     func testTitle() {
 
         let titleText = given.titleText()
-        let model = given.model(titleText)
+        let model = given.model(titleText: titleText)
 
         let viewModel = when.viewModelIsCreated(model: model)
 
         then.viewModel(viewModel, textIs: titleText)
+    }
+
+    func testTapCommand() {
+
+        let tapCommand = given.tapCommand()
+        let model = given.model(tapCommand: tapCommand)
+
+        let viewModel = when.viewModelIsCreated(model: model)
+
+        then.viewModel(viewModel, tapCommandIs: tapCommand)
     }
 }
 
@@ -47,11 +57,17 @@ class CitySearchResultModelSteps {
         "Test Title"
     }
 
-    func model(_ titleText: String) -> CitySearchResultModelMock {
+    func tapCommand() -> OpenDetailsCommandMock {
+
+        OpenDetailsCommandMock()
+    }
+
+    func model(titleText: String = "", tapCommand: OpenDetailsCommandMock = OpenDetailsCommandMock()) -> CitySearchResultModelMock {
 
         let model = CitySearchResultModelMock()
 
         model.titleText = titleText
+        model.tapCommand = tapCommand
 
         return model
     }
@@ -64,5 +80,10 @@ class CitySearchResultModelSteps {
     func viewModel(_ viewModel: CitySearchResultViewModelImp, textIs expectedText: String) {
 
         XCTAssertEqual(viewModel.titleData.text, expectedText, "Title text is not correct")
+    }
+
+    func viewModel(_ viewModel: CitySearchResultViewModelImp, tapCommandIs expectedCommand: OpenDetailsCommandMock) {
+
+        XCTAssertTrue(viewModel.tapCommand === expectedCommand, "Tap command is not correct")
     }
 }

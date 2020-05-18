@@ -8,4 +8,5 @@ import Foundation
 class CitySearchResultModelMock : CitySearchResultModel {
 
     var titleText: String = ""
+    var tapCommand: OpenDetailsCommand = OpenDetailsCommandMock()
 }

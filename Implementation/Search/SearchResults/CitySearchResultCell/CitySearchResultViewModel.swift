@@ -14,10 +14,11 @@ protocol CitySearchResultViewModel: class {
 class CitySearchResultViewModelImp : CitySearchResultViewModel {
 
     let titleData: LabelViewModel
-    let tapCommand: OpenDetailsCommand = OpenDetailsCommandImp()
+    let tapCommand: OpenDetailsCommand
 
     init(model: CitySearchResultModel) {
 
         self.titleData = LabelViewModel(text: model.titleText, font: UIFont.systemFont(ofSize: 12.0))
+        self.tapCommand = model.tapCommand
     }
 }

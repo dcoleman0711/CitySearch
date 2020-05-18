@@ -8,11 +8,13 @@ import Foundation
 protocol CitySearchResultModel: class {
 
     var titleText: String { get }
+    var tapCommand: OpenDetailsCommand { get }
 }
 
 class CitySearchResultModelImp: CitySearchResultModel {
 
     let titleText: String
+    let tapCommand: OpenDetailsCommand = OpenDetailsCommandImp()
 
     init(searchResult: CitySearchResult) {
 
