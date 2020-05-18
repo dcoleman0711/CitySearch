@@ -14,6 +14,6 @@ class CitySearchResultModelFactoryImp: CitySearchResultModelFactory {
 
     func resultModel(searchResult: CitySearchResult) -> CitySearchResultModel {
 
-        CitySearchResultModelImp()
+        CitySearchResultModelImp(searchResult: searchResult)
     }
 }

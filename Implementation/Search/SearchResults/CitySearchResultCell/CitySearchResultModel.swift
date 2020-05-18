@@ -12,5 +12,10 @@ protocol CitySearchResultModel: class {
 
 class CitySearchResultModelImp: CitySearchResultModel {
 
-    let titleText: String = ""
+    let titleText: String
+
+    init(searchResult: CitySearchResult) {
+
+        self.titleText = searchResult.name
+    }
 }

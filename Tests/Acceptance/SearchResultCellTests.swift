@@ -32,18 +32,17 @@ class SearchResultCellTests: XCTestCase {
         super.tearDown()
     }
 
-    // In Progress
-//    func testCellTitleLabel() {
-//
-//        let searchResult = given.searchResult()
-//        let titleText = given.titleText(for: searchResult)
-//        let titleLabel = given.titleLabel()
-//        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel)
-//
-//        when.assignResult(searchResult, toCell: searchResultCell)
-//
-//        then.titleLabel(titleLabel, textIs: titleText)
-//    }
+    func testCellTitleLabel() {
+
+        let searchResult = given.searchResult()
+        let titleText = given.titleText(for: searchResult)
+        let titleLabel = given.titleLabel()
+        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel)
+
+        when.assignResult(searchResult, toCell: searchResultCell)
+
+        then.titleLabel(titleLabel, textIs: titleText)
+    }
 }
 
 class SearchResultCellSteps {
