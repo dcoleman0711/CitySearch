@@ -65,7 +65,7 @@ class ViewBinderSteps {
 
     func updateText(_ textUpdate: ValueUpdate<LabelViewModel>, _ text: String) {
 
-        textUpdate(LabelViewModel(text: text, font: UIFont()))
+        textUpdate(LabelViewModel(text: text, font: .systemFont(ofSize: 12.0)))
     }
 
     func label(_ label: UILabel, textEquals expectedText: String) {

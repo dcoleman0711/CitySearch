@@ -16,6 +16,6 @@ class CitySearchResultViewModelImp : CitySearchResultViewModel {
 
     init(model: CitySearchResultModel) {
 
-        self.titleData = LabelViewModel(text: model.titleText, font: UIFont())
+        self.titleData = LabelViewModel(text: model.titleText, font: UIFont.systemFont(ofSize: 12.0))
     }
 }

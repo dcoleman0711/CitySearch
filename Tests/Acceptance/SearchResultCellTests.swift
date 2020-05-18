@@ -45,25 +45,25 @@ class SearchResultCellTests: XCTestCase {
     }
 
     // In Progress
-//    func testTitleCenter() {
-//
-//        let cellSizes = given.cellSizes()
-//
-//        for cellSize in cellSizes {
-//
-//            testTitleCenter(cellSize: cellSize)
-//        }
-//    }
-//
-//    func testTitleCenter(cellSize: CGSize) {
-//
-//        let titleLabel = given.titleLabel()
-//        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel)
-//
-//        when.cellSizeBecomes(searchResultCell, cellSize)
-//
-//        then.titleLabel(titleLabel, isCenteredIn: searchResultCell)
-//    }
+    func testTitleCenter() {
+
+        let cellSizes = given.cellSizes()
+
+        for cellSize in cellSizes {
+
+            testTitleCenter(cellSize: cellSize)
+        }
+    }
+
+    func testTitleCenter(cellSize: CGSize) {
+
+        let titleLabel = given.titleLabel()
+        let searchResultCell = given.searchResultCellIsCreated(titleLabel: titleLabel)
+
+        when.cellSizeBecomes(searchResultCell, cellSize)
+
+        then.titleLabel(titleLabel, isCenteredIn: searchResultCell)
+    }
 
     func testCellTitleLabelText() {
 

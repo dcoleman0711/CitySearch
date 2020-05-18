@@ -35,6 +35,27 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
         self.updateTitle = binder.bindText(label: self.titleLabel)
 
         super.init(frame: CGRect.zero)
+
+        setupView()
+        buildLayout()
+    }
+
+    private func setupView() {
+
+        self.contentView.addSubview(self.titleLabel)
+        self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func buildLayout() {
+
+        // Title Label
+        let titleLabelXConstraint = titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        let titleLabelYConstraint = titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        let titleLabelConstraints = [titleLabelXConstraint, titleLabelYConstraint]
+
+        let constraints = [NSLayoutConstraint]([titleLabelConstraints].joined())
+
+        self.addConstraints(constraints)
     }
 
     required init?(coder: NSCoder) {

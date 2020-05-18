@@ -122,7 +122,7 @@ class StartupViewSteps {
 
         startupViewModel.observeAppTitleImp = { (viewModelUpdate) in
 
-            viewModelUpdate(LabelViewModel(text: "", font: UIFont()))
+            viewModelUpdate(LabelViewModel.emptyData)
         }
 
         return startupViewModel

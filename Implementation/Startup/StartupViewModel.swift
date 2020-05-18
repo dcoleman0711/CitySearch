@@ -18,7 +18,7 @@ class StartupViewModelImp: StartupViewModel {
 
     private var appTitleObserver: ValueUpdate<LabelViewModel>?
 
-    private var appTitle: LabelViewModel = LabelViewModel(text: "", font: UIFont()) {
+    private var appTitle: LabelViewModel = LabelViewModel.emptyData {
 
         didSet { appTitleObserver?(appTitle) }
     }

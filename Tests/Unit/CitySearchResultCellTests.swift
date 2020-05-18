@@ -29,7 +29,7 @@ class CitySearchResultCellTests: XCTestCase {
         super.tearDown()
     }
 
-    func testTitleLabel() {
+    func testTitleLabelData() {
 
         let titleData = given.titleData()
         let viewModel = given.viewModel(titleData)
@@ -40,6 +40,22 @@ class CitySearchResultCellTests: XCTestCase {
         when.assignViewModel(viewModel, toCell: searchResultCell)
 
         then.titleLabel(titleLabel, dataIs: titleData)
+    }
+
+    func testTitleLabelAutoResizeMaskDisabled() {
+
+        let titleLabel = given.titleLabel()
+        let searchResultCell = when.searchResultCellIsCreated(titleLabel: titleLabel)
+
+        then.autoResizeMaskIsDisabled(for: titleLabel)
+    }
+
+    func testTitleLabelConstraints() {
+
+        let titleLabel = given.titleLabel()
+        let searchResultCell = when.searchResultCellIsCreated(titleLabel: titleLabel)
+
+        then.titleLabel(titleLabel, isConstrainedToCenterOf: searchResultCell)
     }
 }
 
@@ -64,7 +80,7 @@ class CitySearchResultCellSteps {
 
     func titleData() -> LabelViewModel {
 
-        LabelViewModel(text: "Test Title", font: UIFont())
+        LabelViewModel(text: "Test Title", font: .systemFont(ofSize: 12.0))
     }
 
     func titleLabel() -> UILabel {
@@ -81,7 +97,7 @@ class CitySearchResultCellSteps {
         return viewModel
     }
 
-    func searchResultCellIsCreated(titleLabel: UILabel, binder: ViewBinderMock) -> CitySearchResultCell {
+    func searchResultCellIsCreated(titleLabel: UILabel, binder: ViewBinderMock = ViewBinderMock()) -> CitySearchResultCell {
 
         CitySearchResultCell(titleLabel: titleLabel, binder: binder)
     }
@@ -94,5 +110,18 @@ class CitySearchResultCellSteps {
     func titleLabel(_ label: UILabel, dataIs expectedData: LabelViewModel) {
 
         XCTAssertEqual(labelBindings[label], expectedData, "Title label text is not correct")
+    }
+
+    func titleLabel(_ titleLabel: UILabel, isConstrainedToCenterOf cell: CitySearchResultCell) {
+
+        let expectedConstraints = [titleLabel.centerXAnchor.constraint(equalTo: cell.centerXAnchor),
+                                   titleLabel.centerYAnchor.constraint(equalTo: cell.centerYAnchor)]
+
+        XCTAssertTrue(expectedConstraints.allSatisfy( { (first) in cell.constraints.contains(where: { (second) in first.isEqualToConstraint(second)}) }), "Title label is not constraint to center of cell")
+    }
+
+    func autoResizeMaskIsDisabled(for view: UIView) {
+
+        XCTAssertFalse(view.translatesAutoresizingMaskIntoConstraints, "Autoresize mask is not disabled")
     }
 }

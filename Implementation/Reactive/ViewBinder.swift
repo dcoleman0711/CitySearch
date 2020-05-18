@@ -9,7 +9,7 @@ typealias ValueUpdate<T> = (_ value: T) -> Void
 
 struct LabelViewModel: Equatable {
 
-    static let emptyData = LabelViewModel(text: "", font: UIFont())
+    static let emptyData = LabelViewModel(text: "", font: .systemFont(ofSize: 12.0))
 
     let text: String
     let font: UIFont
