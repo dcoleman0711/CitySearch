@@ -115,7 +115,7 @@ class SearchResultsSteps {
 
     func searchCellData(for searchResults: CitySearchResults) -> [CitySearchResultModelMock] {
 
-        searchResults.items.map( { resultModelFactory.resultModel(searchResult: $0) as! CitySearchResultModelMock } )
+        searchResults.results.map( { resultModelFactory.resultModel(searchResult: $0) as! CitySearchResultModelMock } )
     }
 
     func searchCellPresentation(for searchModels: [CitySearchResultModelMock]) -> [CitySearchResultViewModelMock] {
@@ -133,7 +133,7 @@ class SearchResultsSteps {
         })
     }
 
-    func createSearchResults(initialData: CitySearchResults = CitySearchResults(items: [])) -> SearchResultsViewImp {
+    func createSearchResults(initialData: CitySearchResults = CitySearchResults(results: [])) -> SearchResultsViewImp {
 
         let model = SearchResultsModelImp(modelFactory: resultModelFactory, resultModels: Observable<[CitySearchResultModel]>([]))
         let viewModel = SearchResultsViewModelImp(model: model, viewModelFactory: resultViewModelFactory)

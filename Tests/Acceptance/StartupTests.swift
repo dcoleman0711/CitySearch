@@ -13,7 +13,7 @@ class StartupTestConstants {
     static let transitionDuration = 1.0
     static let transitionType = UIView.AnimationOptions.transitionFlipFromRight
 
-    static let initialData = CitySearchResults(items: [
+    static let initialData = CitySearchResults(results: [
         CitySearchResult(name: "Test City 1"),
         CitySearchResult(name: "Test City 2"),
         CitySearchResult(name: "Test City 3"),
@@ -224,19 +224,3 @@ class UIViewMock: UIView {
         transitionImp(view, duration, options, animations, completion)
     }
 }
-
-//class URLSessionDataTaskMock: URLSessionDataTask {
-//
-//    override init() {
-//
-//    }
-//}
-//
-//class URLSessionMock: URLSession {
-//
-//    var dataTaskImp: (_ request: URLRequest, _ completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask = { (request, completionHandler) in URLSessionDataTaskMock() }
-//    override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
-//
-//        dataTaskImp(request, completionHandler)
-//    }
-//}

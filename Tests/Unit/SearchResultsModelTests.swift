@@ -123,7 +123,7 @@ class SearchResultsModelSteps {
             }()
         }
 
-        return searchResults.items.map( { resultModelFactory.resultModel(searchResult: $0) as! CitySearchResultModelMock } )
+        return searchResults.results.map( { resultModelFactory.resultModel(searchResult: $0) as! CitySearchResultModelMock } )
     }
 
     func resultsObserver() -> ValueUpdate<[CitySearchResultModel]> {

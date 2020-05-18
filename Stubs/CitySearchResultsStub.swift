@@ -18,6 +18,6 @@ class CitySearchResultsStub {
             return CitySearchResult(name: stubName)
         }
 
-        return CitySearchResults(items: items)
+        return CitySearchResults(results: items)
     }
 }

@@ -107,6 +107,8 @@
 		CE5D9D762472042800A45702 /* SearchResultCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D9D752472042800A45702 /* SearchResultCellTests.swift */; };
 		CE5D9D7A2472C76300A45702 /* TestImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE5D9D792472C76300A45702 /* TestImage.jpg */; };
 		CE5D9D7B2472CC1800A45702 /* TestImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE5D9D792472C76300A45702 /* TestImage.jpg */; };
+		CEEC6DA52473214900DB0785 /* CitySearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEC6DA42473214800DB0785 /* CitySearchServiceTests.swift */; };
+		CEEC6DA72473330900DB0785 /* stubCityResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DA62473330900DB0785 /* stubCityResponse.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,6 +199,8 @@
 		CE5D9D6B24701E1700A45702 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		CE5D9D752472042800A45702 /* SearchResultCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCellTests.swift; sourceTree = "<group>"; };
 		CE5D9D792472C76300A45702 /* TestImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TestImage.jpg; sourceTree = "<group>"; };
+		CEEC6DA42473214800DB0785 /* CitySearchServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySearchServiceTests.swift; sourceTree = "<group>"; };
+		CEEC6DA62473330900DB0785 /* stubCityResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = stubCityResponse.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -298,6 +302,7 @@
 				CC89D0420D5B819E0ECE120C /* StartupViewModelTests.swift */,
 				CC89D3E267AA4415AE7705CF /* CitySearchResultModelTests.swift */,
 				CC89D95BBA52C5C9B852480A /* AppDelegateTests.swift */,
+				CEEC6DA42473214800DB0785 /* CitySearchServiceTests.swift */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 				CE5D9D792472C76300A45702 /* TestImage.jpg */,
 				CE2C62F4246E137100C1D25A /* Info.plist */,
 				CE3967BD246EDBB300478E39 /* TestInfo.plist */,
+				CEEC6DA62473330900DB0785 /* stubCityResponse.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -510,6 +516,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEEC6DA72473330900DB0785 /* stubCityResponse.json in Resources */,
 				CE5D9D7B2472CC1800A45702 /* TestImage.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -559,6 +566,7 @@
 				CC89D00C615108339BCB7F7F /* StartupTests.swift in Sources */,
 				CC89DA15734314FC0D039354 /* StartupViewImp.swift in Sources */,
 				CE5D9D69246F4FA800A45702 /* StartupScreenTests.swift in Sources */,
+				CEEC6DA52473214900DB0785 /* CitySearchServiceTests.swift in Sources */,
 				CC89DE2A6A2C5FA9462711F3 /* StartupViewTests.swift in Sources */,
 				CC89D94633296FC3B6E300C0 /* StartupModelMock.swift in Sources */,
 				CC89DB65A510EAAA2C92E015 /* StartupModel.swift in Sources */,

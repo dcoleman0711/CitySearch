@@ -5,7 +5,7 @@
 
 import Foundation
 
-struct CitySearchResult: Equatable {
+struct CitySearchResult: Codable, Equatable {
 
     let name: String
 }

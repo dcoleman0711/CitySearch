@@ -5,9 +5,9 @@
 
 import Foundation
 
-struct CitySearchResults: Equatable {
+struct CitySearchResults: Codable, Equatable {
 
-    static func emptyResults() -> CitySearchResults { CitySearchResults(items: []) }
+    static func emptyResults() -> CitySearchResults { CitySearchResults(results: []) }
 
-    let items: [CitySearchResult]
+    let results: [CitySearchResult]
 }
