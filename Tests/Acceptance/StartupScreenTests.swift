@@ -131,9 +131,11 @@ class StartupScreenTests: XCTestCase {
     func testTransitionStartsBeforeMaximumInterval() {
 
         let startupTransitionCommand = given.startupTransitionCommand()
-        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand)
+        let searchService = given.searchService()
+        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand, searchService: searchService)
         let maximumTransitionStartInterval = given.maximumTransitionStartInterval()
         let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
+        given.searchServiceHasReturnedInitialResults(searchService)
 
         when.currentTimeIs(startupScreenLoadTime + maximumTransitionStartInterval)
 
@@ -143,13 +145,43 @@ class StartupScreenTests: XCTestCase {
     func testTransitionDoesNotStartBeforeMinimumInterval() {
 
         let startupTransitionCommand = given.startupTransitionCommand()
-        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand)
+        let searchService = given.searchService()
+        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand, searchService: searchService)
         let minimumTransitionStartInterval = given.minimumTransitionStartInterval()
         let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
+        given.searchServiceHasReturnedInitialResults(searchService)
 
         when.currentTimeIs(startupScreenLoadTime + minimumTransitionStartInterval)
 
         then.transitionToCitySearchScreenHasNotStarted()
+    }
+
+    func testTransitionDoesNotStartBeforeResultsAreReady() {
+
+        let startupTransitionCommand = given.startupTransitionCommand()
+        let searchService = given.searchService()
+        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand, searchService: searchService)
+        let maximumTransitionStartInterval = given.maximumTransitionStartInterval()
+        let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
+
+        when.currentTimeIs(startupScreenLoadTime + maximumTransitionStartInterval)
+
+        then.transitionToCitySearchScreenHasNotStarted()
+    }
+
+    func testTransitionStartsWhenResultsAreReady() {
+
+        let startupTransitionCommand = given.startupTransitionCommand()
+        let searchService = given.searchService()
+        let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand, searchService: searchService)
+        let maximumTransitionStartInterval = given.maximumTransitionStartInterval()
+        let resultsReceivedInterval = given.intervalGreaterThan(maximumTransitionStartInterval)
+        let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
+        given.searchService(searchService, returnsResultsAt: startupScreenLoadTime + resultsReceivedInterval)
+
+        when.searchServiceReturnsInitialResults(searchService)
+
+        then.transitionToCitySearchScreenHasStarted()
     }
 }
 
@@ -157,6 +189,10 @@ class StartupScreenSteps {
 
     private let tests: XCTestCase
     private var transitionStarted = false
+
+    private var servicePromise: CitySearchService.SearchFuture.Promise!
+
+    private var resultsReturnedExpectation: XCTestExpectation?
 
     init(_ tests: XCTestCase) {
 
@@ -176,6 +212,15 @@ class StartupScreenSteps {
         tests.wait(for: [expectation], timeout: 30.0)
     }
 
+    func searchServiceReturnsInitialResults(_ searchService: CitySearchServiceMock) {
+
+        let expectation = tests.expectation(description: "Search results returned")
+
+        self.resultsReturnedExpectation = expectation
+
+        tests.wait(for: [expectation], timeout: 30.0)
+    }
+
     func startupTransitionCommand() -> StartupTransitionCommandMock {
 
         let command = StartupTransitionCommandMock()
@@ -188,6 +233,24 @@ class StartupScreenSteps {
         return command
     }
 
+    func searchService() -> CitySearchServiceMock {
+
+        let searchService = CitySearchServiceMock()
+
+        let serviceFuture = CitySearchService.SearchFuture({ promise in
+
+            self.servicePromise = { results in
+
+                promise(results)
+                self.resultsReturnedExpectation?.fulfill()
+            }
+        })
+
+        searchService.citySearchImp = { serviceFuture }
+
+        return searchService
+    }
+
     func maximumTransitionStartInterval() -> TimeInterval {
 
         StartupScreenTestConstants.maximumTransitionStartInterval
@@ -196,6 +259,11 @@ class StartupScreenSteps {
     func minimumTransitionStartInterval() -> TimeInterval {
 
         StartupScreenTestConstants.minimumTransitionStartInterval
+    }
+
+    func intervalGreaterThan(_ interval: TimeInterval) -> TimeInterval {
+
+        interval + 1.0
     }
 
     func startupScreenLoadedAtTime(_ startupScreen: StartupViewImp) -> Date {
@@ -229,13 +297,29 @@ class StartupScreenSteps {
         UIInterfaceOrientationMask.landscape
     }
 
-    func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock()) -> StartupViewImp {
+    func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock(), searchService: CitySearchServiceMock = CitySearchServiceMock()) -> StartupViewImp {
 
         let builder = StartupViewBuilderImp()
         builder.appTitleLabel = appTitleLabel
         builder.transitionCommand = transitionCommand
+        builder.searchService = searchService
 
         return builder.build()
+    }
+
+    func searchServiceHasReturnedInitialResults(_ searchService: CitySearchServiceMock) {
+
+        servicePromise(.success(CitySearchResults.emptyResults()))
+    }
+
+    func searchService(_ searchService: CitySearchServiceMock, returnsResultsAt time: Date) {
+
+        let timeToWait = time.timeIntervalSinceNow
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + timeToWait, execute: {
+
+            self.servicePromise(.success(CitySearchResults.emptyResults()))
+        })
     }
 
     func startupScreenIsShown(_ startupScreen: StartupViewImp) {
