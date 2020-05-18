@@ -3,19 +3,19 @@
 // Copyright (c) 2020 Daniel Coleman. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol CitySearchResultViewModel: class {
 
-    var titleText: String { get }
+    var titleData: LabelViewModel { get }
 }
 
 class CitySearchResultViewModelImp : CitySearchResultViewModel {
 
-    let titleText: String
+    let titleData: LabelViewModel
 
     init(model: CitySearchResultModel) {
 
-        self.titleText = model.titleText
+        self.titleData = LabelViewModel(text: model.titleText, font: UIFont())
     }
 }

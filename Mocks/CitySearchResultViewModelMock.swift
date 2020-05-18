@@ -7,5 +7,5 @@ import Foundation
 
 class CitySearchResultViewModelMock : CitySearchResultViewModel {
 
-    var titleText: String = ""
+    var titleData: LabelViewModel = LabelViewModel.emptyData
 }

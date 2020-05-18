@@ -63,6 +63,6 @@ class CitySearchResultModelSteps {
 
     func viewModel(_ viewModel: CitySearchResultViewModelImp, textIs expectedText: String) {
 
-        XCTAssertEqual(viewModel.titleText, expectedText, "Title text is not correct")
+        XCTAssertEqual(viewModel.titleData.text, expectedText, "Title text is not correct")
     }
 }

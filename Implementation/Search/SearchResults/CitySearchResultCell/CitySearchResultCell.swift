@@ -11,20 +11,28 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
         didSet {
 
-            self.update()
+            guard let viewModel = viewModel else {
+                return
+            }
+
+            self.bindToViewModel(viewModel)
         }
     }
 
     private let titleLabel: UILabel
 
+    private let updateTitle: ValueUpdate<LabelViewModel>
+
     convenience override init(frame: CGRect) {
 
-        self.init(titleLabel: UILabel())
+        self.init(titleLabel: UILabel(), binder: ViewBinderImp())
     }
 
-    init(titleLabel: UILabel) {
+    init(titleLabel: UILabel, binder: ViewBinder) {
 
         self.titleLabel = titleLabel
+
+        self.updateTitle = binder.bindText(label: self.titleLabel)
 
         super.init(frame: CGRect.zero)
     }
@@ -34,8 +42,8 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
         fatalError("No Interface Builder!")
     }
 
-    private func update() {
+    private func bindToViewModel(_ viewModel: CitySearchResultViewModel) {
 
-        self.titleLabel.text = viewModel?.titleText
+        self.updateTitle(viewModel.titleData)
     }
 }

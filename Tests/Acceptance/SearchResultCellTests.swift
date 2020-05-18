@@ -65,7 +65,7 @@ class SearchResultCellSteps {
 
     func searchResultCellIsCreated(titleLabel: UILabel) -> CitySearchResultCell {
 
-        CitySearchResultCell(titleLabel: titleLabel)
+        CitySearchResultCell(titleLabel: titleLabel, binder: ViewBinderImp())
     }
 
     func assignResult(_ result: CitySearchResult, toCell cell: CitySearchResultCell) {
