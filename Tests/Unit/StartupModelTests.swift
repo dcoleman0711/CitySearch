@@ -52,6 +52,7 @@ class StartupModelTests: XCTestCase {
     func testTransitionTimerCallsTransitionCommandIfInitialResultsAreReady() {
 
         let searchService = given.searchService()
+        let initialResults = given.initialResults(from: searchService)
         let transitionCommand = given.transitionCommand()
         let model = given.modelIsCreated(transitionCommand: transitionCommand, searchService: searchService)
         given.transitionIsScheduled(model)
@@ -59,7 +60,7 @@ class StartupModelTests: XCTestCase {
 
         when.transitionTimerFires()
 
-        then.transitionCommandIsInvoked(transitionCommand)
+        then.transitionCommand(transitionCommand, isInvokedWith: initialResults)
     }
 
     func testTransitionTimerDoesNotCallTransitionCommandIfInitialResultsAreNotReady() {
@@ -86,10 +87,12 @@ class StartupModelTests: XCTestCase {
 
 class StartupModelSteps {
 
+    private let initialResults = CitySearchResultsStub.stubResults()
+
     private var serviceFuture: CitySearchService.SearchFuture!
 
     private var scheduledTimerInterval: TimeInterval?
-    private var transitionCommandInvoked = false
+    private var transitionCommandInvocationData: CitySearchResults? = nil
     private var scheduledTimerBlock: ((Timer) -> Void)?
 
     private var observedAppTitleText: String?
@@ -123,9 +126,9 @@ class StartupModelSteps {
 
         let transitionCommand = StartupTransitionCommandMock()
 
-        transitionCommand.invokeImp = {
+        transitionCommand.invokeImp = { initialResults in
 
-            self.transitionCommandInvoked = true
+            self.transitionCommandInvocationData = initialResults
         }
 
         return transitionCommand
@@ -178,9 +181,14 @@ class StartupModelSteps {
         return searchService
     }
 
+    func initialResults(from: CitySearchServiceMock) -> CitySearchResults {
+
+        initialResults
+    }
+
     func searchServiceHasReturnedResults(_ service: CitySearchServiceMock) {
 
-        servicePromise(.success(CitySearchResults.emptyResults()))
+        servicePromise(.success(initialResults))
     }
 
     func appTitleTextIsUpdated(_ textUpdate: ValueUpdate<String>, toValue expectedText: String) {
@@ -193,14 +201,14 @@ class StartupModelSteps {
         XCTAssertEqual(scheduledTimerInterval, expectedInterval)
     }
 
-    func transitionCommandIsInvoked(_ transitionCommand: StartupTransitionCommandMock) {
+    func transitionCommand(_ transitionCommand: StartupTransitionCommandMock, isInvokedWith expectedResults: CitySearchResults) {
 
-        XCTAssertTrue(transitionCommandInvoked, "Transition command was not invoked")
+        XCTAssertEqual(transitionCommandInvocationData, expectedResults, "Transition command was not invoked with correct results")
     }
 
     func transitionCommandIsNotInvoked(_ transitionCommand: StartupTransitionCommandMock) {
 
-        XCTAssertFalse(transitionCommandInvoked, "Transition command was invoked before results are ready")
+        XCTAssertNil(transitionCommandInvocationData, "Transition command was invoked before results are ready")
     }
 
     func searchServiceResultsWereRequested(_ searchService: CitySearchServiceMock) {

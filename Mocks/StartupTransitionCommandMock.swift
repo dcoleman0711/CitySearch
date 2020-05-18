@@ -7,9 +7,9 @@ import Foundation
 
 class StartupTransitionCommandMock: StartupTransitionCommand {
 
-    public var invokeImp: () -> Void = { }
-    func invoke() {
+    public var invokeImp: (_ initialResults: CitySearchResults) -> Void = { initialResults in }
+    func invoke(initialResults: CitySearchResults) {
 
-        invokeImp()
+        invokeImp(initialResults)
     }
 }

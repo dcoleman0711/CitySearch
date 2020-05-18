@@ -132,6 +132,7 @@ class StartupScreenTests: XCTestCase {
 
         let startupTransitionCommand = given.startupTransitionCommand()
         let searchService = given.searchService()
+        let initialResults = given.initialResults(from: searchService)
         let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand, searchService: searchService)
         let maximumTransitionStartInterval = given.maximumTransitionStartInterval()
         let startupScreenLoadTime = given.startupScreenLoadedAtTime(startupScreen)
@@ -139,7 +140,7 @@ class StartupScreenTests: XCTestCase {
 
         when.currentTimeIs(startupScreenLoadTime + maximumTransitionStartInterval)
 
-        then.transitionToCitySearchScreenHasStarted()
+        then.transitionToCitySearchScreenHasStarted(withInitialResults: initialResults)
     }
 
     func testTransitionDoesNotStartBeforeMinimumInterval() {
@@ -173,6 +174,7 @@ class StartupScreenTests: XCTestCase {
 
         let startupTransitionCommand = given.startupTransitionCommand()
         let searchService = given.searchService()
+        let initialResults = given.initialResults(from: searchService)
         let startupScreen = given.startupScreen(transitionCommand: startupTransitionCommand, searchService: searchService)
         let maximumTransitionStartInterval = given.maximumTransitionStartInterval()
         let resultsReceivedInterval = given.intervalGreaterThan(maximumTransitionStartInterval)
@@ -181,14 +183,17 @@ class StartupScreenTests: XCTestCase {
 
         when.searchServiceReturnsInitialResults(searchService)
 
-        then.transitionToCitySearchScreenHasStarted()
+        then.transitionToCitySearchScreenHasStarted(withInitialResults: initialResults)
     }
 }
 
 class StartupScreenSteps {
 
     private let tests: XCTestCase
-    private var transitionStarted = false
+
+    private let initialResults = CitySearchResults.emptyResults()
+
+    private var transitionInvocationResults: CitySearchResults?
 
     private var servicePromise: CitySearchService.SearchFuture.Promise!
 
@@ -225,9 +230,9 @@ class StartupScreenSteps {
 
         let command = StartupTransitionCommandMock()
 
-        command.invokeImp = {
+        command.invokeImp = { initialResults in
 
-            self.transitionStarted = true
+            self.transitionInvocationResults = initialResults
         }
 
         return command
@@ -249,6 +254,11 @@ class StartupScreenSteps {
         searchService.citySearchImp = { serviceFuture }
 
         return searchService
+    }
+
+    func initialResults(from searchService: CitySearchServiceMock) -> CitySearchResults {
+
+        initialResults
     }
 
     func maximumTransitionStartInterval() -> TimeInterval {
@@ -309,7 +319,7 @@ class StartupScreenSteps {
 
     func searchServiceHasReturnedInitialResults(_ searchService: CitySearchServiceMock) {
 
-        servicePromise(.success(CitySearchResults.emptyResults()))
+        servicePromise(.success(initialResults))
     }
 
     func searchService(_ searchService: CitySearchServiceMock, returnsResultsAt time: Date) {
@@ -318,7 +328,7 @@ class StartupScreenSteps {
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + timeToWait, execute: {
 
-            self.servicePromise(.success(CitySearchResults.emptyResults()))
+            self.servicePromise(.success(self.initialResults))
         })
     }
 
@@ -370,13 +380,18 @@ class StartupScreenSteps {
         XCTAssertEqual(appTitleLabel.font, font, "App title font is not correct")
     }
 
-    func transitionToCitySearchScreenHasStarted() {
+    func transitionToCitySearchScreenHasStarted(withInitialResults expectedResults: CitySearchResults) {
 
-        XCTAssertTrue(transitionStarted, "Transition to search screen has not started")
+        guard let invocationResults = transitionInvocationResults else {
+            XCTFail("Transition to search screen has not started with initial results")
+            return
+        }
+
+        XCTAssertEqual(invocationResults, expectedResults, "Transition was started with incorrect results")
     }
 
     func transitionToCitySearchScreenHasNotStarted() {
 
-        XCTAssertFalse(transitionStarted, "Transition to search screen has already started")
+        XCTAssertNil(transitionInvocationResults, "Transition to search screen has already started")
     }
 }

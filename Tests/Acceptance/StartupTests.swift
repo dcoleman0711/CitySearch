@@ -55,6 +55,7 @@ class StartupTests : XCTestCase {
 
     func testTransitionToSearchView() {
 
+        let initialData = given.initialData()
         let startupView = given.startupView()
         let searchView = given.searchView()
         let transitionType = given.transitionType()
@@ -62,7 +63,7 @@ class StartupTests : XCTestCase {
         let app = given.application()
         given.appIsLaunched(app: app)
 
-        when.transitionToSearchViewBegins()
+        when.transitionToSearchViewBegins(with: initialData)
 
         then.transition(ofType: transitionType, isAppliedFrom: startupView, to: searchView, with: duration)
     }
@@ -75,7 +76,7 @@ class StartupTests : XCTestCase {
 //        let app = given.application()
 //        given.appIsLaunched(app: app)
 //
-//        when.transitionToSearchViewBegins()
+//        when.transitionToSearchViewBegins(with: initialData)
 //
 //        then.searchView(searchView, initialDataIs: initialData)
 //    }
@@ -180,9 +181,9 @@ class StartupSteps {
         app.applicationDidFinishLaunching(UIApplication.shared)
     }
 
-    func transitionToSearchViewBegins() {
+    func transitionToSearchViewBegins(with initialResults: CitySearchResults) {
 
-        transitionCommand?.invoke()
+        transitionCommand?.invoke(initialResults: initialResults)
     }
 
     func startupScreenAppearsFullScreen(app: AppDelegate) {

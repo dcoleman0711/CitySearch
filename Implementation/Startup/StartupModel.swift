@@ -43,18 +43,14 @@ class StartupModelImp: StartupModel {
         let subject = PassthroughSubject<Date, Error>()
         self.timerType.scheduledTimer(withTimeInterval: 4.0, repeats: false, block: { timer in subject.send(Date()) })
 
-        let beginTransitionEvents = initialResults.zip(subject).map( { initialResults, fireDate in  initialResults })
+        let beginTransitionEvents = initialResults.zip(subject).map( { initialResults, fireDate in initialResults })
 
+        // Capture the subscriber in the callback to keep it alive
         var subscriber: Cancellable?
         subscriber = beginTransitionEvents.sink(receiveCompletion: { error in }, receiveValue: { initialResults in
 
-            self.fireTransitionTimer(initialResults: CitySearchResults.emptyResults())
+            self.transitionCommand.invoke(initialResults: initialResults)
             subscriber = nil
         })
-    }
-
-    private func fireTransitionTimer(initialResults: CitySearchResults) {
-
-        transitionCommand.invoke()
     }
 }

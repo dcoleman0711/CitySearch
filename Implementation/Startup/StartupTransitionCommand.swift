@@ -7,12 +7,12 @@ import UIKit
 
 protocol StartupTransitionCommand {
 
-    func invoke()
+    func invoke(initialResults: CitySearchResults)
 }
 
 class StartupTransitionCommandNull : StartupTransitionCommand {
 
-    func invoke() {
+    func invoke(initialResults: CitySearchResults) {
 
     }
 }
@@ -30,7 +30,7 @@ class StartupTransitionCommandImp : StartupTransitionCommand {
         self.viewType = viewType
     }
 
-    func invoke() {
+    func invoke(initialResults: CitySearchResults) {
 
         viewType.transition(with: window, duration: 1.0, options: UIView.AnimationOptions.transitionFlipFromRight, animations: { self.window.rootViewController = self.newRoot }, completion: nil)
     }

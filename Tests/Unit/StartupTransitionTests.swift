@@ -137,7 +137,7 @@ class StartupTransitionSteps {
 
     func transitionCommandIsInvoked(_ command: StartupTransitionCommandImp) {
 
-        command.invoke()
+        command.invoke(initialResults: CitySearchResults.emptyResults())
     }
 
     func performTransitionAnimations() {
