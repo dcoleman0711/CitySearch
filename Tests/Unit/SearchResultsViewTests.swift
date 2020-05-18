@@ -28,7 +28,7 @@ class SearchResultsViewTests: XCTestCase {
         super.tearDown()
     }
 
-    func testBindCollectionView() {
+    func testBindCollectionViewCells() {
 
         let collectionView = given.collectionView()
         let viewModel = given.searchResultsViewModel()
@@ -36,7 +36,7 @@ class SearchResultsViewTests: XCTestCase {
 
         let view = when.searchResultsViewCreated(collectionView: collectionView, viewModel: viewModel, binder: binder)
 
-        then.collectionView(collectionView, isBoundTo: viewModel)
+        then.collectionView(collectionView, cellsAreBoundTo: viewModel)
     }
 }
 
@@ -81,7 +81,7 @@ class SearchResultsViewSteps {
         SearchResultsViewImp(collectionView: collectionView, viewModel: viewModel, binder: binder)
     }
 
-    func collectionView(_ collectionView: UICollectionViewMock, isBoundTo: SearchResultsViewModelMock) {
+    func collectionView(_ collectionView: UICollectionViewMock, cellsAreBoundTo: SearchResultsViewModelMock) {
 
         XCTAssertEqual(boundCollectionView, collectionView)
     }

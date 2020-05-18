@@ -34,12 +34,14 @@ class SearchResultsViewModelTests: XCTestCase {
         let viewModel = given.searchResultsViewModelCreated(model: model)
         let resultModels = given.resultModels()
         let resultViewModels = given.resultViewModels(for: resultModels)
+        let cellSize = given.cellSize()
+        let resultsData = given.resultsData(for: resultViewModels, cellSize)
         let observer = given.resultsObserver()
         given.model(model, updatedResultsTo: resultModels)
 
         when.observeSearchResults(viewModel, observer)
 
-        then.observer(observer, isNotifiedWith: resultViewModels)
+        then.observer(observer, isNotifiedWith: resultsData)
     }
 
     func testObserveSearchResultsUpdate() {
@@ -48,12 +50,14 @@ class SearchResultsViewModelTests: XCTestCase {
         let viewModel = given.searchResultsViewModelCreated(model: model)
         let resultModels = given.resultModels()
         let resultViewModels = given.resultViewModels(for: resultModels)
+        let cellSize = given.cellSize()
+        let resultsData = given.resultsData(for: resultViewModels, cellSize)
         let observer = given.resultsObserver()
         given.observeSearchResults(viewModel, observer)
 
         when.model(model, updatedResultsTo: resultModels)
 
-        then.observer(observer, isNotifiedWith: resultViewModels)
+        then.observer(observer, isNotifiedWith: resultsData)
     }
 }
 
@@ -61,7 +65,7 @@ class SearchResultsViewModelSteps {
 
     private let resultViewModelFactory = CitySearchResultViewModelFactoryMock()
 
-    private var valuePassedToObserver: [CitySearchResultViewModel]?
+    private var valuePassedToObserver: [CellData<CitySearchResultViewModel>]?
     private var modelObserver: ValueUpdate<[CitySearchResultModel]>?
 
     func resultViewModels(for resultModels: [CitySearchResultModelMock]) -> [CitySearchResultViewModelMock] {
@@ -81,7 +85,7 @@ class SearchResultsViewModelSteps {
         return resultModels.map( { resultViewModelFactory.resultViewModel(model: $0) as! CitySearchResultViewModelMock } )
     }
 
-    func resultsObserver() -> ValueUpdate<[CitySearchResultViewModel]> {
+    func resultsObserver() -> ValueUpdate<[CellData<CitySearchResultViewModel>]> {
 
         { (value) in
 
@@ -116,13 +120,23 @@ class SearchResultsViewModelSteps {
         (0..<5).map({ _ in CitySearchResultModelMock() })
     }
 
-    func observeSearchResults(_ viewModel: SearchResultsViewModelImp, _ observer: @escaping ValueUpdate<[CitySearchResultViewModel]>) {
+    func cellSize() -> CGSize {
+
+        CGSize(width: 128.0, height: 128.0)
+    }
+
+    func resultsData(for viewModels: [CitySearchResultViewModelMock], _ cellSize: CGSize) -> [CellData<CitySearchResultViewModel>] {
+
+        viewModels.map({ viewModel in CellData<CitySearchResultViewModel>(viewModel: viewModel, size: cellSize) })
+    }
+
+    func observeSearchResults(_ viewModel: SearchResultsViewModelImp, _ observer: @escaping ValueUpdate<[CellData<CitySearchResultViewModel>]>) {
 
         viewModel.observeResultsViewModels(observer)
     }
 
-    func observer(_ observer: ValueUpdate<[CitySearchResultViewModel]>, isNotifiedWith expectedResults: [CitySearchResultViewModelMock]) {
+    func observer(_ observer: ValueUpdate<[CellData<CitySearchResultViewModel>]>, isNotifiedWith expectedResults: [CellData<CitySearchResultViewModel>]) {
 
-        XCTAssertTrue(valuePassedToObserver?.elementsEqual(expectedResults) { (firstViewModel, secondViewModel) in firstViewModel === secondViewModel } ?? false, "Observer was not notified of correct results")
+        XCTAssertTrue(valuePassedToObserver?.elementsEqual(expectedResults) { first, second in first.viewModel === second.viewModel && first.size == second.size } ?? false, "Observer was not notified of correct results")
     }
 }

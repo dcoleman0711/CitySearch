@@ -3,13 +3,13 @@
 // Copyright (c) 2020 Daniel Coleman. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol SearchResultsViewModel {
 
     var model: SearchResultsModel { get }
 
-    func observeResultsViewModels(_ observer: @escaping ValueUpdate<[CitySearchResultViewModel]>)
+    func observeResultsViewModels(_ observer: @escaping ValueUpdate<[CellData<CitySearchResultViewModel>]>)
 }
 
 class SearchResultsViewModelImp: SearchResultsViewModel {
@@ -18,12 +18,12 @@ class SearchResultsViewModelImp: SearchResultsViewModel {
 
     private let viewModelFactory: CitySearchResultViewModelFactory
 
-    private var resultViewModels: [CitySearchResultViewModel] = [] {
+    private var resultsData: [CellData<CitySearchResultViewModel>] = [] {
 
-        didSet { resultsObserver?(resultViewModels) }
+        didSet { resultsObserver?(resultsData) }
     }
 
-    private var resultsObserver: ValueUpdate<[CitySearchResultViewModel]>?
+    private var resultsObserver: ValueUpdate<[CellData<CitySearchResultViewModel>]>?
 
     init(model: SearchResultsModel, viewModelFactory: CitySearchResultViewModelFactory) {
 
@@ -33,15 +33,20 @@ class SearchResultsViewModelImp: SearchResultsViewModel {
         self.model.observeResultsModels(SearchResultsViewModelImp.resultsModelsUpdated(self))
     }
 
-    func observeResultsViewModels(_ observer: @escaping ValueUpdate<[CitySearchResultViewModel]>) {
+    func observeResultsViewModels(_ observer: @escaping ValueUpdate<[CellData<CitySearchResultViewModel>]>) {
 
         self.resultsObserver = observer
 
-        observer(resultViewModels)
+        observer(resultsData)
     }
 
     private func resultsModelsUpdated(models: [CitySearchResultModel]) {
 
-        resultViewModels = models.map({ self.viewModelFactory.resultViewModel(model: $0) })
+        resultsData = models.map({ CellData<CitySearchResultViewModel>(viewModel: self.viewModelFactory.resultViewModel(model: $0), size: cellSize()) })
+    }
+
+    private func cellSize() -> CGSize {
+
+        CGSize(width: 128.0, height: 128.0)
     }
 }

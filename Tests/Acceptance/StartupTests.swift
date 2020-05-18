@@ -85,7 +85,7 @@ class StartupSteps {
     private var startupViewStub = StartupViewBuilderImp().build()
 
     private let searchViewFactory = SearchViewFactoryMock()
-    private let searchViewStub = SearchViewImp(initialData: CitySearchResults.emptyResults())
+    private let searchViewStub = SearchViewFactoryImp().searchView(initialData: CitySearchResults.emptyResults())
 
     private let transitionCommandFactory = StartupTransitionCommandFactoryMock()
     private var transitionCommand: StartupTransitionCommand?

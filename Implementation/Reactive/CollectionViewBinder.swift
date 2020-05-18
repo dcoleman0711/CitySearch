@@ -7,9 +7,15 @@ import UIKit
 
 struct BindingCellReuseId { static let reuseId = "BindingCell " }
 
+struct CellData<ViewModel> {
+
+    let viewModel: ViewModel
+    let size: CGSize
+}
+
 class CollectionViewBinder<ViewModel, CellType: MVVMCollectionViewCell<ViewModel>> {
 
-    func bindCells(collectionView: UICollectionView) -> ValueUpdate<[ViewModel]> {
+    func bindCells(collectionView: UICollectionView) -> ValueUpdate<[CellData<ViewModel>]> {
 
         fatalError("CollectionViewBinder is abstract.  Subclasses must override bindCells")
     }
@@ -17,16 +23,20 @@ class CollectionViewBinder<ViewModel, CellType: MVVMCollectionViewCell<ViewModel
 
 class CollectionViewBinderImp<ViewModel, CellType: MVVMCollectionViewCell<ViewModel>>: CollectionViewBinder<ViewModel, CellType> {
 
-    override func bindCells(collectionView: UICollectionView) -> ValueUpdate<[ViewModel]> {
+    override func bindCells(collectionView: UICollectionView) -> ValueUpdate<[CellData<ViewModel>]> {
 
         collectionView.register(CellType.self, forCellWithReuseIdentifier: BindingCellReuseId.reuseId)
 
         let dataSource = BindingDataSource<ViewModel>()
         collectionView.dataSource = dataSource
 
+        let delegate = BindingDelegate<ViewModel>()
+        collectionView.delegate = delegate
+
         return { (viewModels) in
 
-            dataSource.viewModels = viewModels
+            dataSource.cellData = viewModels
+            delegate.cellData = viewModels
             collectionView.reloadData()
         }
     }
@@ -34,11 +44,11 @@ class CollectionViewBinderImp<ViewModel, CellType: MVVMCollectionViewCell<ViewMo
 
 class BindingDataSource<ViewModel>: NSObject, UICollectionViewDataSource {
 
-    var viewModels: [ViewModel] = []
+    var cellData: [CellData<ViewModel>] = []
 
     func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { viewModels.count }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { cellData.count }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
@@ -46,8 +56,20 @@ class BindingDataSource<ViewModel>: NSObject, UICollectionViewDataSource {
             fatalError("Registered cell must be a subclass of MVVMCollectionViewCell with the matching ViewModel type")
         }
 
-        cell.viewModel = viewModels[indexPath.item]
+        cell.viewModel = cellData[indexPath.item].viewModel
 
         return cell
+    }
+}
+
+class BindingDelegate<ViewModel>: NSObject, UICollectionViewDelegateFlowLayout {
+
+    var cellData: [CellData<ViewModel>] = []
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        if cellData.isEmpty { return CGSize.zero }
+
+        return cellData[indexPath.item].size
     }
 }

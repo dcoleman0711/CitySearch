@@ -43,7 +43,7 @@ class SearchResultsTests: XCTestCase {
         then.searchResultsViewHasHorizontallyScrollingFlowLayout(searchResultsView)
     }
 
-    func testInitialSearchResultsDisplayed() {
+    func testInitialSearchResultsData() {
 
         let searchResults = given.searchResults()
         let searchModels = given.searchCellData(for: searchResults)
@@ -53,6 +53,16 @@ class SearchResultsTests: XCTestCase {
         let searchView = when.createSearchResults(initialData: searchResults)
 
         then.searchResultsCells(searchResultCells, areDisplayedIn: searchView)
+    }
+    
+    func testInitialSearchResultsSizes() {
+
+        let searchResults = given.searchResults()
+        let expectedCellSize = given.searchResultCellSize()
+        
+        let searchView = when.createSearchResults(initialData: searchResults)
+
+        then.displayedCells(in: searchView, allHaveSize: expectedCellSize)
     }
 }
 
@@ -96,6 +106,11 @@ class SearchResultsSteps {
     func searchResults() -> CitySearchResults {
 
         CitySearchResultsStub.stubResults()
+    }
+
+    func searchResultCellSize() -> CGSize {
+
+        CGSize(width: 128.0, height: 128.0)
     }
 
     func searchCellData(for searchResults: CitySearchResults) -> [CitySearchResultModelMock] {
@@ -159,6 +174,13 @@ class SearchResultsSteps {
     func searchResultsViewHasHorizontallyScrollingFlowLayout(_ searchResultsView: SearchResultsViewImp) {
 
         XCTAssertEqual((collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection, UICollectionView.ScrollDirection.horizontal, "Search results does not have a horizontally scrolling flow layout")
+    }
+
+    func displayedCells(in: SearchResultsViewImp, allHaveSize expectedSize: CGSize) {
+
+        let size = (collectionView.delegate as? UICollectionViewDelegateFlowLayout)?.collectionView?(self.collectionView, layout: self.collectionView.collectionViewLayout, sizeForItemAt: IndexPath(item: 0, section: 0))
+
+        XCTAssertEqual(size, expectedSize, "Displayed cells do not have the correct size")
     }
 }
 
