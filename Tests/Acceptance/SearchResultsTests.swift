@@ -64,6 +64,19 @@ class SearchResultsTests: XCTestCase {
 
         then.displayedCells(in: searchView, allHaveSize: expectedCellSize)
     }
+
+    // In Progress
+//    func testTapCellToOpenDetails() {
+//
+//        let searchResults = given.searchResults()
+//        let searchResult = given.searchResult(in: searchResults)
+//        let openDetailsCommand = given.openDetailsCommand(for: searchResult)
+//        let searchView = given.createSearchResults(initialData: searchResults)
+//
+//        when.cellIsTapped(displaying: searchResult, in: searchView)
+//
+//        then.openDetailsCommandIsInvoked(openDetailsCommand)
+//    }
 }
 
 class SearchResultsSteps {
@@ -73,7 +86,11 @@ class SearchResultsSteps {
     private let resultModelFactory = CitySearchResultModelFactoryMock()
     private let resultViewModelFactory = CitySearchResultViewModelFactoryMock()
 
+    private let openDetailsCommandFactory = OpenDetailsCommandFactoryMock()
+
     private var displayedResults: [[CitySearchResultCell]]?
+
+    private var invokedOpenDetailsCommand: OpenDetailsCommandMock?
 
     init() {
 
@@ -135,7 +152,7 @@ class SearchResultsSteps {
 
     func createSearchResults(initialData: CitySearchResults = CitySearchResults(results: [])) -> SearchResultsViewImp {
 
-        let model = SearchResultsModelImp(modelFactory: resultModelFactory, resultModels: Observable<[CitySearchResultModel]>([]))
+        let model = SearchResultsModelImp(modelFactory: resultModelFactory, openDetailsCommandFactory: openDetailsCommandFactory, resultModels: Observable<[CitySearchResultModel]>([]))
         let viewModel = SearchResultsViewModelImp(model: model, viewModelFactory: resultViewModelFactory)
         model.setResults(initialData)
 
@@ -152,6 +169,50 @@ class SearchResultsSteps {
         searchView.view.frame = CGRect(origin: CGPoint.zero, size: size)
         searchView.view.setNeedsLayout()
         searchView.view.layoutIfNeeded()
+    }
+
+    func searchResult(in searchResults: CitySearchResults) -> CitySearchResult {
+
+        searchResults.results[searchResults.results.count / 2]
+    }
+
+    func openDetailsCommand(for searchResult: CitySearchResult) -> OpenDetailsCommandMock {
+
+        let command = OpenDetailsCommandMock()
+
+        command.invokeImp = {
+
+            self.invokedOpenDetailsCommand = command
+        }
+
+        openDetailsCommandFactory.openDetailsCommandImp = { result in
+
+            if result == searchResult { return command }
+
+            return OpenDetailsCommandMock()
+        }
+
+        return command
+    }
+
+    func cellIsTapped(displaying result: CitySearchResult, in searchView: SearchResultsViewImp) {
+
+        let model = resultModelFactory.resultModel(searchResult: result)
+        let viewModel = resultViewModelFactory.resultViewModel(model: model)
+
+        let indexPath = (displayedResults?.enumerated().compactMap { sectionIndex, section -> IndexPath? in
+
+            section.enumerated().compactMap { rowIndex, cell -> IndexPath? in
+
+                guard cell.viewModel === viewModel else { return nil }
+
+                return IndexPath(item: rowIndex, section: sectionIndex)
+
+            }.first
+
+        }.first)!
+
+        collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
     }
 
     func searchResultsCells(_ expectedCells: [CitySearchResultCell], areDisplayedIn searchView: SearchResultsViewImp) {
@@ -181,6 +242,11 @@ class SearchResultsSteps {
         let size = (collectionView.delegate as? UICollectionViewDelegateFlowLayout)?.collectionView?(self.collectionView, layout: self.collectionView.collectionViewLayout, sizeForItemAt: IndexPath(item: 0, section: 0))
 
         XCTAssertEqual(size, expectedSize, "Displayed cells do not have the correct size")
+    }
+
+    func openDetailsCommandIsInvoked(_ detailsCommand: OpenDetailsCommandMock) {
+
+        XCTAssertTrue(invokedOpenDetailsCommand === detailsCommand, "Open Details command was not invoked")
     }
 }
 

@@ -136,7 +136,7 @@ class SearchResultsModelSteps {
 
     func searchResultsModelCreated(resultModels: ObservableMock<[CitySearchResultModel]>) -> SearchResultsModelImp {
 
-        SearchResultsModelImp(modelFactory: resultModelFactory, resultModels: resultModels)
+        SearchResultsModelImp(modelFactory: resultModelFactory, openDetailsCommandFactory: OpenDetailsCommandFactoryMock(), resultModels: resultModels)
     }
 
     func searchResultsModel(_ searchResultsModel: SearchResultsModelImp, dataIsSetTo searchResults: CitySearchResults) {
