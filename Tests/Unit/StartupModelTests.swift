@@ -49,11 +49,13 @@ class StartupModelTests: XCTestCase {
         then.timerIsScheduled(withInterval: transitionStartInterval)
     }
 
-    func testTransitionTimerCallsTransitionCommand() {
+    func testTransitionTimerCallsTransitionCommandIfInitialResultsAreReady() {
 
+        let searchService = given.searchService()
         let transitionCommand = given.transitionCommand()
         let model = given.modelIsCreated(transitionCommand: transitionCommand)
         given.transitionIsScheduled(model)
+        given.searchServiceHasReturnedResults(searchService)
 
         when.transitionTimerFires()
 
@@ -71,6 +73,8 @@ class StartupModelTests: XCTestCase {
 }
 
 class StartupModelSteps {
+
+    private var serviceFuture: CitySearchService.SearchFuture!
 
     private var scheduledTimerInterval: TimeInterval?
     private var transitionCommandInvoked = false
@@ -149,10 +153,18 @@ class StartupModelSteps {
 
             self.searchServiceThatReceivedRequest = searchService
 
-            return CitySearchService.SearchFuture { promise in }
+            return self.serviceFuture
         }
 
         return searchService
+    }
+
+    func searchServiceHasReturnedResults(_ service: CitySearchServiceMock) {
+
+        serviceFuture = CitySearchService.SearchFuture({ promise in
+
+            promise(.success(CitySearchResults.emptyResults()))
+        })
     }
 
     func appTitleTextIsUpdated(_ textUpdate: ValueUpdate<String>, toValue expectedText: String) {
