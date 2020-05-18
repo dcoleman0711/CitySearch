@@ -36,6 +36,13 @@ class SearchResultsTests: XCTestCase {
         then.searchResultsViewHasClearBackground(searchResultsView)
     }
 
+    func testFlowLayout() {
+
+        let searchResultsView = when.createSearchResults()
+
+        then.searchResultsViewHasHorizontallyScrollingFlowLayout(searchResultsView)
+    }
+
     func testInitialSearchResultsDisplayed() {
 
         let searchResults = given.searchResults()
@@ -147,6 +154,11 @@ class SearchResultsSteps {
     func searchResultsViewHasClearBackground(_ searchView: SearchResultsViewImp) {
 
         XCTAssertEqual(searchView.view.backgroundColor, UIColor.clear, "Search Results background is not clear")
+    }
+
+    func searchResultsViewHasHorizontallyScrollingFlowLayout(_ searchResultsView: SearchResultsViewImp) {
+
+        XCTAssertEqual((collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection, UICollectionView.ScrollDirection.horizontal, "Search results does not have a horizontally scrolling flow layout")
     }
 }
 
