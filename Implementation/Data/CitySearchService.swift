@@ -5,7 +5,7 @@
 
 import Combine
 
-protocol CitySearchService {
+protocol CitySearchService: class {
 
     typealias SearchFuture = Future<CitySearchResults, Error>
 

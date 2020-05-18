@@ -7,10 +7,11 @@ import Foundation
 
 class StartupViewBuilderMock: StartupViewBuilder {
 
-    var transitionCommandSetter: (StartupTransitionCommand) -> Void = { (transitionCommand) in }
-    var transitionCommand: StartupTransitionCommand { get { StartupTransitionCommandMock() } set { transitionCommandSetter(newValue) }}
+    var transitionCommand: StartupTransitionCommand = StartupTransitionCommandMock()
+    var searchService: CitySearchService = CitySearchServiceMock()
 
     var buildImp: () -> StartupViewImp = { StartupViewBuilderImp().build() }
+
     func build() -> StartupViewImp {
 
         buildImp()

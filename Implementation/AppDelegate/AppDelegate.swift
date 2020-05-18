@@ -29,6 +29,8 @@ class AppDelegate : NSObject, UIApplicationDelegate {
         self.transitionCommandFactory = transitionCommandFactory
 
         super.init()
+
+        self.startupViewBuilder.searchService = searchService
     }
 
     func applicationDidFinishLaunching(_ application: UIApplication) {
