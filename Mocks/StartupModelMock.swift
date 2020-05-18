@@ -7,8 +7,8 @@ import Foundation
 
 class StartupModelMock : StartupModel {
 
-    var observeAppTitleTextImp: (_ update: @escaping ValueUpdate<NSAttributedString>) -> Void = { (update) in }
-    func observeAppTitleText(_ update: @escaping ValueUpdate<NSAttributedString>) {
+    var observeAppTitleTextImp: (_ update: @escaping ValueUpdate<String>) -> Void = { (update) in }
+    func observeAppTitleText(_ update: @escaping ValueUpdate<String>) {
 
         observeAppTitleTextImp(update)
     }

@@ -14,13 +14,13 @@ class StartupViewImp : UIViewController, StartupView {
 
     private let appTitleLabel: UILabel
 
-    private let model: StartupModel
+    private let viewModel: StartupViewModel
     private let binder: ViewBinder
 
-    init(appTitleLabel: UILabel, model: StartupModel, binder: ViewBinder) {
+    init(appTitleLabel: UILabel, viewModel: StartupViewModel, binder: ViewBinder) {
 
         self.appTitleLabel = appTitleLabel
-        self.model = model
+        self.viewModel = viewModel
         self.binder = binder
 
         super.init(nibName: nil, bundle: nil)
@@ -40,7 +40,7 @@ class StartupViewImp : UIViewController, StartupView {
         setupView()
         buildLayout()
 
-        model.startTransitionTimer()
+        viewModel.model.startTransitionTimer()
     }
 
     private func setupView() {
@@ -48,8 +48,6 @@ class StartupViewImp : UIViewController, StartupView {
         view.backgroundColor = UIColor.white
 
         view.addSubview(appTitleLabel)
-
-        appTitleLabel.font = UIFont.systemFont(ofSize: 48.0)
     }
 
     private func buildLayout() {
@@ -67,6 +65,6 @@ class StartupViewImp : UIViewController, StartupView {
 
     private func bindViews() {
 
-        model.observeAppTitleText(binder.bindText(label: appTitleLabel))
+        viewModel.observeAppTitle(binder.bindText(label: appTitleLabel))
     }
 }

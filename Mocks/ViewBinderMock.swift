@@ -7,8 +7,8 @@ import UIKit
 
 class ViewBinderMock : ViewBinder {
 
-    var bindLabelTextImp: (_ label: UILabel) -> ValueUpdate<NSAttributedString> = { (label) in { (text) in } }
-    func bindText(label: UILabel) -> ValueUpdate<NSAttributedString> {
+    var bindLabelTextImp: (_ label: UILabel) -> ValueUpdate<LabelViewModel> = { (label) in { (text) in } }
+    func bindText(label: UILabel) -> ValueUpdate<LabelViewModel> {
 
         bindLabelTextImp(label)
     }

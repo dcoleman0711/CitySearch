@@ -7,15 +7,25 @@ import UIKit
 
 typealias ValueUpdate<T> = (_ value: T) -> Void
 
+struct LabelViewModel {
+
+    let text: String
+    let font: UIFont
+}
+
 protocol ViewBinder {
 
-    func bindText(label: UILabel) -> ValueUpdate<NSAttributedString>
+    func bindText(label: UILabel) -> ValueUpdate<LabelViewModel>
 }
 
 class ViewBinderImp: ViewBinder {
 
-    func bindText(label: UILabel) -> ValueUpdate<NSAttributedString> {
+    func bindText(label: UILabel) -> ValueUpdate<LabelViewModel> {
 
-        { (text) in label.attributedText = text }
+        { (viewModel) in
+
+            label.text = viewModel.text
+            label.font = viewModel.font
+        }
     }
 }

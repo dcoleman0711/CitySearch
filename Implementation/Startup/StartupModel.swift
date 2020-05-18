@@ -7,26 +7,26 @@ import Foundation
 
 protocol StartupModel {
 
-    func observeAppTitleText(_ update: @escaping ValueUpdate<NSAttributedString>)
+    func observeAppTitleText(_ update: @escaping ValueUpdate<String>)
 
     func startTransitionTimer()
 }
 
 class StartupModelImp: StartupModel {
 
-    private let appTitleText: NSAttributedString
+    private let appTitleText: String
     private let timerType: Timer.Type
     private let transitionCommand: StartupTransitionCommand
 
     init(timerType: Timer.Type, transitionCommand: StartupTransitionCommand) {
 
-        self.appTitleText = NSAttributedString(string: "City Search")
+        self.appTitleText = "City Search"
         self.timerType = timerType
 
         self.transitionCommand = transitionCommand
     }
 
-    func observeAppTitleText(_ update: @escaping ValueUpdate<NSAttributedString>) {
+    func observeAppTitleText(_ update: @escaping ValueUpdate<String>) {
 
         update(appTitleText)
     }

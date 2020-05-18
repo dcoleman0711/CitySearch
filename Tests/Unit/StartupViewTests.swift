@@ -59,27 +59,16 @@ class StartupViewTests: XCTestCase {
         then.startupView(startupView, hasConstraints: expectedConstraints)
     }
 
-    func testAppTitleLabelFont() {
+    func testAppTitleLabelIsBoundToViewModel() {
 
         let appTitleLabel = given.appTitleLabel()
-        let startupView = given.startupView(appTitleLabel: appTitleLabel)
-        let expectedFont = given.appTitleFont(appTitleLabel)
-
-        when.startupViewIsLoaded(startupView)
-
-        then.appTitleLabel(appTitleLabel, fontIs: expectedFont)
-    }
-
-    func testAppTitleLabelIsBoundToModel() {
-
-        let appTitleLabel = given.appTitleLabel()
-        let startupModel = given.startupModel()
+        let startupViewModel = given.startupViewModel()
         let binder = given.binder()
-        let startupView = given.startupView(appTitleLabel: appTitleLabel, startupModel: startupModel, binder: binder)
+        let startupView = given.startupView(appTitleLabel: appTitleLabel, startupViewModel: startupViewModel, binder: binder)
 
         when.startupViewIsLoaded(startupView)
 
-        then.appTitleLabel(appTitleLabel, isBoundToModel: startupModel)
+        then.appTitleLabel(appTitleLabel, isBoundToViewModel: startupViewModel)
     }
 
     func testTransitionIsScheduled() {
@@ -96,14 +85,9 @@ class StartupViewTests: XCTestCase {
 class StartupViewSteps {
 
     private var labelBoundToModel: UILabel?
-    private var textUpdatePassedToModel: ValueUpdate<NSAttributedString>?
+    private var textUpdatePassedToViewModel: ValueUpdate<LabelViewModel>?
 
     private var transitionScheduled = false
-
-    func appTitleFont(_ label: UILabel) -> UIFont {
-
-        StartupScreenTestConstants.appTitleFont
-    }
 
     func binder() -> ViewBinderMock {
 
@@ -124,11 +108,6 @@ class StartupViewSteps {
 
         let startupModel = StartupModelMock()
 
-        startupModel.observeAppTitleTextImp = { (textUpdate) in
-
-            textUpdate(NSAttributedString())
-        }
-
         startupModel.startTransitionTimerImp = {
 
             self.transitionScheduled = true
@@ -137,15 +116,29 @@ class StartupViewSteps {
         return startupModel
     }
 
+    func startupViewModel() -> StartupViewModelMock {
+
+        let startupViewModel = StartupViewModelMock()
+
+        startupViewModel.observeAppTitleImp = { (viewModelUpdate) in
+
+            viewModelUpdate(LabelViewModel(text: "", font: UIFont()))
+        }
+
+        return startupViewModel
+    }
+
     func constraintsForCenter(_ appTitleLabel: UILabel, equalTo startupView: StartupViewImp) -> [NSLayoutConstraint] {
 
         [appTitleLabel.centerXAnchor.constraint(equalTo: startupView.view.centerXAnchor),
          appTitleLabel.centerYAnchor.constraint(equalTo: startupView.view.centerYAnchor)]
     }
 
-    func startupView(appTitleLabel: UILabel = UILabel(), startupModel: StartupModelMock = StartupModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> StartupViewImp {
+    func startupView(appTitleLabel: UILabel = UILabel(), startupModel: StartupModelMock = StartupModelMock(), startupViewModel: StartupViewModelMock = StartupViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> StartupViewImp {
 
-        StartupViewImp(appTitleLabel: appTitleLabel, model: startupModel, binder: binder)
+        startupViewModel.model = startupModel
+
+        return StartupViewImp(appTitleLabel: appTitleLabel, viewModel: startupViewModel, binder: binder)
     }
 
     func appTitleLabel() -> UILabel {
@@ -173,14 +166,9 @@ class StartupViewSteps {
         XCTAssertTrue(startupView.view.constraints.contains { constraint in expectedConstraints.contains { expectedConstraint in constraint.isEqualToConstraint(expectedConstraint) } }, "Startup view does not contain expected constraints")
     }
 
-    func appTitleLabel(_ appTitleLabel: UILabel, isBoundToModel model: StartupModelMock) {
+    func appTitleLabel(_ appTitleLabel: UILabel, isBoundToViewModel model: StartupViewModelMock) {
 
         XCTAssertEqual(labelBoundToModel, appTitleLabel, "App title text is not bound to model")
-    }
-
-    func appTitleLabel(_ appTitleLabel: UILabel, fontIs font: UIFont) {
-
-        XCTAssertEqual(appTitleLabel.font, font, "App title font is not correct")
     }
 
     func transitionIsScheduled(_ startupModel: StartupModelMock) {

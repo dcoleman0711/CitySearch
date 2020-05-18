@@ -67,7 +67,7 @@ class StartupModelSteps {
     private var transitionCommandInvoked = false
     private var scheduledTimerBlock: ((Timer) -> Void)?
 
-    private var observedAppTitleText: NSAttributedString?
+    private var observedAppTitleText: String?
 
     init() {
 
@@ -112,7 +112,7 @@ class StartupModelSteps {
         StartupModelImp(timerType: TimerMock.self, transitionCommand: transitionCommand)
     }
 
-    func textUpdate() -> ValueUpdate<NSAttributedString> {
+    func textUpdate() -> ValueUpdate<String> {
 
         { (text) in
 
@@ -120,7 +120,7 @@ class StartupModelSteps {
         }
     }
 
-    func observerAppTitleText(_ model: StartupModelImp, _ textUpdate: @escaping ValueUpdate<NSAttributedString>) {
+    func observerAppTitleText(_ model: StartupModelImp, _ textUpdate: @escaping ValueUpdate<String>) {
 
         model.observeAppTitleText(textUpdate)
     }
@@ -130,9 +130,9 @@ class StartupModelSteps {
         scheduledTimerBlock?(TimerMock())
     }
 
-    func appTitleTextIsUpdated(_ textUpdate: ValueUpdate<NSAttributedString>, toValue expectedText: String) {
+    func appTitleTextIsUpdated(_ textUpdate: ValueUpdate<String>, toValue expectedText: String) {
 
-        XCTAssertEqual(observedAppTitleText?.string, expectedText, "App title text was not updated immediately")
+        XCTAssertEqual(observedAppTitleText, expectedText, "App title text was not updated immediately")
     }
 
     func timerIsScheduled(withInterval expectedInterval: TimeInterval) {
