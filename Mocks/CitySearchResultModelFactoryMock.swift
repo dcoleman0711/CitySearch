@@ -7,9 +7,9 @@ import Foundation
 
 class CitySearchResultModelFactoryMock : CitySearchResultModelFactory {
 
-    public var resultModelImp: (_ searchResult: CitySearchResult) -> CitySearchResultModel = { (searchResult) in CitySearchResultModelMock() }
-    func resultModel(searchResult: CitySearchResult) -> CitySearchResultModel {
+    public var resultModelImp: (_ searchResult: CitySearchResult, _ tapCommandFactory: OpenDetailsCommandFactory) -> CitySearchResultModel = { (searchResult, tapCommandFactory) in CitySearchResultModelMock() }
+    func resultModel(searchResult: CitySearchResult, tapCommandFactory: OpenDetailsCommandFactory) -> CitySearchResultModel {
 
-        resultModelImp(searchResult)
+        resultModelImp(searchResult, tapCommandFactory)
     }
 }

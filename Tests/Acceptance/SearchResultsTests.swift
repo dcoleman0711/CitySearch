@@ -95,7 +95,7 @@ class SearchResultsSteps {
     init() {
 
         var modelsMap: [String : CitySearchResultModelMock] = [:]
-        resultModelFactory.resultModelImp = { (searchResult) in
+        resultModelFactory.resultModelImp = { (searchResult, tapCommandFactory) in
 
             modelsMap[searchResult.name] ?? {
 
@@ -132,7 +132,7 @@ class SearchResultsSteps {
 
     func searchCellData(for searchResults: CitySearchResults) -> [CitySearchResultModelMock] {
 
-        searchResults.results.map( { resultModelFactory.resultModel(searchResult: $0) as! CitySearchResultModelMock } )
+        searchResults.results.map( { resultModelFactory.resultModel(searchResult: $0, tapCommandFactory: OpenDetailsCommandFactoryMock()) as! CitySearchResultModelMock } )
     }
 
     func searchCellPresentation(for searchModels: [CitySearchResultModelMock]) -> [CitySearchResultViewModelMock] {
@@ -197,7 +197,7 @@ class SearchResultsSteps {
 
     func cellIsTapped(displaying result: CitySearchResult, in searchView: SearchResultsViewImp) {
 
-        let model = resultModelFactory.resultModel(searchResult: result)
+        let model = resultModelFactory.resultModel(searchResult: result, tapCommandFactory: OpenDetailsCommandFactoryMock())
         let viewModel = resultViewModelFactory.resultViewModel(model: model)
 
         let indexPath = (displayedResults?.enumerated().compactMap { sectionIndex, section -> IndexPath? in

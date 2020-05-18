@@ -113,7 +113,7 @@ class SearchResultsModelSteps {
     func models(for searchResults: CitySearchResults) -> [CitySearchResultModelMock] {
 
         var modelsMap: [String : CitySearchResultModelMock] = [:]
-        resultModelFactory.resultModelImp = { (searchResult) in
+        resultModelFactory.resultModelImp = { (searchResult, tapCommandFactory) in
 
             modelsMap[searchResult.name] ?? {
 
@@ -123,7 +123,7 @@ class SearchResultsModelSteps {
             }()
         }
 
-        return searchResults.results.map( { resultModelFactory.resultModel(searchResult: $0) as! CitySearchResultModelMock } )
+        return searchResults.results.map( { resultModelFactory.resultModel(searchResult: $0, tapCommandFactory: OpenDetailsCommandFactoryMock()) as! CitySearchResultModelMock } )
     }
 
     func resultsObserver() -> ValueUpdate<[CitySearchResultModel]> {

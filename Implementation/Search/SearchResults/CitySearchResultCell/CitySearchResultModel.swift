@@ -14,10 +14,11 @@ protocol CitySearchResultModel: class {
 class CitySearchResultModelImp: CitySearchResultModel {
 
     let titleText: String
-    let tapCommand: OpenDetailsCommand = OpenDetailsCommandImp()
+    let tapCommand: OpenDetailsCommand
 
-    init(searchResult: CitySearchResult) {
+    init(searchResult: CitySearchResult, tapCommandFactory: OpenDetailsCommandFactory) {
 
         self.titleText = searchResult.name
+        self.tapCommand = tapCommandFactory.openDetailsCommand(for: searchResult)
     }
 }

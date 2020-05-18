@@ -7,13 +7,13 @@ import Foundation
 
 protocol CitySearchResultModelFactory {
 
-    func resultModel(searchResult: CitySearchResult) -> CitySearchResultModel
+    func resultModel(searchResult: CitySearchResult, tapCommandFactory: OpenDetailsCommandFactory) -> CitySearchResultModel
 }
 
 class CitySearchResultModelFactoryImp: CitySearchResultModelFactory {
 
-    func resultModel(searchResult: CitySearchResult) -> CitySearchResultModel {
+    func resultModel(searchResult: CitySearchResult, tapCommandFactory: OpenDetailsCommandFactory) -> CitySearchResultModel {
 
-        CitySearchResultModelImp(searchResult: searchResult)
+        CitySearchResultModelImp(searchResult: searchResult, tapCommandFactory: tapCommandFactory)
     }
 }

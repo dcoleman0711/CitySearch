@@ -37,6 +37,6 @@ class SearchResultsModelImp: SearchResultsModel {
 
     func setResults(_ results: CitySearchResults) {
 
-        self.resultModels.value = results.results.map({ modelFactory.resultModel(searchResult: $0) })
+        self.resultModels.value = results.results.map({ modelFactory.resultModel(searchResult: $0, tapCommandFactory: OpenDetailsCommandFactoryImp()) })
     }
 }

@@ -37,6 +37,17 @@ class CitySearchResultViewModelTests: XCTestCase {
 
         then.model(model, titleIs: searchResult.name)
     }
+
+    func testTapCommand() {
+
+        let searchResult = given.searchResult()
+        let tapCommandFactory = given.tapCommandFactory()
+        let tapCommand = given.tapCommand(createdBy: tapCommandFactory, for: searchResult)
+
+        let model = when.modelIsCreated(searchResult: searchResult, tapCommandFactory: tapCommandFactory)
+
+        then.model(model, tapCommandIs: tapCommand)
+    }
 }
 
 class CitySearchResultViewModelSteps {
@@ -46,13 +57,37 @@ class CitySearchResultViewModelSteps {
         CitySearchResult(name: "Test City")
     }
 
-    func modelIsCreated(searchResult: CitySearchResult) -> CitySearchResultModelImp {
+    func tapCommandFactory() -> OpenDetailsCommandFactoryMock {
 
-        CitySearchResultModelFactoryImp().resultModel(searchResult: searchResult) as! CitySearchResultModelImp
+        OpenDetailsCommandFactoryMock()
+    }
+
+    func tapCommand(createdBy factory: OpenDetailsCommandFactoryMock, for searchResult: CitySearchResult) -> OpenDetailsCommandMock {
+
+        let command = OpenDetailsCommandMock()
+
+        factory.openDetailsCommandImp = { result in
+
+            if result == searchResult { return command }
+
+            return OpenDetailsCommandMock()
+        }
+
+        return command
+    }
+
+    func modelIsCreated(searchResult: CitySearchResult, tapCommandFactory: OpenDetailsCommandFactoryMock = OpenDetailsCommandFactoryMock()) -> CitySearchResultModelImp {
+
+        CitySearchResultModelFactoryImp().resultModel(searchResult: searchResult, tapCommandFactory: tapCommandFactory) as! CitySearchResultModelImp
     }
 
     func model(_ model: CitySearchResultModelImp, titleIs expectedTitle: String) {
 
         XCTAssertEqual(model.titleText, expectedTitle, "Model title is not search result name")
+    }
+
+    func model(_ model: CitySearchResultModelImp, tapCommandIs expectedTapCommand: OpenDetailsCommandMock) {
+
+        XCTAssertTrue(model.tapCommand === expectedTapCommand, "Model tap command is not tap command created by factory")
     }
 }

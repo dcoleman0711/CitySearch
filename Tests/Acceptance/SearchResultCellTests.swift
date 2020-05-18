@@ -217,7 +217,7 @@ class SearchResultCellSteps {
         let modelFactory = CitySearchResultModelFactoryImp()
         let viewModelFactory = CitySearchResultViewModelFactoryImp()
 
-        let model = modelFactory.resultModel(searchResult: result)
+        let model = modelFactory.resultModel(searchResult: result, tapCommandFactory: OpenDetailsCommandFactoryMock())
         let viewModel = viewModelFactory.resultViewModel(model: model)
 
         cell.viewModel = viewModel
