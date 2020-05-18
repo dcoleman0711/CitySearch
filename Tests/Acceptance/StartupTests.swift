@@ -68,18 +68,17 @@ class StartupTests : XCTestCase {
         then.transition(ofType: transitionType, isAppliedFrom: startupView, to: searchView, with: duration)
     }
 
-    // In Progress
-//    func testTransitionToSearchViewInitialData() {
-//
-//        let initialData = given.initialData()
-//        let searchView = given.searchView()
-//        let app = given.application()
-//        given.appIsLaunched(app: app)
-//
-//        when.transitionToSearchViewBegins(with: initialData)
-//
-//        then.searchView(searchView, initialDataIs: initialData)
-//    }
+    func testTransitionToSearchViewInitialData() {
+
+        let initialData = given.initialData()
+        let searchView = given.searchView()
+        let app = given.application()
+        given.appIsLaunched(app: app)
+
+        when.transitionToSearchViewBegins(with: initialData)
+
+        then.searchView(searchView, initialDataIs: initialData)
+    }
 }
 
 class StartupSteps {

@@ -16,6 +16,14 @@ class CitySearchServiceImp : CitySearchService {
 
     func citySearch() -> SearchFuture {
 
-        SearchFuture({ promise in })
+        let initialData = CitySearchResults(items: [
+            CitySearchResult(name: "Test City 1"),
+            CitySearchResult(name: "Test City 2"),
+            CitySearchResult(name: "Test City 3"),
+            CitySearchResult(name: "Test City 4"),
+            CitySearchResult(name: "Test City 5")
+        ])
+
+        return SearchFuture({ promise in promise(.success(initialData)) })
     }
 }
