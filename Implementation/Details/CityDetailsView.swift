@@ -19,11 +19,6 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
         setupView()
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-
-        UIInterfaceOrientationMask.portrait
-    }
-
     private func setupView() {
 
         view.backgroundColor = .white

@@ -37,16 +37,6 @@ class DetailsScreenTests: XCTestCase {
 
         then.detailsScreenBackgroundIsWhite(detailsScreen)
     }
-
-    func testOrientations() {
-
-        let detailsScreen = given.detailsScreen()
-        let portraitOrientation = given.portraitOrientation()
-
-        when.detailsScreenIsLoaded(detailsScreen)
-
-        then.detailsScreen(detailsScreen, supportedOrientationsAre: portraitOrientation)
-    }
 }
 
 class DetailsScreenSteps {
@@ -74,10 +64,5 @@ class DetailsScreenSteps {
     func detailsScreenBackgroundIsWhite(_ detailsScreen: CityDetailsView) {
 
         XCTAssertEqual(detailsScreen.view.backgroundColor, UIColor.white, "Details screen background is not white")
-    }
-
-    func detailsScreen(_ detailsScreen: CityDetailsView, supportedOrientationsAre expectedOrientations: UIInterfaceOrientationMask) {
-
-        XCTAssertEqual(detailsScreen.supportedInterfaceOrientations, expectedOrientations, "Supported orientations are not the expected orientations")
     }
 }

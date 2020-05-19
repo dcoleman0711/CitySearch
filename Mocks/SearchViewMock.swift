@@ -8,12 +8,3 @@ import UIKit
 class SearchViewMock : UIViewControllerMock, SearchView {
 
 }
-
-class UIViewControllerMock: UIViewController {
-
-    var navigationControllerMock: UINavigationController?
-    override var navigationController: UINavigationController? {
-
-        navigationControllerMock
-    }
-}
