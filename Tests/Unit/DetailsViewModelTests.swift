@@ -32,7 +32,8 @@ class DetailsViewModelTests: XCTestCase {
     func testTitleFont() {
 
         let titleFont = given.titleFont()
-        let detailsViewModel = given.detailsViewModel()
+        let model = given.model()
+        let detailsViewModel = given.detailsViewModel(model: model)
         let labelObserver = given.labelObserver()
 
         when.observer(labelObserver, observesTitleOn: detailsViewModel)
@@ -55,6 +56,8 @@ class DetailsViewModelTests: XCTestCase {
 
 class DetailsViewModelSteps {
 
+    private let titleText = "Test Title"
+
     private var observedLabelData: LabelViewModel?
 
     private var modelTitleObserver: ValueUpdate<String>?
@@ -74,22 +77,22 @@ class DetailsViewModelSteps {
 
     func model() -> CityDetailsModelMock {
 
-        CityDetailsModelMock()
+        let model = CityDetailsModelMock()
+
+        model.observeTitleTextImp = { observer in
+
+            observer(self.titleText)
+        }
+
+        return model
     }
 
     func titleText(from model: CityDetailsModelMock) -> String {
 
-        let text = "Test Title"
-
-        model.observeTitleTextImp = { observer in
-
-            observer(text)
-        }
-
-        return text
+        titleText
     }
 
-    func detailsViewModel(model: CityDetailsModelMock = CityDetailsModelMock()) -> CityDetailsViewModel {
+    func detailsViewModel(model: CityDetailsModelMock) -> CityDetailsViewModel {
 
         CityDetailsViewModelImp(model: model)
     }
