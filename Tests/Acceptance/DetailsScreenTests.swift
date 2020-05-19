@@ -7,6 +7,11 @@ import XCTest
 
 import UIKit
 
+class DetailsScreenTestConstants {
+
+    static let titleFont = UIFont.systemFont(ofSize: 36.0)
+}
+
 class DetailsScreenTests: XCTestCase {
 
     var steps: DetailsScreenSteps!
@@ -48,6 +53,17 @@ class DetailsScreenTests: XCTestCase {
 
         then.titleLabel(titleLabel, isInTopLeftCornerOfSafeAreaOf: detailsScreen)
     }
+
+    func testTitleFont() {
+
+        let titleLabel = given.titleLabel()
+        let titleFont = given.titleFont()
+        let detailsScreen = given.detailsScreen(titleLabel: titleLabel)
+
+        when.detailsScreenIsLoaded(detailsScreen)
+
+        then.titleLabel(titleLabel, fontIs: titleFont)
+    }
 }
 
 class DetailsScreenSteps {
@@ -59,6 +75,11 @@ class DetailsScreenSteps {
         UILabel()
     }
 
+    func titleFont() -> UIFont {
+
+        DetailsScreenTestConstants.titleFont
+    }
+
     func screenSizes() -> [CGSize] {
 
         [CGSize(width: 1024, height: 768), CGSize(width: 2048, height: 768), CGSize(width: 2048, height: 1536)]
@@ -66,7 +87,7 @@ class DetailsScreenSteps {
 
     func detailsScreen(titleLabel: UILabel = UILabel()) -> CityDetailsView {
 
-        CityDetailsViewImp(titleLabel: titleLabel)
+        CityDetailsViewImp(titleLabel: titleLabel, viewModel: CityDetailsViewModelImp(), binder: ViewBinderImp())
     }
 
     func detailsScreenIsLoaded(_ detailsScreen: CityDetailsView) {
@@ -87,5 +108,10 @@ class DetailsScreenSteps {
     func titleLabel(_ titleLabel: UILabel, isInTopLeftCornerOfSafeAreaOf: CityDetailsView) {
 
         XCTAssertEqual(titleLabel.frame.origin, safeAreaFrame.origin, "Title label is not in top-left corner of safe area")
+    }
+
+    func titleLabel(_ titleLabel: UILabel, fontIs expectedFont: UIFont) {
+
+        XCTAssertEqual(titleLabel.font, expectedFont, "Title label font is not expected font")
     }
 }

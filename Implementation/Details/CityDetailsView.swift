@@ -13,17 +13,23 @@ protocol CityDetailsView where Self: UIViewController {
 class CityDetailsViewImp : UIViewController, CityDetailsView {
 
     private let titleLabel: UILabel
+    private let viewModel: CityDetailsViewModel
+    private let binder: ViewBinder
 
     convenience init() {
 
-        self.init(titleLabel: UILabel())
+        self.init(titleLabel: UILabel(), viewModel: CityDetailsViewModelImp(), binder: ViewBinderImp())
     }
 
-    init(titleLabel: UILabel) {
+    init(titleLabel: UILabel, viewModel: CityDetailsViewModel, binder: ViewBinder) {
 
         self.titleLabel = titleLabel
+        self.viewModel = viewModel
+        self.binder = binder
 
         super.init(nibName: nil, bundle: nil)
+
+        bindViews()
     }
 
     required init?(coder: NSCoder) {
@@ -42,6 +48,11 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
 
         UIInterfaceOrientationMask.landscape
+    }
+
+    private func bindViews() {
+
+        viewModel.observeTitle(binder.bindText(label: titleLabel))
     }
 
     private func setupView() {

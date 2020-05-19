@@ -49,34 +49,70 @@ class DetailsViewTests: XCTestCase {
 
         then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
     }
+
+    func testTitleBindToViewModel() {
+
+        let titleLabel = given.titleLabel()
+        let viewModel = given.viewModel()
+        let binder = given.binder()
+        let detailsView = given.detailsView(titleLabel: titleLabel, viewModel: viewModel, binder: binder)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.titleLabel(titleLabel, isBoundTo: viewModel)
+    }
 }
 
 class DetailsViewSteps {
+
+    private var labelBoundToViewModel: UILabel?
 
     func titleLabel() -> UILabel {
 
         UILabel()
     }
 
-    func detailsView(titleLabel: UILabel = UILabel()) -> CityDetailsView {
+    func viewModel() -> CityDetailsViewModelMock {
 
-        CityDetailsViewImp(titleLabel: titleLabel)
+        let viewModel = CityDetailsViewModelMock()
+
+        viewModel.observeTitleImp = { observer in
+
+            observer(LabelViewModel.emptyData)
+        }
+
+        return viewModel
     }
 
-    func detailsViewIsLoaded(_ detailsView: CityDetailsView) {
+    func binder() -> ViewBinderMock {
+
+        let binder = ViewBinderMock()
+
+        binder.bindLabelTextImp = { (label) in
+
+            { (text) in
+
+                self.labelBoundToViewModel = label
+            }
+        }
+
+        return binder
+    }
+
+    func detailsView(titleLabel: UILabel = UILabel(), viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
+
+        CityDetailsViewImp(titleLabel: titleLabel, viewModel: viewModel, binder: binder)
+    }
+
+    func detailsViewIsLoaded(_ detailsView: CityDetailsViewImp) {
 
         detailsView.loadViewIfNeeded()
     }
 
-    func titleLabel(_ titleLabel: UILabel, constraintsToTopLeftSafeAreaOf detailsView: CityDetailsView) -> [NSLayoutConstraint] {
+    func titleLabel(_ titleLabel: UILabel, constraintsToTopLeftSafeAreaOf detailsView: CityDetailsViewImp) -> [NSLayoutConstraint] {
 
         [titleLabel.leftAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.leftAnchor),
          titleLabel.topAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.topAnchor)]
-    }
-
-    func detailsViewBackgroundIsWhite(_ detailsView: CityDetailsView) {
-
-        XCTAssertEqual(detailsView.view.backgroundColor, UIColor.white, "Details screen background is not white")
     }
 
     func autoResizeMaskIsDisabled(_ view: UIView) {
@@ -84,8 +120,13 @@ class DetailsViewSteps {
         XCTAssertFalse(view.translatesAutoresizingMaskIntoConstraints, "Autoresizing mask is not disabled")
     }
 
-    func detailsView(_ detailsView: CityDetailsView, hasExpectedConstraints expectedConstraints: [NSLayoutConstraint]) {
+    func detailsView(_ detailsView: CityDetailsViewImp, hasExpectedConstraints expectedConstraints: [NSLayoutConstraint]) {
 
         ViewConstraintValidator.validateThatView(detailsView.view, hasConstraints: expectedConstraints, message: "Details view does not contain expected constraints")
+    }
+
+    func titleLabel(_ titleLabel: UILabel, isBoundTo viewModel: CityDetailsViewModelMock) {
+
+        XCTAssertEqual(labelBoundToViewModel, titleLabel, "Title label is not bound to view model")
     }
 }
