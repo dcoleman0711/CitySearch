@@ -7,9 +7,15 @@ import UIKit
 
 class ViewBinderMock : ViewBinder {
 
-    var bindLabelTextImp: (_ label: UILabel) -> ValueUpdate<LabelViewModel> = { (label) in { (text) in } }
+    var bindLabelTextImp: (_ label: UILabel) -> ValueUpdate<LabelViewModel> = { (label) in { text in } }
     func bindText(label: UILabel) -> ValueUpdate<LabelViewModel> {
 
         bindLabelTextImp(label)
+    }
+
+    var bindImageImp: (_ imageView: UIImageView) -> ValueUpdate<UIImage?> = { imageView in { image in } }
+    func bindImage(imageView: UIImageView) -> ValueUpdate<UIImage?> {
+
+        bindImageImp(imageView)
     }
 }

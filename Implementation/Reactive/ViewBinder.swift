@@ -23,6 +23,8 @@ struct LabelViewModel: Equatable {
 protocol ViewBinder {
 
     func bindText(label: UILabel) -> ValueUpdate<LabelViewModel>
+
+    func bindImage(imageView: UIImageView) -> ValueUpdate<UIImage?>
 }
 
 class ViewBinderImp: ViewBinder {
@@ -33,6 +35,14 @@ class ViewBinderImp: ViewBinder {
 
             label.text = viewModel.text
             label.font = viewModel.font
+        }
+    }
+
+    func bindImage(imageView: UIImageView) -> ValueUpdate<UIImage?> {
+
+        { (image) in
+
+            imageView.image = image
         }
     }
 }
