@@ -13,6 +13,8 @@ protocol CityDetailsView where Self: UIViewController {
 class CityDetailsViewImp : UIViewController, CityDetailsView {
 
     private let titleLabel: UILabel
+    private let populationTitleLabel: UILabel
+
     private let viewModel: CityDetailsViewModel
     private let binder: ViewBinder
 
@@ -20,12 +22,13 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         let model = CityDetailsModelImp(searchResult: searchResult)
         let viewModel = CityDetailsViewModelImp(model: model)
-        self.init(titleLabel: UILabel(), viewModel: viewModel, binder: ViewBinderImp())
+        self.init(titleLabel: UILabel(), populationTitleLabel: UILabel(), viewModel: viewModel, binder: ViewBinderImp())
     }
 
-    init(titleLabel: UILabel, viewModel: CityDetailsViewModel, binder: ViewBinder) {
+    init(titleLabel: UILabel, populationTitleLabel: UILabel, viewModel: CityDetailsViewModel, binder: ViewBinder) {
 
         self.titleLabel = titleLabel
+        self.populationTitleLabel = populationTitleLabel
         self.viewModel = viewModel
         self.binder = binder
 
@@ -55,6 +58,7 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
     private func bindViews() {
 
         viewModel.observeTitle(binder.bindText(label: titleLabel))
+        viewModel.observePopulationTitle(binder.bindText(label: populationTitleLabel))
     }
 
     private func setupView() {
@@ -63,6 +67,9 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(populationTitleLabel)
+        populationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buildLayout() {
@@ -72,7 +79,12 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
         let titleLabelYConstraint = titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         let titleLabelConstraints = [titleLabelXConstraint, titleLabelYConstraint]
 
-        let constraints = [NSLayoutConstraint]([titleLabelConstraints].joined())
+        // Population Title Label
+        let populationTitleLabelXConstraint = populationTitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor)
+        let populationTitleLabelYConstraint = populationTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32.0)
+        let populationTitleLabelConstraints = [populationTitleLabelXConstraint, populationTitleLabelYConstraint]
+        
+        let constraints = [NSLayoutConstraint]([titleLabelConstraints, populationTitleLabelConstraints].joined())
 
         view.addConstraints(constraints)
     }

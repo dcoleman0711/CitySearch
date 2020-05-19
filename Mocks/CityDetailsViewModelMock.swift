@@ -12,4 +12,10 @@ class CityDetailsViewModelMock: CityDetailsViewModel {
 
         observeTitleImp(observer)
     }
+
+    var observePopulationTitleImp: (_ observer: @escaping ValueUpdate<LabelViewModel>) -> Void = { observer in }
+    func observePopulationTitle(_ observer: @escaping ValueUpdate<LabelViewModel>) {
+
+        observePopulationTitleImp(observer)
+    }
 }

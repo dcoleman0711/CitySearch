@@ -31,13 +31,13 @@ class DetailsViewTests: XCTestCase {
 
     func testTitleLabelAutoResizeMaskDisabled() {
 
-        let titleLabel = given.titleLabel()
-        let detailsView = given.detailsView(titleLabel: titleLabel)
+    let titleLabel = given.titleLabel()
+    let detailsView = given.detailsView(titleLabel: titleLabel)
 
-        when.detailsViewIsLoaded(detailsView)
+    when.detailsViewIsLoaded(detailsView)
 
-        then.autoResizeMaskIsDisabled(titleLabel)
-    }
+    then.autoResizeMaskIsDisabled(titleLabel)
+}
 
     func testTitlePositionConstraints() {
 
@@ -61,13 +61,55 @@ class DetailsViewTests: XCTestCase {
 
         then.titleLabel(titleLabel, isBoundTo: viewModel)
     }
+
+    func testPopulationTitleLabelAutoResizeMaskDisabled() {
+
+        let populationTitleLabel = given.populationTitleLabel()
+        let detailsView = given.detailsView(populationTitleLabel: populationTitleLabel)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.autoResizeMaskIsDisabled(populationTitleLabel)
+    }
+
+    func testPopulationTitlePositionConstraints() {
+
+        let populationTitleLabel = given.populationTitleLabel()
+        let titleLabel = given.titleLabel()
+        let detailsView = given.detailsView(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel)
+        let expectedConstraints = given.populationTitleLabel(populationTitleLabel, constraintsToLeftAlignAndSpaceBelow: titleLabel)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
+    }
+
+    func testPopulationTitleBindToViewModel() {
+
+        let populationTitleLabel = given.populationTitleLabel()
+        let viewModel = given.viewModel()
+        let binder = given.binder()
+        let detailsView = given.detailsView(populationTitleLabel: populationTitleLabel, viewModel: viewModel, binder: binder)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.populationTitleLabel(populationTitleLabel, isBoundTo: viewModel)
+    }
 }
 
 class DetailsViewSteps {
 
     private var labelBoundToViewModel: UILabel?
 
+    private var boundTitleLabel: UILabel?
+    private var boundPopulationTitleLabel: UILabel?
+
     func titleLabel() -> UILabel {
+
+        UILabel()
+    }
+
+    func populationTitleLabel() -> UILabel {
 
         UILabel()
     }
@@ -79,6 +121,13 @@ class DetailsViewSteps {
         viewModel.observeTitleImp = { observer in
 
             observer(LabelViewModel.emptyData)
+            self.boundTitleLabel = self.labelBoundToViewModel
+        }
+
+        viewModel.observePopulationTitleImp = { observer in
+
+            observer(LabelViewModel.emptyData)
+            self.boundPopulationTitleLabel = self.labelBoundToViewModel
         }
 
         return viewModel
@@ -99,9 +148,9 @@ class DetailsViewSteps {
         return binder
     }
 
-    func detailsView(titleLabel: UILabel = UILabel(), viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
+    func detailsView(titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
 
-        CityDetailsViewImp(titleLabel: titleLabel, viewModel: viewModel, binder: binder)
+        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, viewModel: viewModel, binder: binder)
     }
 
     func detailsViewIsLoaded(_ detailsView: CityDetailsViewImp) {
@@ -113,6 +162,12 @@ class DetailsViewSteps {
 
         [titleLabel.leftAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.leftAnchor),
          titleLabel.topAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.topAnchor)]
+    }
+
+    func populationTitleLabel(_ populationTitleLabel: UILabel, constraintsToLeftAlignAndSpaceBelow titleLabel: UILabel) -> [NSLayoutConstraint] {
+
+        [populationTitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
+         populationTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32.0)]
     }
 
     func autoResizeMaskIsDisabled(_ view: UIView) {
@@ -127,6 +182,11 @@ class DetailsViewSteps {
 
     func titleLabel(_ titleLabel: UILabel, isBoundTo viewModel: CityDetailsViewModelMock) {
 
-        XCTAssertEqual(labelBoundToViewModel, titleLabel, "Title label is not bound to view model")
+        XCTAssertEqual(boundTitleLabel, titleLabel, "Title label is not bound to view model")
+    }
+
+    func populationTitleLabel(_ populationTitleLabel: UILabel, isBoundTo viewModel: CityDetailsViewModelMock) {
+
+        XCTAssertEqual(boundPopulationTitleLabel, populationTitleLabel, "Population Title label is not bound to view model")
     }
 }
