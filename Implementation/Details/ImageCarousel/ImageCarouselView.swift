@@ -12,5 +12,22 @@ protocol ImageCarouselView {
 
 class ImageCarouselViewImp: ImageCarouselView {
 
-    let view = UIView()
+    var view: UIView { collectionView }
+
+    private let collectionView: UICollectionView
+
+    private let viewModel: ImageCarouselViewModel
+
+    convenience init() {
+
+        self.init(collectionView: UICollectionView(), viewModel: ImageCarouselViewModelImp(), binder: CollectionViewBinderImp<AsyncImageViewModel, AsyncImageCell>())
+    }
+
+    init(collectionView: UICollectionView, viewModel: ImageCarouselViewModel, binder: CollectionViewBinder<AsyncImageViewModel, AsyncImageCell>) {
+
+        self.collectionView = collectionView
+        self.viewModel = viewModel
+
+        viewModel.observeResultsViewModels(binder.bindCells(collectionView: self.collectionView))
+    }
 }
