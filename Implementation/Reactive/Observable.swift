@@ -11,11 +11,9 @@ class Observable<T> {
 
         didSet {
 
-            self.listener?(value)
+            NotificationCenter.default.post(name: self.notificationName, object: nil)
         }
     }
-
-    private var listener: ValueUpdate<T>?
 
     init(_ value: T) {
 
@@ -24,8 +22,28 @@ class Observable<T> {
 
     func subscribe(_ listener: @escaping ValueUpdate<T>, updateImmediately: Bool = false) {
 
-        self.listener = listener
+        NotificationCenter.default.addObserver(forName: self.notificationName, object: nil, queue: nil) { notification in listener(self.value) }
 
-        listener(self.value)
+        if updateImmediately { listener(self.value) }
+    }
+
+    func map<T2>( _ observable: Observable<T2>, _ mapFunction: @escaping (T2) -> T) {
+
+        observable.subscribe(map(mapFunction), updateImmediately: true)
+    }
+
+    func map<T2>( _ mapFunction: @escaping (T2) -> T) -> ValueUpdate<T2> {
+
+        mapUpdate({ value in
+
+            self.value = value
+
+        }, mapFunction)
+    }
+
+    private var notificationName: Notification.Name {
+
+        let objectId = String(UInt(bitPattern: ObjectIdentifier(self)))
+        return Notification.Name(rawValue: objectId)
     }
 }

@@ -8,7 +8,7 @@ import Foundation
 class ImageCarouselViewModelMock: ImageCarouselViewModel {
 
     var observeResultsViewModelsImp: (_ observer: @escaping ValueUpdate<[CellData<AsyncImageViewModel>]>) -> Void = { observer in }
-    func observeResultsViewModels(_ observer: @escaping ValueUpdate<[CellData<AsyncImageViewModel>]>) {
+    func observeResults(_ observer: @escaping ValueUpdate<[CellData<AsyncImageViewModel>]>) {
 
         observeResultsViewModelsImp(observer)
     }

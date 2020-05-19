@@ -28,6 +28,6 @@ class ImageCarouselViewImp: ImageCarouselView {
         self.collectionView = collectionView
         self.viewModel = viewModel
 
-        viewModel.observeResultsViewModels(binder.bindCells(collectionView: self.collectionView))
+        viewModel.observeResults(binder.bindCells(collectionView: self.collectionView))
     }
 }
