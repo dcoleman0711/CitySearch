@@ -65,7 +65,7 @@ class StartupTests : XCTestCase {
 
         when.transitionToSearchViewBegins(with: initialData)
 
-        then.transition(ofType: transitionType, isAppliedFrom: startupView, to: searchView, with: duration)
+        then.transition(ofType: transitionType, isAppliedFrom: startupView, toNavigationStackContaining: searchView, with: duration)
     }
 
     func testTransitionToSearchViewInitialData() {
@@ -202,12 +202,18 @@ class StartupSteps {
         XCTAssertTrue(rootController is StartupViewImp, "Root controller's is not Startup Screen")
     }
 
-    func transition(ofType expectedTransitionType: UIView.AnimationOptions, isAppliedFrom expectedOldView: UIViewController, to expectedNewView: UIViewController, with expectedDuration: TimeInterval) {
+    func transition(ofType expectedTransitionType: UIView.AnimationOptions, isAppliedFrom expectedOldView: UIViewController, toNavigationStackContaining expectedNewView: UIViewController, with expectedDuration: TimeInterval) {
 
         XCTAssertEqual(durationUsedInAnimation, expectedDuration)
         XCTAssertEqual(transitionTypeUsedInAnimation, expectedTransitionType)
         XCTAssertEqual(transitionOldView, expectedOldView)
-        XCTAssertEqual(transitionNewView, expectedNewView)
+
+        guard let navigationController = transitionNewView as? UINavigationController else {
+            XCTFail("Transition destination is not navigation stack")
+            return
+        }
+
+        XCTAssertEqual(navigationController.viewControllers, [expectedNewView], "Navigation stack is not Search View")
     }
 
     func searchView(_ view: SearchViewImp, initialDataIs expectedInitialData: CitySearchResults) {

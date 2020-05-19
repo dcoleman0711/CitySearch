@@ -46,9 +46,7 @@ class SearchResultsTests: XCTestCase {
     func testInitialSearchResultsData() {
 
         let searchResults = given.searchResults()
-        let searchModels = given.searchCellData(for: searchResults)
-        let searchViewModels = given.searchCellPresentation(for: searchModels)
-        let searchResultCells = given.searchResultCells(for: searchViewModels)
+        let searchResultCells = given.searchResultCells(for: searchResults)
 
         let searchView = when.createSearchResults(initialData: searchResults)
 
@@ -65,18 +63,17 @@ class SearchResultsTests: XCTestCase {
         then.displayedCells(in: searchView, allHaveSize: expectedCellSize)
     }
 
-    // In Progress
-//    func testTapCellToOpenDetails() {
-//
-//        let searchResults = given.searchResults()
-//        let searchResult = given.searchResult(in: searchResults)
-//        let openDetailsCommand = given.openDetailsCommand(for: searchResult)
-//        let searchView = given.createSearchResults(initialData: searchResults)
-//
-//        when.cellIsTapped(displaying: searchResult, in: searchView)
-//
-//        then.openDetailsCommandIsInvoked(openDetailsCommand)
-//    }
+    func testTapCellToOpenDetails() {
+
+        let searchResults = given.searchResults()
+        let searchResult = given.searchResult(in: searchResults)
+        let openDetailsCommand = given.openDetailsCommand(for: searchResult)
+        let searchView = given.createSearchResults(initialData: searchResults)
+
+        when.cellIsTapped(displaying: searchResult, in: searchView)
+
+        then.openDetailsCommandIsInvoked(openDetailsCommand)
+    }
 }
 
 class SearchResultsSteps {
@@ -100,6 +97,7 @@ class SearchResultsSteps {
             modelsMap[searchResult.name] ?? {
 
                 let result = CitySearchResultModelMock()
+                result.tapCommand = tapCommandFactory.openDetailsCommand(for: searchResult)
                 modelsMap[searchResult.name] = result
                 return result
             }()
@@ -112,6 +110,7 @@ class SearchResultsSteps {
             return viewModelsMap[modelID] ?? {
 
                 let result = CitySearchResultViewModelMock()
+                result.tapCommand = model.tapCommand
                 viewModelsMap[modelID] = result
                 return result
             }()
@@ -130,20 +129,12 @@ class SearchResultsSteps {
         CGSize(width: 128.0, height: 128.0)
     }
 
-    func searchCellData(for searchResults: CitySearchResults) -> [CitySearchResultModelMock] {
+    func searchResultCells(for searchResults: CitySearchResults) -> [CitySearchResultCellMock] {
 
-        searchResults.results.map( { resultModelFactory.resultModel(searchResult: $0, tapCommandFactory: OpenDetailsCommandFactoryMock()) as! CitySearchResultModelMock } )
-    }
+        searchResults.results.map({ (searchResult) in
 
-    func searchCellPresentation(for searchModels: [CitySearchResultModelMock]) -> [CitySearchResultViewModelMock] {
-
-        searchModels.map( { resultViewModelFactory.resultViewModel(model: $0) as! CitySearchResultViewModelMock } )
-    }
-
-    func searchResultCells(for viewModels: [CitySearchResultViewModelMock]) -> [CitySearchResultCellMock] {
-
-        viewModels.map({ (viewModel) in
-
+            let model = resultModelFactory.resultModel(searchResult: searchResult, tapCommandFactory: openDetailsCommandFactory)
+            let viewModel = resultViewModelFactory.resultViewModel(model: model)
             let cell = CitySearchResultCellMock()
             cell.viewModel = viewModel
             return cell

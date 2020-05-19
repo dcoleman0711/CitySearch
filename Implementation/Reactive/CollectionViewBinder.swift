@@ -75,4 +75,9 @@ class BindingDelegate<ViewModel>: NSObject, UICollectionViewDelegateFlowLayout {
 
         return cellData[indexPath.item].size
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        cellData[indexPath.item].tapCommand?.invoke()
+    }
 }

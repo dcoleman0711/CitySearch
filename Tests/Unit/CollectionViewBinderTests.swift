@@ -54,11 +54,28 @@ class CollectionViewBinderTests: XCTestCase {
 
         then.collectionView(collectionView, cellsHaveSizes: cellSizes)
     }
+
+    func testBindCollectionViewTapCommands() {
+
+        let collectionView = given.collectionView()
+        let binder = given.binder()
+        let cellUpdate = given.bindCells(binder, collectionView)
+        let viewModels = given.viewModels()
+        let cellData = given.cellData(viewModels)
+        let expectedTapCommands = given.tapCommands(cellData)
+        given.updateViewModels(cellUpdate, cellData)
+
+        let tapCommands = when.tapOnCells(in: collectionView)
+
+        then.tapCommands(tapCommands, areEqualTo: expectedTapCommands)
+    }
 }
 
 class CollectionViewBinderSteps {
 
     private var displayedCells: [[TestMVVMCell]]?
+
+    private var invokedCommand: CellTapCommandMock?
 
     func collectionView() -> UICollectionViewMock {
 
@@ -86,7 +103,14 @@ class CollectionViewBinderSteps {
 
     func cellData(_ viewModels: [String]) -> [CellData<String>] {
 
-        viewModels.enumerated().map { (index, viewModel) in CellData<String>(viewModel: viewModel, size: CGSize(width: CGFloat(index) * 32.0, height: CGFloat(index) * 64.0), tapCommand: CellTapCommandMock()) }
+        viewModels.enumerated().map { (index, viewModel) in
+
+            let command = CellTapCommandMock()
+
+            command.invokeImp = { self.invokedCommand = command }
+
+            return CellData<String>(viewModel: viewModel, size: CGSize(width: CGFloat(index) * 32.0, height: CGFloat(index) * 64.0), tapCommand: command)
+        }
     }
 
     func cellSizes(_ cellData: [CellData<String>]) -> [CGSize] {
@@ -94,9 +118,36 @@ class CollectionViewBinderSteps {
         cellData.map({$0.size})
     }
 
+    func tapCommands(_ cellData: [CellData<String>]) -> [CellTapCommandMock] {
+
+        cellData.map({$0.tapCommand as! CellTapCommandMock})
+    }
+
     func updateViewModels(_ cellUpdate: ValueUpdate<[CellData<String>]>, _ cellData: [CellData<String>]) {
 
         cellUpdate(cellData)
+    }
+
+    func tapOnCells(in collectionView: UICollectionViewMock) -> [CellTapCommandMock] {
+
+        guard let displayedCells = displayedCells else {
+            return []
+        }
+
+        let indexPaths = [IndexPath](displayedCells.enumerated().map { sectionIndex, section -> [IndexPath] in
+
+            section.enumerated().map { itemIndex, cell -> IndexPath in
+
+                IndexPath(item: itemIndex, section: sectionIndex)
+            }
+
+        }.joined())
+
+        return indexPaths.map { indexPath in
+
+            collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
+            return self.invokedCommand ?? CellTapCommandMock()
+        }
     }
 
     func collectionView(_ collectionView: UICollectionViewMock, cellsHaveViewModels expectedCellData: [String]) {
@@ -140,6 +191,11 @@ class CollectionViewBinderSteps {
 
         XCTAssertEqual(cellSizes, expectedSizes, "Collection view cell sizes are not correct")
     }
+
+    func tapCommands(_ tapCommands: [CellTapCommandMock], areEqualTo expectedTapCommands: [CellTapCommandMock]) {
+
+        XCTAssertTrue(tapCommands.elementsEqual(expectedTapCommands) { first, second in first === second })
+    }
 }
 
 class TestMVVMCell: MVVMCollectionViewCell<String> {
@@ -149,7 +205,9 @@ class TestMVVMCell: MVVMCollectionViewCell<String> {
 
 class CellTapCommandMock: CellTapCommand {
 
+    var invokeImp: () -> Void = { }
     func invoke() {
 
+        invokeImp()
     }
 }
