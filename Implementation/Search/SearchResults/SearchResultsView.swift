@@ -9,21 +9,20 @@ protocol SearchResultsView {
 
     var view: UIView { get }
 
-    var model: SearchResultsModel { get }
+//    var model: SearchResultsModel { get }
 }
 
 class SearchResultsViewImp : SearchResultsView {
 
     var view: UIView { collectionView }
 
-    var model: SearchResultsModel { viewModel.model }
+//    var model: SearchResultsModel { viewModel.model }
 
     private let collectionView: UICollectionView
     private let viewModel: SearchResultsViewModel
 
-    convenience init(openDetailsCommandFactory: OpenDetailsCommandFactory) {
+    convenience init(model: SearchResultsModel) {
 
-        let model = SearchResultsModelImp(openDetailsCommandFactory: openDetailsCommandFactory)
         let viewModel = SearchResultsViewModelImp(model: model, viewModelFactory: CitySearchResultViewModelFactoryImp())
         self.init(viewModel: viewModel)
     }

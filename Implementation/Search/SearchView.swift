@@ -6,18 +6,16 @@
 import UIKit
 
 protocol SearchView where Self: UIViewController {
-    
+
 }
 
 class SearchViewImp: UIViewController, SearchView {
 
     private let searchResultsView: SearchResultsView
 
-    init(searchResultsView: SearchResultsView, modelFactory: SearchModelFactory, initialData: CitySearchResults) {
+    init(searchResultsView: SearchResultsView, model: SearchModel, initialData: CitySearchResults) {
 
         self.searchResultsView = searchResultsView
-
-        modelFactory.searchModel(searchResultsModel: self.searchResultsView.model, initialData: initialData)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -66,12 +64,19 @@ class SearchViewImp: UIViewController, SearchView {
 class SearchViewBuilder {
 
     var initialData = CitySearchResults.emptyResults()
+    var searchResultsModelFactory: SearchResultsModelFactory = SearchResultsModelFactoryImp()
     var searchResultsViewFactory: SearchResultsViewFactory = SearchResultsViewFactoryImp()
+    var modelFactory: SearchModelFactory = SearchModelFactoryImp()
 
     func build() -> SearchView {
 
         let openDetailsCommandFactory = OpenDetailsCommandFactoryImp(cityDetailsViewFactory: CityDetailsViewFactoryImp())
-        let searchView = SearchViewImp(searchResultsView: searchResultsViewFactory.searchResultsView(openDetailsCommandFactory: openDetailsCommandFactory), modelFactory: SearchModelFactoryImp(), initialData: initialData)
+        let searchResultsModel = searchResultsModelFactory.searchResultsModel(openDetailsCommandFactory: openDetailsCommandFactory)
+        let searchResultsView = searchResultsViewFactory.searchResultsView(model: searchResultsModel)
+
+        let model = modelFactory.searchModel(searchResultsModel: searchResultsModel, initialData: initialData)
+        let searchView = SearchViewImp(searchResultsView: searchResultsView, model: model, initialData: initialData)
+
         openDetailsCommandFactory.searchView = searchView
 
         return searchView

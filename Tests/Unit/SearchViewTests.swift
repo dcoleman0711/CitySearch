@@ -58,27 +58,6 @@ class SearchViewTests: XCTestCase {
 
         then.searchView(searchView, hasConstraints: expectedConstraints)
     }
-
-    func testPassInitialDataToModelFactory() {
-
-        let initialData = given.initialData()
-        let modelFactory = given.modelFactory()
-
-        let searchView = when.searchViewIsCreated(modelFactory: modelFactory, initialData: initialData)
-
-        then.initialData(initialData, isPassedTo: modelFactory)
-    }
-
-    func testPassSearchResultsModelToModelFactory() {
-
-        let searchResultsModel = given.searchResultsModel()
-        let searchResultsView = given.searchResultsView(searchResultsModel)
-        let modelFactory = given.modelFactory()
-
-        let searchView = when.searchViewIsCreated(searchResultsView: searchResultsView, modelFactory: modelFactory)
-
-        then.searchResultsModel(searchResultsModel, isPassedTo: modelFactory)
-    }
 }
 
 class SearchViewSteps {
@@ -94,21 +73,6 @@ class SearchViewSteps {
     func initialData() -> CitySearchResults {
 
         CitySearchResultsStub.stubResults()
-    }
-
-    func modelFactory() -> SearchModelFactoryMock {
-
-        let model = SearchModelFactoryMock()
-
-        model.searchModelImp = { (searchResultsModel, initialData) in
-
-            self.searchResultsModelPassedToFactory = searchResultsModel
-            self.initialDataPassedToModelFactory = initialData
-
-            return SearchModelMock()
-        }
-
-        return model
     }
 
     func searchResultsView(_ searchResultsModel: SearchResultsModelMock = SearchResultsModelMock()) -> SearchResultsViewMock {
@@ -128,9 +92,9 @@ class SearchViewSteps {
          view.bottomAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.bottomAnchor)]
     }
 
-    func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), modelFactory: SearchModelFactoryMock = SearchModelFactoryMock(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchViewImp {
+    func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), model: SearchModelMock = SearchModelMock(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchViewImp {
 
-        SearchViewImp(searchResultsView: searchResultsView, modelFactory: modelFactory, initialData: initialData)
+        SearchViewImp(searchResultsView: searchResultsView, model: model, initialData: initialData)
     }
 
     func searchViewIsLoaded(_ searchView: SearchViewImp) {
@@ -151,15 +115,5 @@ class SearchViewSteps {
     func searchView(_ searchView: SearchViewImp, hasConstraints expectedConstraints: [NSLayoutConstraint]) {
 
         XCTAssertTrue(searchView.view.constraints.contains { constraint in expectedConstraints.contains { expectedConstraint in constraint.isEqualToConstraint(expectedConstraint) } }, "Startup view does not contain expected constraints")
-    }
-
-    func initialData(_ initialData: CitySearchResults, isPassedTo modelFactory: SearchModelFactoryMock) {
-
-        XCTAssertEqual(initialDataPassedToModelFactory, initialData, "Initial data was not passed to model factory")
-    }
-
-    func searchResultsModel(_ searchResultsModel: SearchResultsModelMock, isPassedTo modelFactory: SearchModelFactoryMock) {
-
-        XCTAssertTrue(searchResultsModelPassedToFactory === searchResultsModel, "SearchResultsModel was not passed to model factory")
     }
 }

@@ -7,13 +7,13 @@ import Foundation
 
 protocol SearchResultsViewFactory {
 
-    func searchResultsView(openDetailsCommandFactory: OpenDetailsCommandFactory) -> SearchResultsView
+    func searchResultsView(model: SearchResultsModel) -> SearchResultsView
 }
 
 class SearchResultsViewFactoryImp: SearchResultsViewFactory {
 
-    func searchResultsView(openDetailsCommandFactory: OpenDetailsCommandFactory) -> SearchResultsView {
+    func searchResultsView(model: SearchResultsModel) -> SearchResultsView {
 
-        SearchResultsViewImp(openDetailsCommandFactory: openDetailsCommandFactory)
+        SearchResultsViewImp(model: model)
     }
 }

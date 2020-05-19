@@ -135,19 +135,23 @@ class SearchScreenSteps {
         return SearchResultsViewImp(viewModel: viewModel)
     }
 
-    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(openDetailsCommandFactory: OpenDetailsCommandFactoryMock()), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchView {
+    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(model: SearchResultsModelMock()), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchView {
 
-        let searchResultsViewFactory = SearchResultsViewFactoryMock()
+        let searchResultsModelFactory = SearchResultsModelFactoryMock()
 
-        searchResultsViewFactory.searchResultsViewImp = { openDetailsCommandFactory in
+        searchResultsModelFactory.searchResultsModelImp = { openDetailsCommandFactory in
 
             self.openDetailsCommandFactory = openDetailsCommandFactory
-            return searchResults
+            return self.searchResultsModel
         }
+
+        let searchResultsViewFactory = SearchResultsViewFactoryMock()
+        searchResultsViewFactory.searchResultsViewImp = { model in searchResults }
 
         let builder = SearchViewBuilder()
         builder.initialData = initialData
         builder.searchResultsViewFactory = searchResultsViewFactory
+        builder.searchResultsModelFactory = searchResultsModelFactory
 
         return builder.build()
     }
