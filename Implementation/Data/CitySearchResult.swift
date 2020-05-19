@@ -8,4 +8,5 @@ import Foundation
 struct CitySearchResult: Codable, Equatable {
 
     let name: String
+    let population: Int
 }

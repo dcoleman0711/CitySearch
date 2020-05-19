@@ -72,7 +72,7 @@ class DetailsViewTests: XCTestCase {
         then.autoResizeMaskIsDisabled(populationTitleLabel)
     }
 
-    func testPopulationTitlePositionConstraints() {
+    func testPopulationTitleLabelPositionConstraints() {
 
         let populationTitleLabel = given.populationTitleLabel()
         let titleLabel = given.titleLabel()
@@ -84,7 +84,7 @@ class DetailsViewTests: XCTestCase {
         then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
     }
 
-    func testPopulationTitleBindToViewModel() {
+    func testPopulationTitleLabelBindToViewModel() {
 
         let populationTitleLabel = given.populationTitleLabel()
         let viewModel = given.viewModel()
@@ -95,6 +95,40 @@ class DetailsViewTests: XCTestCase {
 
         then.populationTitleLabel(populationTitleLabel, isBoundTo: viewModel)
     }
+
+    func testPopulationLabelAutoResizeMaskDisabled() {
+
+        let populationLabel = given.populationLabel()
+        let detailsView = given.detailsView(populationLabel: populationLabel)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.autoResizeMaskIsDisabled(populationLabel)
+    }
+
+    func testPopulationLabelPositionConstraints() {
+
+        let populationLabel = given.populationLabel()
+        let populationTitleLabel = given.populationTitleLabel()
+        let detailsView = given.detailsView(populationTitleLabel: populationTitleLabel, populationLabel: populationLabel)
+        let expectedConstraints = given.populationLabel(populationLabel, constraintsToRightAndVerticallyCenteredWith: populationTitleLabel)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
+    }
+
+    func testPopulationLabelBindToViewModel() {
+
+        let populationLabel = given.populationLabel()
+        let viewModel = given.viewModel()
+        let binder = given.binder()
+        let detailsView = given.detailsView(populationLabel: populationLabel, viewModel: viewModel, binder: binder)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.populationLabel(populationLabel, isBoundTo: viewModel)
+    }
 }
 
 class DetailsViewSteps {
@@ -103,6 +137,7 @@ class DetailsViewSteps {
 
     private var boundTitleLabel: UILabel?
     private var boundPopulationTitleLabel: UILabel?
+    private var boundPopulationLabel: UILabel?
 
     func titleLabel() -> UILabel {
 
@@ -110,6 +145,11 @@ class DetailsViewSteps {
     }
 
     func populationTitleLabel() -> UILabel {
+
+        UILabel()
+    }
+
+    func populationLabel() -> UILabel {
 
         UILabel()
     }
@@ -130,6 +170,12 @@ class DetailsViewSteps {
             self.boundPopulationTitleLabel = self.labelBoundToViewModel
         }
 
+        viewModel.observePopulationImp = { observer in
+
+            observer(LabelViewModel.emptyData)
+            self.boundPopulationLabel = self.labelBoundToViewModel
+        }
+
         return viewModel
     }
 
@@ -148,9 +194,9 @@ class DetailsViewSteps {
         return binder
     }
 
-    func detailsView(titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
+    func detailsView(titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), populationLabel: UILabel = UILabel(), viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
 
-        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, viewModel: viewModel, binder: binder)
+        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, viewModel: viewModel, binder: binder)
     }
 
     func detailsViewIsLoaded(_ detailsView: CityDetailsViewImp) {
@@ -168,6 +214,12 @@ class DetailsViewSteps {
 
         [populationTitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
          populationTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32.0)]
+    }
+
+    func populationLabel(_ populationLabel: UILabel, constraintsToRightAndVerticallyCenteredWith populationTitleLabel: UILabel) -> [NSLayoutConstraint] {
+
+        [populationLabel.leftAnchor.constraint(equalTo: populationTitleLabel.rightAnchor, constant: 8.0),
+         populationLabel.centerYAnchor.constraint(equalTo: populationTitleLabel.centerYAnchor)]
     }
 
     func autoResizeMaskIsDisabled(_ view: UIView) {
@@ -188,5 +240,10 @@ class DetailsViewSteps {
     func populationTitleLabel(_ populationTitleLabel: UILabel, isBoundTo viewModel: CityDetailsViewModelMock) {
 
         XCTAssertEqual(boundPopulationTitleLabel, populationTitleLabel, "Population Title label is not bound to view model")
+    }
+
+    func populationLabel(_ populationLabel: UILabel, isBoundTo viewModel: CityDetailsViewModelMock) {
+
+        XCTAssertEqual(boundPopulationLabel, populationLabel, "Population label is not bound to view model")
     }
 }

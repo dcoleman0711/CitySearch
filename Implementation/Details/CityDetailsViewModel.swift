@@ -10,6 +10,8 @@ protocol CityDetailsViewModel {
     func observeTitle(_ observer: @escaping ValueUpdate<LabelViewModel>)
 
     func observePopulationTitle(_ observer: @escaping ValueUpdate<LabelViewModel>)
+
+    func observePopulation(_ observer: @escaping ValueUpdate<LabelViewModel>)
 }
 
 class CityDetailsViewModelImp: CityDetailsViewModel {
@@ -17,12 +19,19 @@ class CityDetailsViewModelImp: CityDetailsViewModel {
     private let model: CityDetailsModel
 
     private let titleLabelFont = UIFont.systemFont(ofSize: 36.0)
+    private let populationTitleFont = UIFont.systemFont(ofSize: 24.0)
     private let populationTitleLabelText = "Population: "
-    private let populationTitleLabelFont = UIFont.systemFont(ofSize: 24.0)
+
+    private let numberFormatter: NumberFormatter
 
     init(model: CityDetailsModel) {
 
         self.model = model
+
+        self.numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale.current
+        numberFormatter.usesGroupingSeparator = true
+        numberFormatter.numberStyle = .decimal
     }
 
     func observeTitle(_ observer: @escaping ValueUpdate<LabelViewModel>) {
@@ -32,6 +41,16 @@ class CityDetailsViewModelImp: CityDetailsViewModel {
 
     func observePopulationTitle(_ observer: @escaping ValueUpdate<LabelViewModel>) {
 
-        observer(LabelViewModel(text: populationTitleLabelText, font: populationTitleLabelFont))
+        observer(LabelViewModel(text: populationTitleLabelText, font: populationTitleFont))
+    }
+
+    func observePopulation(_ observer: @escaping ValueUpdate<LabelViewModel>) {
+
+        model.observePopulation(mapUpdate(observer) { population in LabelViewModel(text: self.populationText(population), font: self.populationTitleFont) })
+    }
+
+    private func populationText(_ population: Int) -> String {
+
+        numberFormatter.string(for: population) ?? ""
     }
 }

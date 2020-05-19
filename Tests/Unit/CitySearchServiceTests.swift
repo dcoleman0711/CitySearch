@@ -81,16 +81,16 @@ class CitySearchServiceSteps {
     func expectedResults() -> CitySearchResults {
 
         CitySearchResults(results: [
-            CitySearchResult(name: "la Massana"),
-            CitySearchResult(name: "El Tarter"),
-            CitySearchResult(name: "Arinsal"),
-            CitySearchResult(name: "les Escaldes"),
-            CitySearchResult(name: "Canillo"),
-            CitySearchResult(name: "Pas de la Casa"),
-            CitySearchResult(name: "Andorra la Vella"),
-            CitySearchResult(name: "Encamp"),
-            CitySearchResult(name: "Ordino"),
-            CitySearchResult(name: "Sant Julià de Lòria")
+            CitySearchResult(name: "la Massana", population: 7211),
+            CitySearchResult(name: "El Tarter", population: 1052),
+            CitySearchResult(name: "Arinsal", population: 1419),
+            CitySearchResult(name: "les Escaldes", population: 15853),
+            CitySearchResult(name: "Canillo", population: 3292),
+            CitySearchResult(name: "Pas de la Casa", population: 2363),
+            CitySearchResult(name: "Andorra la Vella", population: 20430),
+            CitySearchResult(name: "Encamp", population: 11223),
+            CitySearchResult(name: "Ordino", population: 3066),
+            CitySearchResult(name: "Sant Julià de Lòria", population: 8022)
         ])
     }
 

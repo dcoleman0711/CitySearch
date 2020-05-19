@@ -14,6 +14,7 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
     private let titleLabel: UILabel
     private let populationTitleLabel: UILabel
+    private let populationLabel: UILabel
 
     private let viewModel: CityDetailsViewModel
     private let binder: ViewBinder
@@ -22,13 +23,14 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         let model = CityDetailsModelImp(searchResult: searchResult)
         let viewModel = CityDetailsViewModelImp(model: model)
-        self.init(titleLabel: UILabel(), populationTitleLabel: UILabel(), viewModel: viewModel, binder: ViewBinderImp())
+        self.init(titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), viewModel: viewModel, binder: ViewBinderImp())
     }
 
-    init(titleLabel: UILabel, populationTitleLabel: UILabel, viewModel: CityDetailsViewModel, binder: ViewBinder) {
+    init(titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, viewModel: CityDetailsViewModel, binder: ViewBinder) {
 
         self.titleLabel = titleLabel
         self.populationTitleLabel = populationTitleLabel
+        self.populationLabel = populationLabel
         self.viewModel = viewModel
         self.binder = binder
 
@@ -59,6 +61,7 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         viewModel.observeTitle(binder.bindText(label: titleLabel))
         viewModel.observePopulationTitle(binder.bindText(label: populationTitleLabel))
+        viewModel.observePopulation(binder.bindText(label: populationLabel))
     }
 
     private func setupView() {
@@ -70,6 +73,9 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         view.addSubview(populationTitleLabel)
         populationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(populationLabel)
+        populationLabel.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buildLayout() {
@@ -83,8 +89,13 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
         let populationTitleLabelXConstraint = populationTitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor)
         let populationTitleLabelYConstraint = populationTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32.0)
         let populationTitleLabelConstraints = [populationTitleLabelXConstraint, populationTitleLabelYConstraint]
+
+        // Population Label
+        let populationLabelXConstraint = populationLabel.leftAnchor.constraint(equalTo: populationTitleLabel.rightAnchor, constant: 8.0)
+        let populationLabelYConstraint = populationLabel.centerYAnchor.constraint(equalTo: populationTitleLabel.centerYAnchor)
+        let populationLabelConstraints = [populationLabelXConstraint, populationLabelYConstraint]
         
-        let constraints = [NSLayoutConstraint]([titleLabelConstraints, populationTitleLabelConstraints].joined())
+        let constraints = [NSLayoutConstraint]([titleLabelConstraints, populationTitleLabelConstraints, populationLabelConstraints].joined())
 
         view.addConstraints(constraints)
     }

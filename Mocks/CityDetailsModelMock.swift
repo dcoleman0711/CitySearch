@@ -7,9 +7,15 @@ import Foundation
 
 class CityDetailsModelMock : CityDetailsModel {
 
-    public var observeTitleTextImp: (_ update: @escaping ValueUpdate<String>) -> Void = { update in }
+    var observeTitleTextImp: (_ update: @escaping ValueUpdate<String>) -> Void = { update in }
     func observeTitleText(_ update: @escaping ValueUpdate<String>) {
 
         observeTitleTextImp(update)
+    }
+
+    var observePopulationImp: (_ update: @escaping ValueUpdate<Int>) -> Void = { update in }
+    func observePopulation(_ update: @escaping ValueUpdate<Int>) {
+
+        observePopulationImp(update)
     }
 }

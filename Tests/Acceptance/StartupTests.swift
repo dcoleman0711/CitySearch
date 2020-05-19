@@ -14,11 +14,11 @@ class StartupTestConstants {
     static let transitionType = UIView.AnimationOptions.transitionFlipFromRight
 
     static let initialData = CitySearchResults(results: [
-        CitySearchResult(name: "Test City 1"),
-        CitySearchResult(name: "Test City 2"),
-        CitySearchResult(name: "Test City 3"),
-        CitySearchResult(name: "Test City 4"),
-        CitySearchResult(name: "Test City 5")
+        CitySearchResult(name: "Test City 1", population: 1000),
+        CitySearchResult(name: "Test City 2", population: 1000),
+        CitySearchResult(name: "Test City 3", population: 1000),
+        CitySearchResult(name: "Test City 4", population: 1000),
+        CitySearchResult(name: "Test City 5", population: 1000)
     ])
 }
 

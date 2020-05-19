@@ -15,7 +15,7 @@ class CitySearchResultsStub {
         let items = itemIndices.map { index -> CitySearchResult in
 
             let stubName = "Stub City #\(index)"
-            return CitySearchResult(name: stubName)
+            return CitySearchResult(name: stubName, population: (index + 1) * 1000)
         }
 
         return CitySearchResults(results: items)

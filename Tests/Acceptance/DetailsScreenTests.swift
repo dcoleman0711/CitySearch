@@ -94,7 +94,7 @@ class DetailsScreenTests: XCTestCase {
     func testPopulationTitleFont() {
 
         let populationTitleLabel = given.populationTitleLabel()
-        let populationTitleFont = given.populationTitleFont()
+        let populationTitleFont = given.populationFont()
         let detailsScreen = given.detailsScreen(populationTitleLabel: populationTitleLabel)
 
         when.detailsScreenIsLoaded(detailsScreen)
@@ -112,6 +112,41 @@ class DetailsScreenTests: XCTestCase {
 
         then.label(populationTitleLabel, textIs: populationTitleText)
     }
+
+    func testPopulationPosition() {
+
+        let populationLabel = given.populationLabel()
+        let populationTitleLabel = given.populationTitleLabel()
+        let detailsScreen = given.detailsScreen(populationTitleLabel: populationTitleLabel, populationLabel: populationLabel)
+        given.detailsScreenIsLoaded(detailsScreen)
+
+        when.detailsViewAppearsOnScreen(detailsScreen)
+
+        then.populationLabel(populationLabel, isVerticallyAlignedAndSpacedNextTo: populationTitleLabel, in: detailsScreen)
+    }
+
+    func testPopulationFont() {
+
+        let populationLabel = given.populationLabel()
+        let populationFont = given.populationFont()
+        let detailsScreen = given.detailsScreen(populationLabel: populationLabel)
+
+        when.detailsScreenIsLoaded(detailsScreen)
+
+        then.label(populationLabel, fontIs: populationFont)
+    }
+
+    func testPopulationText() {
+
+        let populationLabel = given.populationLabel()
+        let searchResult = given.searchResult()
+        let populationText = given.populationText(for: searchResult)
+        let detailsScreen = given.detailsScreen(searchResult: searchResult, populationLabel: populationLabel)
+
+        when.detailsScreenIsLoaded(detailsScreen)
+
+        then.label(populationLabel, textIs: populationText)
+    }
 }
 
 class DetailsScreenSteps {
@@ -128,6 +163,11 @@ class DetailsScreenSteps {
         UILabel()
     }
 
+    func populationLabel() -> UILabel {
+
+        UILabel()
+    }
+
     func titleFont() -> UIFont {
 
         DetailsScreenTestConstants.titleFont
@@ -138,9 +178,14 @@ class DetailsScreenSteps {
         DetailsScreenTestConstants.populationTitleText
     }
 
-    func populationTitleFont() -> UIFont {
+    func populationFont() -> UIFont {
 
         DetailsScreenTestConstants.populationTitleFont
+    }
+
+    func populationText(for searchResult: CitySearchResult) -> String {
+
+        "1,234,567"
     }
 
     func screenSizes() -> [CGSize] {
@@ -150,7 +195,7 @@ class DetailsScreenSteps {
 
     func searchResult() -> CitySearchResult {
 
-        CitySearchResult(name: "Test City")
+        CitySearchResult(name: "Test City", population: 1234567)
     }
 
     func titleText(for searchResult: CitySearchResult) -> String {
@@ -158,9 +203,9 @@ class DetailsScreenSteps {
         searchResult.name
     }
 
-    func detailsScreen(searchResult: CitySearchResult = CitySearchResult(name: ""), titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel()) -> CityDetailsView {
+    func detailsScreen(searchResult: CitySearchResult = CitySearchResultsStub.stubResults().results[0], titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), populationLabel: UILabel = UILabel()) -> CityDetailsView {
 
-        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, viewModel: CityDetailsViewModelImp(model: CityDetailsModelImp(searchResult: searchResult)), binder: ViewBinderImp())
+        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, viewModel: CityDetailsViewModelImp(model: CityDetailsModelImp(searchResult: searchResult)), binder: ViewBinderImp())
     }
 
     func detailsScreenIsLoaded(_ detailsScreen: CityDetailsView) {
@@ -190,12 +235,18 @@ class DetailsScreenSteps {
 
     func label(_ titleLabel: UILabel, textIs expectedText: String) {
 
-        XCTAssertEqual(titleLabel.text, expectedText, "Title label text is not correct")
+        XCTAssertEqual(titleLabel.text, expectedText, "Label text is not correct")
     }
 
     func populationTitleLabel(_ populationTitleLabel: UILabel, isLeftAlignedAndSpacedBelow titleLabel: UILabel, in detailsView: CityDetailsView) {
 
         let expectedOrigin = CGPoint(x: titleLabel.frame.origin.x, y: titleLabel.frame.maxY + 32.0)
         XCTAssertEqual(populationTitleLabel.frame.origin, expectedOrigin, "Population title label is not positioned correctly")
+    }
+
+    func populationLabel(_ populationLabel: UILabel, isVerticallyAlignedAndSpacedNextTo populationTitleLabel: UILabel, in detailsScreen: CityDetailsView) {
+
+        let expectedOrigin = CGPoint(x: populationTitleLabel.frame.maxX + 8.0, y: populationTitleLabel.frame.center.y - (populationLabel.frame.size.height / 2.0))
+        XCTAssertEqual(populationLabel.frame.origin, expectedOrigin, "Population label is not positioned correctly")
     }
 }

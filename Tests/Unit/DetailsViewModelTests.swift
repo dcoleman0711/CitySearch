@@ -55,32 +55,57 @@ class DetailsViewModelTests: XCTestCase {
 
     func testPopulationTitleFont() {
 
-        let populationTitleFont = given.populationTitleFont()
+        let populationFont = given.populationFont()
         let model = given.model()
         let detailsViewModel = given.detailsViewModel(model: model)
         let labelObserver = given.labelObserver()
 
         when.observer(labelObserver, observesPopulationTitleOn: detailsViewModel)
 
-        then.observedFont(on: labelObserver, isEqualTo: populationTitleFont)
+        then.observedFont(on: labelObserver, isEqualTo: populationFont)
     }
 
     func testPopulationTitleText() {
 
-        let populationPopulationTitleText = given.populationTitleText()
+        let populationTitle = given.populationTitleText()
         let model = given.model()
         let detailsViewModel = given.detailsViewModel(model: model)
         let labelObserver = given.labelObserver()
 
         when.observer(labelObserver, observesPopulationTitleOn: detailsViewModel)
 
-        then.observedText(on: labelObserver, isEqualTo: populationPopulationTitleText)
+        then.observedText(on: labelObserver, isEqualTo: populationTitle)
+    }
+
+    func testPopulationFont() {
+
+        let populationFont = given.populationFont()
+        let model = given.model()
+        let detailsViewModel = given.detailsViewModel(model: model)
+        let labelObserver = given.labelObserver()
+
+        when.observer(labelObserver, observesPopulationOn: detailsViewModel)
+
+        then.observedFont(on: labelObserver, isEqualTo: populationFont)
+    }
+
+    func testPopulationText() {
+
+        let model = given.model()
+        let populationText = given.populationText(from: model)
+        let detailsViewModel = given.detailsViewModel(model: model)
+        let labelObserver = given.labelObserver()
+
+        when.observer(labelObserver, observesPopulationOn: detailsViewModel)
+
+        then.observedText(on: labelObserver, isEqualTo: populationText)
     }
 }
 
 class DetailsViewModelSteps {
 
     private let titleText = "Test Title"
+    private let population = 1234567
 
     private var observedLabelData: LabelViewModel?
 
@@ -91,7 +116,7 @@ class DetailsViewModelSteps {
         DetailsScreenTestConstants.titleFont
     }
 
-    func populationTitleFont() -> UIFont {
+    func populationFont() -> UIFont {
 
         DetailsScreenTestConstants.populationTitleFont
     }
@@ -118,12 +143,22 @@ class DetailsViewModelSteps {
             observer(self.titleText)
         }
 
+        model.observePopulationImp = { observer in
+
+            observer(self.population)
+        }
+
         return model
     }
 
     func titleText(from model: CityDetailsModelMock) -> String {
 
         titleText
+    }
+
+    func populationText(from: CityDetailsModelMock) -> String {
+
+        "1,234,567"
     }
 
     func detailsViewModel(model: CityDetailsModelMock) -> CityDetailsViewModel {
@@ -139,6 +174,11 @@ class DetailsViewModelSteps {
     func observer(_ observer: @escaping ValueUpdate<LabelViewModel>, observesPopulationTitleOn viewModel: CityDetailsViewModel) {
 
         viewModel.observePopulationTitle(observer)
+    }
+
+    func observer(_ observer: @escaping ValueUpdate<LabelViewModel>, observesPopulationOn viewModel: CityDetailsViewModel) {
+
+        viewModel.observePopulation(observer)
     }
 
     func observedFont(on: ValueUpdate<LabelViewModel>, isEqualTo expectedFont: UIFont) {

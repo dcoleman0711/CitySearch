@@ -171,7 +171,7 @@ class SearchResultCellSteps {
 
     func searchResult() -> CitySearchResult {
 
-        CitySearchResult(name: "Test City")
+        CitySearchResultsStub.stubResults().results[0]
     }
 
     func titleText(for searchResult: CitySearchResult) -> String {

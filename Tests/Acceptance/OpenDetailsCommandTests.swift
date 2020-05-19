@@ -51,7 +51,7 @@ class OpenDetailsCommandSteps {
 
     func searchResult() -> CitySearchResult {
 
-        CitySearchResult(name: "Test City")
+        CitySearchResultsStub.stubResults().results[0]
     }
 
     func searchScreen() -> SearchViewMock {
