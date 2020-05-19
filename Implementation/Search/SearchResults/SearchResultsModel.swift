@@ -15,6 +15,7 @@ protocol SearchResultsModel: class {
 class SearchResultsModelImp: SearchResultsModel {
 
     private let modelFactory: CitySearchResultModelFactory
+    private let openDetailsCommandFactory: OpenDetailsCommandFactory
 
     private var resultModels: Observable<[CitySearchResultModel]>
 
@@ -26,6 +27,7 @@ class SearchResultsModelImp: SearchResultsModel {
     init(modelFactory: CitySearchResultModelFactory, openDetailsCommandFactory: OpenDetailsCommandFactory, resultModels: Observable<[CitySearchResultModel]>) {
 
         self.modelFactory = modelFactory
+        self.openDetailsCommandFactory = openDetailsCommandFactory
 
         self.resultModels = resultModels
     }
@@ -37,6 +39,6 @@ class SearchResultsModelImp: SearchResultsModel {
 
     func setResults(_ results: CitySearchResults) {
 
-        self.resultModels.value = results.results.map({ modelFactory.resultModel(searchResult: $0, tapCommandFactory: OpenDetailsCommandFactoryImp()) })
+        self.resultModels.value = results.results.map({ modelFactory.resultModel(searchResult: $0, tapCommandFactory: self.openDetailsCommandFactory) })
     }
 }

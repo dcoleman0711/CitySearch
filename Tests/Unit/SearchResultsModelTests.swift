@@ -64,6 +64,18 @@ class SearchResultsModelTests: XCTestCase {
         // Good example of the same step being a "when" in one test (the previous one) and a "then" in another test (this one).  Making something happen isn't the same as checking that it did happen, so I made a slightly renamed function.  There are other ways to handle this, like separating the assertions into another class (but then you have to deal with passing state between these classes)
         then.resultModels(resultModels, isSetTo: expectedResultModels)
     }
+
+    func testPassCommandFactory() {
+
+        let searchResults = given.searchResults()
+        let tapCommandFactory = given.tapCommandFactory()
+        let resultModels = given.resultModelsObservable()
+        let searchModel = given.searchResultsModelCreated(resultModels: resultModels, tapCommandFactory: tapCommandFactory)
+
+        when.setResults(searchModel, searchResults)
+
+        then.resultModels(resultModels, commandFactoriesAreAll: tapCommandFactory)
+    }
 }
 
 class SearchResultsModelSteps {
@@ -76,6 +88,25 @@ class SearchResultsModelSteps {
     private var listenerIsNotifiedImmediately = false
 
     private var resultModelsValue: [CitySearchResultModel] = []
+    private var resultModelsCommandFactories: [ObjectIdentifier: OpenDetailsCommandFactory] = [:]
+
+    init() {
+
+        var modelsMap: [String : CitySearchResultModelMock] = [:]
+        resultModelFactory.resultModelImp = { (searchResult, tapCommandFactory) in
+
+            let model = modelsMap[searchResult.name] ?? {
+
+                let result = CitySearchResultModelMock()
+                modelsMap[searchResult.name] = result
+                return result
+            }()
+
+            self.resultModelsCommandFactories[ObjectIdentifier(model)] = tapCommandFactory
+
+            return model
+        }
+    }
 
     func resultModelsObservable() -> ObservableMock<[CitySearchResultModel]> {
 
@@ -112,18 +143,7 @@ class SearchResultsModelSteps {
 
     func models(for searchResults: CitySearchResults) -> [CitySearchResultModelMock] {
 
-        var modelsMap: [String : CitySearchResultModelMock] = [:]
-        resultModelFactory.resultModelImp = { (searchResult, tapCommandFactory) in
-
-            modelsMap[searchResult.name] ?? {
-
-                let result = CitySearchResultModelMock()
-                modelsMap[searchResult.name] = result
-                return result
-            }()
-        }
-
-        return searchResults.results.map( { resultModelFactory.resultModel(searchResult: $0, tapCommandFactory: OpenDetailsCommandFactoryMock()) as! CitySearchResultModelMock } )
+        searchResults.results.map( { resultModelFactory.resultModel(searchResult: $0, tapCommandFactory: OpenDetailsCommandFactoryMock()) as! CitySearchResultModelMock } )
     }
 
     func resultsObserver() -> ValueUpdate<[CitySearchResultModel]> {
@@ -134,9 +154,14 @@ class SearchResultsModelSteps {
         }
     }
 
-    func searchResultsModelCreated(resultModels: ObservableMock<[CitySearchResultModel]>) -> SearchResultsModelImp {
+    func tapCommandFactory() -> OpenDetailsCommandFactoryMock {
 
-        SearchResultsModelImp(modelFactory: resultModelFactory, openDetailsCommandFactory: OpenDetailsCommandFactoryMock(), resultModels: resultModels)
+        OpenDetailsCommandFactoryMock()
+    }
+
+    func searchResultsModelCreated(resultModels: ObservableMock<[CitySearchResultModel]> = ObservableMock<[CitySearchResultModel]>([]), tapCommandFactory: OpenDetailsCommandFactoryMock = OpenDetailsCommandFactoryMock()) -> SearchResultsModelImp {
+
+        SearchResultsModelImp(modelFactory: resultModelFactory, openDetailsCommandFactory: tapCommandFactory, resultModels: resultModels)
     }
 
     func searchResultsModel(_ searchResultsModel: SearchResultsModelImp, dataIsSetTo searchResults: CitySearchResults) {
@@ -171,6 +196,13 @@ class SearchResultsModelSteps {
 
     func resultModels(_ resultModels: ObservableMock<[CitySearchResultModel]>, isSetTo expectedResults: [CitySearchResultModelMock]) {
 
-        XCTAssertTrue(resultModelsValue.elementsEqual(expectedResults) { (firstModel, secondModel) in firstModel === secondModel } ?? false, "Result models was not set to expected value")
+        XCTAssertTrue(resultModelsValue.elementsEqual(expectedResults) { (firstModel, secondModel) in firstModel === secondModel }, "Result models was not set to expected value")
+    }
+
+    func resultModels(_ resultModels: ObservableMock<[CitySearchResultModel]>, commandFactoriesAreAll commandFactory: OpenDetailsCommandFactoryMock) {
+
+        let resultModelsFactories = resultModelsValue.map({ self.resultModelsCommandFactories[ObjectIdentifier($0)]})
+
+        XCTAssertTrue(resultModelsFactories.allSatisfy { factory in factory === commandFactory }, "Result models were not created with the correct tap command factory")
     }
 }

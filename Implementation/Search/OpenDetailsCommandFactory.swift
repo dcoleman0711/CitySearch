@@ -5,7 +5,7 @@
 
 import Foundation
 
-protocol OpenDetailsCommandFactory {
+protocol OpenDetailsCommandFactory: class {
 
     func openDetailsCommand(for searchResult: CitySearchResult) -> OpenDetailsCommand
 }
