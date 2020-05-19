@@ -5,9 +5,9 @@
 
 import UIKit
 
-protocol StartupView {
+protocol StartupView where Self: UIViewController {
 
-    var view: UIView! { get }
+
 }
 
 class StartupViewImp : UIViewController, StartupView {

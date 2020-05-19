@@ -6,14 +6,7 @@
 import UIKit
 
 protocol SearchView where Self: UIViewController {
-
-    var view: UIView! { get }
-
-    var navigationController: UINavigationController? { get }
-
-    var supportedInterfaceOrientations: UIInterfaceOrientationMask { get }
-
-    func loadViewIfNeeded()
+    
 }
 
 class SearchViewImp: UIViewController, SearchView {

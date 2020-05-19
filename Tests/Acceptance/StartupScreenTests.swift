@@ -276,7 +276,7 @@ class StartupScreenSteps {
         interval + 1.0
     }
 
-    func startupScreenLoadedAtTime(_ startupScreen: StartupViewImp) -> Date {
+    func startupScreenLoadedAtTime(_ startupScreen: StartupView) -> Date {
 
         startupScreen.loadViewIfNeeded()
         return Date()
@@ -307,7 +307,7 @@ class StartupScreenSteps {
         UIInterfaceOrientationMask.landscape
     }
 
-    func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock(), searchService: CitySearchServiceMock = CitySearchServiceMock()) -> StartupViewImp {
+    func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock(), searchService: CitySearchServiceMock = CitySearchServiceMock()) -> StartupView {
 
         let builder = StartupViewBuilderImp()
         builder.appTitleLabel = appTitleLabel
@@ -332,29 +332,29 @@ class StartupScreenSteps {
         })
     }
 
-    func startupScreenIsShown(_ startupScreen: StartupViewImp) {
+    func startupScreenIsShown(_ startupScreen: StartupView) {
 
         startupScreen.loadViewIfNeeded()
     }
 
-    func startupScreenSizeBecomes(_ startupScreen: StartupViewImp, _ screenSize: CGSize) {
+    func startupScreenSizeBecomes(_ startupScreen: StartupView, _ screenSize: CGSize) {
 
         startupScreen.view.frame = CGRect(origin: CGPoint.zero, size: screenSize)
         startupScreen.view.setNeedsLayout()
         startupScreen.view.layoutIfNeeded()
     }
 
-    func startupScreenBackgroundIsWhite(_ startupScreen: StartupViewImp) {
+    func startupScreenBackgroundIsWhite(_ startupScreen: StartupView) {
 
         XCTAssertEqual(startupScreen.view.backgroundColor, UIColor.white)
     }
 
-    func startupScreen(_ startupScreen: StartupViewImp, supportedOrientationsAre expectedOrientations: UIInterfaceOrientationMask) {
+    func startupScreen(_ startupScreen: StartupView, supportedOrientationsAre expectedOrientations: UIInterfaceOrientationMask) {
 
         XCTAssertEqual(startupScreen.supportedInterfaceOrientations, expectedOrientations)
     }
 
-    func appTitleIsVisible(_ startupScreen: StartupViewImp, _ appTitleLabel: UILabel) {
+    func appTitleIsVisible(_ startupScreen: StartupView, _ appTitleLabel: UILabel) {
 
         XCTAssertTrue(appTitleLabel.isDescendant(of: startupScreen.view), "App title is not visible on startup screen")
     }

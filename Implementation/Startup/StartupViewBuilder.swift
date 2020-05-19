@@ -10,7 +10,7 @@ protocol StartupViewBuilder: class {
     var transitionCommand: StartupTransitionCommand { get set }
     var searchService: CitySearchService { get set }
 
-    func build() -> StartupViewImp
+    func build() -> StartupView
 }
 
 class StartupViewBuilderImp: StartupViewBuilder {
@@ -19,7 +19,7 @@ class StartupViewBuilderImp: StartupViewBuilder {
     var transitionCommand: StartupTransitionCommand = StartupTransitionCommandNull()
     var searchService: CitySearchService = CitySearchServiceImp()
 
-    func build() -> StartupViewImp {
+    func build() -> StartupView {
 
         let model = StartupModelImp(timerType: Timer.self, transitionCommand: transitionCommand, searchService: searchService)
         let viewModel = StartupViewModelImp(model: model)

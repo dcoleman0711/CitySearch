@@ -141,7 +141,7 @@ class StartupSteps {
         return app
     }
 
-    func startupView() -> StartupViewImp {
+    func startupView() -> StartupView {
 
         startupViewStub
     }
@@ -199,7 +199,7 @@ class StartupSteps {
             return
         }
 
-        XCTAssertTrue(rootController is StartupViewImp, "Root controller's is not Startup Screen")
+        XCTAssertTrue(rootController is StartupView, "Root controller's is not Startup Screen")
     }
 
     func transition(ofType expectedTransitionType: UIView.AnimationOptions, isAppliedFrom expectedOldView: UIViewController, toNavigationStackContaining expectedNewView: UIViewController, with expectedDuration: TimeInterval) {

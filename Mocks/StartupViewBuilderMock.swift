@@ -10,9 +10,8 @@ class StartupViewBuilderMock: StartupViewBuilder {
     var transitionCommand: StartupTransitionCommand = StartupTransitionCommandMock()
     var searchService: CitySearchService = CitySearchServiceMock()
 
-    var buildImp: () -> StartupViewImp = { StartupViewBuilderImp().build() }
-
-    func build() -> StartupViewImp {
+    var buildImp: () -> StartupView = { StartupViewBuilderImp().build() }
+    func build() -> StartupView {
 
         buildImp()
     }

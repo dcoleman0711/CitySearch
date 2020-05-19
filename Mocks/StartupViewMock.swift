@@ -5,11 +5,6 @@
 
 import UIKit
 
-class StartupViewMock: StartupView {
+class StartupViewMock: UIViewControllerMock, StartupView {
 
-    init() {
-
-    }
-
-    var view: UIView! = UIView()
 }
