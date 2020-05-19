@@ -129,6 +129,27 @@ class DetailsViewTests: XCTestCase {
 
         then.populationLabel(populationLabel, isBoundTo: viewModel)
     }
+
+    func testMapViewAutoResizeMaskDisabled() {
+
+        let mapView = given.mapView()
+        let detailsView = given.detailsView(mapView: mapView)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.autoResizeMaskIsDisabled(mapView.view)
+    }
+
+    func testMapViewPositionConstraints() {
+
+        let mapView = given.mapView()
+        let detailsView = given.detailsView(mapView: mapView)
+        let expectedConstraints = given.mapView(mapView, constraintsToTopRightWithHalfWidthAnd2to1AspectRatio: detailsView)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
+    }
 }
 
 class DetailsViewSteps {
@@ -152,6 +173,11 @@ class DetailsViewSteps {
     func populationLabel() -> UILabel {
 
         UILabel()
+    }
+
+    func mapView() -> MapViewMock {
+
+        MapViewMock()
     }
 
     func viewModel() -> CityDetailsViewModelMock {
@@ -194,9 +220,9 @@ class DetailsViewSteps {
         return binder
     }
 
-    func detailsView(titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), populationLabel: UILabel = UILabel(), viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
+    func detailsView(titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), populationLabel: UILabel = UILabel(), mapView: MapViewMock = MapViewMock(), viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
 
-        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, viewModel: viewModel, binder: binder)
+        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: mapView, viewModel: viewModel, binder: binder)
     }
 
     func detailsViewIsLoaded(_ detailsView: CityDetailsViewImp) {
@@ -220,6 +246,14 @@ class DetailsViewSteps {
 
         [populationLabel.leftAnchor.constraint(equalTo: populationTitleLabel.rightAnchor, constant: 8.0),
          populationLabel.centerYAnchor.constraint(equalTo: populationTitleLabel.centerYAnchor)]
+    }
+
+    func mapView(_ mapView: MapViewMock, constraintsToTopRightWithHalfWidthAnd2to1AspectRatio detailsView: CityDetailsViewImp) -> [NSLayoutConstraint] {
+
+        [mapView.view.rightAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.rightAnchor),
+         mapView.view.topAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.topAnchor),
+         mapView.view.leftAnchor.constraint(equalTo: detailsView.view.centerXAnchor),
+         mapView.view.widthAnchor.constraint(equalTo: mapView.view.heightAnchor, multiplier: 2.0)]
     }
 
     func autoResizeMaskIsDisabled(_ view: UIView) {

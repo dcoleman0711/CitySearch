@@ -15,6 +15,7 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
     private let titleLabel: UILabel
     private let populationTitleLabel: UILabel
     private let populationLabel: UILabel
+    private let mapView: MapView
 
     private let viewModel: CityDetailsViewModel
     private let binder: ViewBinder
@@ -23,14 +24,16 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         let model = CityDetailsModelImp(searchResult: searchResult)
         let viewModel = CityDetailsViewModelImp(model: model)
-        self.init(titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), viewModel: viewModel, binder: ViewBinderImp())
+        self.init(titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(), viewModel: viewModel, binder: ViewBinderImp())
     }
 
-    init(titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, viewModel: CityDetailsViewModel, binder: ViewBinder) {
+    init(titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, mapView: MapView, viewModel: CityDetailsViewModel, binder: ViewBinder) {
 
         self.titleLabel = titleLabel
         self.populationTitleLabel = populationTitleLabel
         self.populationLabel = populationLabel
+        self.mapView = mapView
+        
         self.viewModel = viewModel
         self.binder = binder
 
@@ -76,6 +79,9 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         view.addSubview(populationLabel)
         populationLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(mapView.view)
+        mapView.view.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buildLayout() {
@@ -94,8 +100,15 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
         let populationLabelXConstraint = populationLabel.leftAnchor.constraint(equalTo: populationTitleLabel.rightAnchor, constant: 8.0)
         let populationLabelYConstraint = populationLabel.centerYAnchor.constraint(equalTo: populationTitleLabel.centerYAnchor)
         let populationLabelConstraints = [populationLabelXConstraint, populationLabelYConstraint]
-        
-        let constraints = [NSLayoutConstraint]([titleLabelConstraints, populationTitleLabelConstraints, populationLabelConstraints].joined())
+
+        // Population Label
+        let mapViewXConstraint = mapView.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
+        let mapViewYConstraint = mapView.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        let mapViewWidthConstraint = mapView.view.leftAnchor.constraint(equalTo: view.centerXAnchor)
+        let mapViewAspectRatioConstraint = mapView.view.widthAnchor.constraint(equalTo: mapView.view.heightAnchor, multiplier: 2.0)
+        let mapViewConstraints = [mapViewXConstraint, mapViewYConstraint, mapViewWidthConstraint, mapViewAspectRatioConstraint]
+
+        let constraints = [NSLayoutConstraint]([titleLabelConstraints, populationTitleLabelConstraints, populationLabelConstraints, mapViewConstraints].joined())
 
         view.addConstraints(constraints)
     }

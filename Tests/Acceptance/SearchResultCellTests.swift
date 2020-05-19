@@ -274,11 +274,3 @@ class SearchResultCellSteps {
         XCTAssertEqual(imageView.contentMode, UIView.ContentMode.scaleAspectFill, "Image view does not display image with aspect fill")
     }
 }
-
-extension CGRect {
-
-    var center: CGPoint {
-
-        CGPoint(x: origin.x + size.width / 2.0, y: origin.y + size.height / 2.0)
-    }
-}

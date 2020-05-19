@@ -117,6 +117,6 @@ class ViewConstraintValidator {
 
     static func validateThatView(_ view: UIView, hasConstraints expectedConstraints: [NSLayoutConstraint], message: String) {
 
-        XCTAssertTrue(view.constraints.contains { constraint in expectedConstraints.contains { expectedConstraint in constraint.isEqualToConstraint(expectedConstraint) } }, message)
+        XCTAssertTrue(expectedConstraints.allSatisfy { first in view.constraints.contains { second in first.isEqualToConstraint(second) } }, message)
     }
 }

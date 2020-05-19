@@ -147,6 +147,28 @@ class DetailsScreenTests: XCTestCase {
 
         then.label(populationLabel, textIs: populationText)
     }
+
+    func testMapPosition() {
+
+        let map = given.map()
+        let detailsScreen = given.detailsScreen(map: map)
+        given.detailsScreenIsLoaded(detailsScreen)
+
+        when.detailsViewAppearsOnScreen(detailsScreen)
+
+        then.map(map, isInTopRightCornerOfSafeAreaOf: detailsScreen)
+    }
+
+    func testMapSize() {
+
+        let map = given.map()
+        let detailsScreen = given.detailsScreen(map: map)
+        given.detailsScreenIsLoaded(detailsScreen)
+
+        when.detailsViewAppearsOnScreen(detailsScreen)
+
+        then.map(map, isHalfWidthWithCorrectAspectRatioOf: detailsScreen)
+    }
 }
 
 class DetailsScreenSteps {
@@ -171,6 +193,11 @@ class DetailsScreenSteps {
     func titleFont() -> UIFont {
 
         DetailsScreenTestConstants.titleFont
+    }
+
+    func map() -> MapViewMock {
+
+        MapViewMock()
     }
 
     func populationTitleText() -> String {
@@ -203,9 +230,9 @@ class DetailsScreenSteps {
         searchResult.name
     }
 
-    func detailsScreen(searchResult: CitySearchResult = CitySearchResultsStub.stubResults().results[0], titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), populationLabel: UILabel = UILabel()) -> CityDetailsView {
+    func detailsScreen(searchResult: CitySearchResult = CitySearchResultsStub.stubResults().results[0], titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), populationLabel: UILabel = UILabel(), map: MapViewMock = MapViewMock()) -> CityDetailsView {
 
-        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, viewModel: CityDetailsViewModelImp(model: CityDetailsModelImp(searchResult: searchResult)), binder: ViewBinderImp())
+        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: map, viewModel: CityDetailsViewModelImp(model: CityDetailsModelImp(searchResult: searchResult)), binder: ViewBinderImp())
     }
 
     func detailsScreenIsLoaded(_ detailsScreen: CityDetailsView) {
@@ -248,5 +275,16 @@ class DetailsScreenSteps {
 
         let expectedOrigin = CGPoint(x: populationTitleLabel.frame.maxX + 8.0, y: populationTitleLabel.frame.center.y - (populationLabel.frame.size.height / 2.0))
         XCTAssertEqual(populationLabel.frame.origin, expectedOrigin, "Population label is not positioned correctly")
+    }
+
+    func map(_ map: MapViewMock, isInTopRightCornerOfSafeAreaOf detailsScreen: CityDetailsView) {
+
+        XCTAssertEqual(map.view.frame.topRight, safeAreaFrame.topRight, "Map is not positioned correctly")
+    }
+
+    func map(_ map: MapViewMock, isHalfWidthWithCorrectAspectRatioOf detailsScreen: CityDetailsView) {
+
+        XCTAssertEqual(map.view.frame.width, safeAreaFrame.maxX - detailsScreen.view.frame.center.x, "Map is not half-width of details screen")
+        XCTAssertEqual(map.view.frame.height, map.view.frame.width / 2.0, "Map does not have the correct aspect ratio")
     }
 }
