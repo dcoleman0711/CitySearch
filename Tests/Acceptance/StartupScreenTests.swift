@@ -247,7 +247,12 @@ class StartupScreenSteps {
             self.servicePromise = { results in
 
                 promise(results)
-                self.resultsReturnedExpectation?.fulfill()
+                
+                // Let the run loop run before fulfilling, because the results are dispatched on the main run loop
+                DispatchQueue.main.async {
+                    
+                    self.resultsReturnedExpectation?.fulfill()
+                }
             }
         })
 

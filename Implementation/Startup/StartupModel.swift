@@ -18,16 +18,18 @@ class StartupModelImp: StartupModel {
     private let appTitleText: String
     private let timerType: Timer.Type
     private let transitionCommand: StartupTransitionCommand
+    private let invocationQueue: IDispatchQueue
     private let initialResults: CitySearchService.SearchFuture
 
     private var test: AnyCancellable!
 
-    init(timerType: Timer.Type, transitionCommand: StartupTransitionCommand, searchService: CitySearchService) {
+    init(timerType: Timer.Type, transitionCommand: StartupTransitionCommand, searchService: CitySearchService, invocationQueue: IDispatchQueue) {
 
         self.appTitleText = "City Search"
         self.timerType = timerType
 
         self.transitionCommand = transitionCommand
+        self.invocationQueue = invocationQueue
 
         initialResults = searchService.citySearch()
     }
@@ -49,7 +51,7 @@ class StartupModelImp: StartupModel {
         var subscriber: Cancellable?
         subscriber = beginTransitionEvents.sink(receiveCompletion: { error in }, receiveValue: { initialResults in
 
-            self.transitionCommand.invoke(initialResults: initialResults)
+            self.invocationQueue.async { self.transitionCommand.invoke(initialResults: initialResults) }
             subscriber = nil
         })
     }

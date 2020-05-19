@@ -51,24 +51,29 @@ class CitySearchServiceImp : CitySearchService {
 
             let task = self.urlSession.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
 
-                guard let data = data else {
-
-                    promise(.failure(error ?? NSError(domain: URLError.errorDomain, code: URLError.unknown.rawValue)))
-                    return
-                }
-
-                do {
-
-                    let responseObj = try JSONDecoder().decode(CitySearchResults.self, from: data)
-                    promise(.success(responseObj))
-                }
-                catch {
-
-                    promise(.failure(error))
-                }
+                let result = self.parseResponse(data, error)
+                promise(result)
             }
 
             task.resume();
         })
+    }
+
+    private func parseResponse(_ data: Data?, _ error: Error?) -> Result<CitySearchResults, Error> {
+
+        guard let data = data else {
+
+            return.failure(error ?? NSError(domain: URLError.errorDomain, code: URLError.unknown.rawValue))
+        }
+
+        do {
+
+            let responseObj = try JSONDecoder().decode(CitySearchResults.self, from: data)
+            return .success(responseObj)
+        }
+        catch {
+
+            return .failure(error)
+        }
     }
 }

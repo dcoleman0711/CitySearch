@@ -54,13 +54,14 @@ class StartupModelTests: XCTestCase {
         let searchService = given.searchService()
         let initialResults = given.initialResults(from: searchService)
         let transitionCommand = given.transitionCommand()
+        let invocationQueue = given.invocationQueue()
         let model = given.modelIsCreated(transitionCommand: transitionCommand, searchService: searchService)
         given.transitionIsScheduled(model)
         given.searchServiceHasReturnedResults(searchService)
 
         when.transitionTimerFires()
 
-        then.transitionCommand(transitionCommand, isInvokedWith: initialResults)
+        then.transitionCommand(transitionCommand, isInvokedWith: initialResults, onQueue: invocationQueue)
     }
 
     func testTransitionTimerDoesNotCallTransitionCommandIfInitialResultsAreNotReady() {
@@ -89,6 +90,8 @@ class StartupModelSteps {
 
     private let initialResults = CitySearchResultsStub.stubResults()
 
+    private let invocationQueueMock = DispatchQueueMock()
+
     private var serviceFuture: CitySearchService.SearchFuture!
 
     private var scheduledTimerInterval: TimeInterval?
@@ -101,6 +104,9 @@ class StartupModelSteps {
 
     private var servicePromise: CitySearchService.SearchFuture.Promise!
 
+    private var isOnInvocationQueue = false
+    private var transitionCommandInvokedOnQueue = false
+
     init() {
 
         TimerMock.scheduledTimerImp = { (interval, repeats, block) in
@@ -109,6 +115,13 @@ class StartupModelSteps {
             self.scheduledTimerBlock = block
 
             return TimerMock()
+        }
+
+        invocationQueueMock.asyncImp = { work in
+
+            self.isOnInvocationQueue = true
+            work()
+            self.isOnInvocationQueue = false
         }
     }
 
@@ -129,9 +142,15 @@ class StartupModelSteps {
         transitionCommand.invokeImp = { initialResults in
 
             self.transitionCommandInvocationData = initialResults
+            self.transitionCommandInvokedOnQueue = self.isOnInvocationQueue
         }
 
         return transitionCommand
+    }
+
+    func invocationQueue() -> DispatchQueueMock {
+
+        invocationQueueMock
     }
 
     func appTitle() -> String {
@@ -141,7 +160,7 @@ class StartupModelSteps {
 
     func modelIsCreated(transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock(), searchService: CitySearchServiceMock = CitySearchServiceMock()) -> StartupModelImp {
 
-        StartupModelImp(timerType: TimerMock.self, transitionCommand: transitionCommand, searchService: searchService)
+        StartupModelImp(timerType: TimerMock.self, transitionCommand: transitionCommand, searchService: searchService, invocationQueue: invocationQueueMock)
     }
 
     func textUpdate() -> ValueUpdate<String> {
@@ -201,9 +220,10 @@ class StartupModelSteps {
         XCTAssertEqual(scheduledTimerInterval, expectedInterval)
     }
 
-    func transitionCommand(_ transitionCommand: StartupTransitionCommandMock, isInvokedWith expectedResults: CitySearchResults) {
+    func transitionCommand(_ transitionCommand: StartupTransitionCommandMock, isInvokedWith expectedResults: CitySearchResults, onQueue expectedQueue: DispatchQueueMock) {
 
         XCTAssertEqual(transitionCommandInvocationData, expectedResults, "Transition command was not invoked with correct results")
+        XCTAssertTrue(transitionCommandInvokedOnQueue, "Transition command was not invoked with on the invocation queue")
     }
 
     func transitionCommandIsNotInvoked(_ transitionCommand: StartupTransitionCommandMock) {
@@ -223,5 +243,14 @@ class TimerMock: Timer {
     override class func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> ()) -> Timer {
 
         scheduledTimerImp(interval, repeats, block)
+    }
+}
+
+class DispatchQueueMock: IDispatchQueue {
+
+    var asyncImp: (_ work: @escaping @convention(block) () -> ()) -> Void = { work in }
+    func async(_ work: @escaping @convention(block) () -> ()) {
+
+        asyncImp(work)
     }
 }
