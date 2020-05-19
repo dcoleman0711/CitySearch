@@ -167,9 +167,9 @@ class StartupTransitionSteps {
         transitionAnimations?()
     }
 
-    func searchView(createdBy factory: SearchViewFactoryMock) -> SearchViewImp {
+    func searchView(createdBy factory: SearchViewFactoryMock) -> SearchViewMock {
 
-        let searchView = SearchViewImp()
+        let searchView = SearchViewMock()
 
         factory.searchViewImp = { initialData in
 
@@ -215,7 +215,7 @@ class StartupTransitionSteps {
         XCTAssertEqual(navigationController.viewControllers, [expectedNewRoot], "Navigation stack is not the expected root")
     }
 
-    func searchView(_ searchView: SearchViewImp, isCreatedWith expectedResults: CitySearchResults) {
+    func searchView(_ searchView: SearchViewMock, isCreatedWith expectedResults: CitySearchResults) {
 
         XCTAssertEqual(initialResultsPassedToSearchView, expectedResults, "Search view was not created with initial results")
     }

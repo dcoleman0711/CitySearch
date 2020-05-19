@@ -146,7 +146,7 @@ class StartupSteps {
         startupViewStub
     }
 
-    func searchView() -> SearchViewImp {
+    func searchView() -> SearchView {
 
         searchViewStub
     }
@@ -216,7 +216,7 @@ class StartupSteps {
         XCTAssertEqual(navigationController.viewControllers, [expectedNewView], "Navigation stack is not Search View")
     }
 
-    func searchView(_ view: SearchViewImp, initialDataIs expectedInitialData: CitySearchResults) {
+    func searchView(_ view: SearchView, initialDataIs expectedInitialData: CitySearchResults) {
 
         XCTAssertEqual(searchViewInitialData, expectedInitialData)
     }

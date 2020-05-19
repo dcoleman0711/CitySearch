@@ -79,6 +79,21 @@ class SearchScreenTests: XCTestCase {
 
         then.searchResultsAreDisplayed(initialData)
     }
+
+    func testOpenDetailsCommand() {
+
+        let initialData = given.initialData()
+        let searchResults = given.searchResults()
+        let searchResult = given.searchResult(in: initialData)
+        let detailsScreen = given.detailsScreen(for: searchResult)
+        let searchView = given.searchScreen(searchResults: searchResults, initialData: initialData)
+        let openDetailsCommand = given.openDetailsCommand(for: searchResult)
+        given.searchScreenIsLoaded(searchView)
+
+        when.invoke(openDetailsCommand)
+
+        then.detailsScreenIsPushedOntoNavigationStack(detailsScreen)
+    }
 }
 
 class SearchScreenSteps {
@@ -88,6 +103,8 @@ class SearchScreenSteps {
     private var displayedSearchResults: CitySearchResults?
 
     private var safeAreaFrame = CGRect.zero
+
+    private var openDetailsCommandFactory: OpenDetailsCommandFactory?
 
     init() {
 
@@ -118,9 +135,21 @@ class SearchScreenSteps {
         return SearchResultsViewImp(viewModel: viewModel)
     }
 
-    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchViewImp {
+    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(openDetailsCommandFactory: OpenDetailsCommandFactoryMock()), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchView {
 
-        SearchViewImp(searchResultsView: searchResults, modelFactory: SearchModelFactoryImp(), initialData: initialData)
+        let searchResultsViewFactory = SearchResultsViewFactoryMock()
+
+        searchResultsViewFactory.searchResultsViewImp = { openDetailsCommandFactory in
+
+            self.openDetailsCommandFactory = openDetailsCommandFactory
+            return searchResults
+        }
+
+        let builder = SearchViewBuilder()
+        builder.initialData = initialData
+        builder.searchResultsViewFactory = searchResultsViewFactory
+
+        return builder.build()
     }
 
     func searchScreenIsLoaded(_ searchView: SearchView) {
@@ -152,7 +181,27 @@ class SearchScreenSteps {
         window.windowScene = nil
     }
 
-    func searchResults(_ searchResults: SearchResultsView, isDisplayedIn searchView: SearchViewImp) {
+    func searchResult(in searchResults: CitySearchResults) -> CitySearchResult {
+
+        searchResults.results[searchResults.results.count / 2]
+    }
+
+    func openDetailsCommand(for searchResult: CitySearchResult) -> OpenDetailsCommand {
+
+        self.openDetailsCommandFactory!.openDetailsCommand(for: searchResult)
+    }
+
+    func detailsScreen(for: CitySearchResult) -> CityDetailsViewMock {
+
+        CityDetailsViewMock()
+    }
+
+    func invoke(_ openDetailsCommand: OpenDetailsCommand) {
+
+        openDetailsCommand.invoke()
+    }
+
+    func searchResults(_ searchResults: SearchResultsView, isDisplayedIn searchView: SearchView) {
 
         XCTAssertTrue(searchResults.view.isDescendant(of: searchView.view), "Search results are not displayed in search view")
     }
@@ -172,8 +221,13 @@ class SearchScreenSteps {
         XCTAssertEqual(displayedSearchResults, expectedData, "Search results is not displaying expected data")
     }
 
-    func searchScreen(_ searchScreen: SearchViewImp, supportedOrientationsAre expectedOrientations: UIInterfaceOrientationMask) {
+    func searchScreen(_ searchScreen: SearchView, supportedOrientationsAre expectedOrientations: UIInterfaceOrientationMask) {
 
         XCTAssertEqual(searchScreen.supportedInterfaceOrientations, expectedOrientations, "Supported orientations are not the expected orientations")
+    }
+
+    func detailsScreenIsPushedOntoNavigationStack(_ detailsScreen: CityDetailsViewMock) {
+
+
     }
 }

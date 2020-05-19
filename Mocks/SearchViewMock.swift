@@ -5,11 +5,15 @@
 
 import UIKit
 
-class SearchViewMock : SearchView {
+class SearchViewMock : UIViewControllerMock, SearchView {
 
-    var view: UIView! = UIView()
+}
 
-    func loadViewIfNeeded() {
+class UIViewControllerMock: UIViewController {
 
+    var navigationControllerMock: UINavigationController?
+    override var navigationController: UINavigationController? {
+
+        navigationControllerMock
     }
 }

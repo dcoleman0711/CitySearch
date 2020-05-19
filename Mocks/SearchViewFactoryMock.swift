@@ -3,12 +3,12 @@
 // Copyright (c) 2020 Daniel Coleman. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class SearchViewFactoryMock : SearchViewFactory {
 
-    var searchViewImp: (_ initialData: CitySearchResults) -> SearchViewImp = { (initialData) in SearchViewImp(initialData: initialData) }
-    func searchView(initialData: CitySearchResults) -> SearchViewImp {
+    var searchViewImp: (_ initialData: CitySearchResults) -> SearchView = { (initialData) in SearchViewMock() }
+    func searchView(initialData: CitySearchResults) -> SearchView {
 
         searchViewImp(initialData)
     }

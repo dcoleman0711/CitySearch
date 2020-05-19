@@ -21,9 +21,9 @@ class SearchResultsViewImp : SearchResultsView {
     private let collectionView: UICollectionView
     private let viewModel: SearchResultsViewModel
 
-    convenience init() {
+    convenience init(openDetailsCommandFactory: OpenDetailsCommandFactory) {
 
-        let model = SearchResultsModelImp()
+        let model = SearchResultsModelImp(openDetailsCommandFactory: openDetailsCommandFactory)
         let viewModel = SearchResultsViewModelImp(model: model, viewModelFactory: CitySearchResultViewModelFactoryImp())
         self.init(viewModel: viewModel)
     }

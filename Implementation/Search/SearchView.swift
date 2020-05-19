@@ -5,9 +5,13 @@
 
 import UIKit
 
-protocol SearchView {
+protocol SearchView where Self: UIViewController {
 
     var view: UIView! { get }
+
+    var navigationController: UINavigationController? { get }
+
+    var supportedInterfaceOrientations: UIInterfaceOrientationMask { get }
 
     func loadViewIfNeeded()
 }
@@ -15,16 +19,6 @@ protocol SearchView {
 class SearchViewImp: UIViewController, SearchView {
 
     private let searchResultsView: SearchResultsView
-
-    convenience init() {
-
-        self.init(initialData: CitySearchResults.emptyResults())
-    }
-
-    convenience init(initialData: CitySearchResults) {
-
-        self.init(searchResultsView: SearchResultsViewImp(), modelFactory: SearchModelFactoryImp(), initialData: initialData)
-    }
 
     init(searchResultsView: SearchResultsView, modelFactory: SearchModelFactory, initialData: CitySearchResults) {
 
@@ -73,5 +67,20 @@ class SearchViewImp: UIViewController, SearchView {
         let constraints = [NSLayoutConstraint]([searchResultsViewContraints].joined())
 
         view.addConstraints(constraints)
+    }
+}
+
+class SearchViewBuilder {
+
+    var initialData = CitySearchResults.emptyResults()
+    var searchResultsViewFactory: SearchResultsViewFactory = SearchResultsViewFactoryImp()
+
+    func build() -> SearchView {
+
+        let openDetailsCommandFactory = OpenDetailsCommandFactoryImp(cityDetailsViewFactory: CityDetailsViewFactoryImp())
+        let searchView = SearchViewImp(searchResultsView: searchResultsViewFactory.searchResultsView(openDetailsCommandFactory: openDetailsCommandFactory), modelFactory: SearchModelFactoryImp(), initialData: initialData)
+        openDetailsCommandFactory.searchView = searchView
+
+        return searchView
     }
 }

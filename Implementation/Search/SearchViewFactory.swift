@@ -3,17 +3,19 @@
 // Copyright (c) 2020 Daniel Coleman. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol SearchViewFactory {
 
-    func searchView(initialData: CitySearchResults) -> SearchViewImp
+    func searchView(initialData: CitySearchResults) -> SearchView
 }
 
 class SearchViewFactoryImp: SearchViewFactory {
 
-    func searchView(initialData: CitySearchResults) -> SearchViewImp {
+    func searchView(initialData: CitySearchResults) -> SearchView {
 
-        SearchViewImp(initialData: initialData)
+        let builder = SearchViewBuilder()
+        builder.initialData = initialData
+        return builder.build()
     }
 }

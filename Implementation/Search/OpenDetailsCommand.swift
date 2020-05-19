@@ -3,7 +3,7 @@
 // Copyright (c) 2020 Daniel Coleman. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol OpenDetailsCommand: CellTapCommand {
 
@@ -12,7 +12,20 @@ protocol OpenDetailsCommand: CellTapCommand {
 
 class OpenDetailsCommandImp: OpenDetailsCommand {
 
+    private weak var searchView: SearchView?
+    private let cityDetailsViewFactory: CityDetailsViewFactory
+    private let searchResult: CitySearchResult
+
+    init(searchView: SearchView?, cityDetailsViewFactory: CityDetailsViewFactory, searchResult: CitySearchResult) {
+
+        self.searchView = searchView
+        self.cityDetailsViewFactory = cityDetailsViewFactory
+        self.searchResult = searchResult
+    }
+
     func invoke() {
 
+        let cityDetailsView = cityDetailsViewFactory.detailsView(searchResult: searchResult)
+        self.searchView?.navigationController?.pushViewController(cityDetailsView, animated: true)
     }
 }
