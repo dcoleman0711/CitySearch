@@ -13,9 +13,15 @@ protocol CityDetailsViewModel {
 class CityDetailsViewModelImp: CityDetailsViewModel {
 
     private let titleLabelFont = UIFont.systemFont(ofSize: 36.0)
+    private let model: CityDetailsModel
+
+    init(model: CityDetailsModel) {
+
+        self.model = model
+    }
 
     func observeTitle(_ observer: @escaping ValueUpdate<LabelViewModel>) {
 
-        observer(LabelViewModel(text: "", font: self.titleLabelFont))
+        model.observeTitleText(mapUpdate(observer, { titleText in LabelViewModel(text: titleText, font: self.titleLabelFont)}))
     }
 }

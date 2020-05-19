@@ -64,6 +64,18 @@ class DetailsScreenTests: XCTestCase {
 
         then.titleLabel(titleLabel, fontIs: titleFont)
     }
+
+    func testTitleText() {
+
+        let titleLabel = given.titleLabel()
+        let searchResult = given.searchResult()
+        let titleText = given.titleText(for: searchResult)
+        let detailsScreen = given.detailsScreen(searchResult: searchResult, titleLabel: titleLabel)
+
+        when.detailsScreenIsLoaded(detailsScreen)
+
+        then.titleLabel(titleLabel, textIs: titleText)
+    }
 }
 
 class DetailsScreenSteps {
@@ -85,9 +97,19 @@ class DetailsScreenSteps {
         [CGSize(width: 1024, height: 768), CGSize(width: 2048, height: 768), CGSize(width: 2048, height: 1536)]
     }
 
-    func detailsScreen(titleLabel: UILabel = UILabel()) -> CityDetailsView {
+    func searchResult() -> CitySearchResult {
 
-        CityDetailsViewImp(titleLabel: titleLabel, viewModel: CityDetailsViewModelImp(), binder: ViewBinderImp())
+        CitySearchResult(name: "Test City")
+    }
+
+    func titleText(for searchResult: CitySearchResult) -> String {
+
+        searchResult.name
+    }
+
+    func detailsScreen(searchResult: CitySearchResult = CitySearchResult(name: ""), titleLabel: UILabel = UILabel()) -> CityDetailsView {
+
+        CityDetailsViewImp(titleLabel: titleLabel, viewModel: CityDetailsViewModelImp(model: CityDetailsModelImp(searchResult: searchResult)), binder: ViewBinderImp())
     }
 
     func detailsScreenIsLoaded(_ detailsScreen: CityDetailsView) {
@@ -113,5 +135,10 @@ class DetailsScreenSteps {
     func titleLabel(_ titleLabel: UILabel, fontIs expectedFont: UIFont) {
 
         XCTAssertEqual(titleLabel.font, expectedFont, "Title label font is not expected font")
+    }
+
+    func titleLabel(_ titleLabel: UILabel, textIs expectedText: String) {
+
+        XCTAssertEqual(titleLabel.text, expectedText, "Title label text is not correct")
     }
 }

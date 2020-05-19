@@ -16,9 +16,11 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
     private let viewModel: CityDetailsViewModel
     private let binder: ViewBinder
 
-    convenience init() {
+    convenience init(searchResult: CitySearchResult) {
 
-        self.init(titleLabel: UILabel(), viewModel: CityDetailsViewModelImp(), binder: ViewBinderImp())
+        let model = CityDetailsModelImp(searchResult: searchResult)
+        let viewModel = CityDetailsViewModelImp(model: model)
+        self.init(titleLabel: UILabel(), viewModel: viewModel, binder: ViewBinderImp())
     }
 
     init(titleLabel: UILabel, viewModel: CityDetailsViewModel, binder: ViewBinder) {

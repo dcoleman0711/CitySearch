@@ -39,11 +39,25 @@ class DetailsViewModelTests: XCTestCase {
 
         then.observedFont(on: labelObserver, isEqualTo: titleFont)
     }
+
+    func testTitleText() {
+
+        let model = given.model()
+        let titleText = given.titleText(from: model)
+        let detailsViewModel = given.detailsViewModel(model: model)
+        let labelObserver = given.labelObserver()
+
+        when.observer(labelObserver, observesTitleOn: detailsViewModel)
+
+        then.observedText(on: labelObserver, isEqualTo: titleText)
+    }
 }
 
 class DetailsViewModelSteps {
 
     private var observedLabelData: LabelViewModel?
+
+    private var modelTitleObserver: ValueUpdate<String>?
 
     func titleFont() -> UIFont {
 
@@ -58,9 +72,26 @@ class DetailsViewModelSteps {
         }
     }
 
-    func detailsViewModel() -> CityDetailsViewModel {
+    func model() -> CityDetailsModelMock {
 
-        CityDetailsViewModelImp()
+        CityDetailsModelMock()
+    }
+
+    func titleText(from model: CityDetailsModelMock) -> String {
+
+        let text = "Test Title"
+
+        model.observeTitleTextImp = { observer in
+
+            observer(text)
+        }
+
+        return text
+    }
+
+    func detailsViewModel(model: CityDetailsModelMock = CityDetailsModelMock()) -> CityDetailsViewModel {
+
+        CityDetailsViewModelImp(model: model)
     }
 
     func observer(_ observer: @escaping ValueUpdate<LabelViewModel>, observesTitleOn viewModel: CityDetailsViewModel) {
@@ -71,5 +102,10 @@ class DetailsViewModelSteps {
     func observedFont(on: ValueUpdate<LabelViewModel>, isEqualTo expectedFont: UIFont) {
 
         XCTAssertEqual(observedLabelData?.font, expectedFont, "Observed font is not correct font")
+    }
+
+    func observedText(on: ValueUpdate<LabelViewModel>, isEqualTo expectedText: String) {
+
+        XCTAssertEqual(observedLabelData?.text, expectedText, "Observed text is not correct text")
     }
 }
