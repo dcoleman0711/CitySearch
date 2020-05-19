@@ -241,7 +241,7 @@ class SearchScreenSteps {
 
     func searchScreenBackgroundIsWhite(_ searchScreen: SearchView) {
 
-        XCTAssertEqual(searchScreen.view.frame, searchScreen.view.bounds, "Search results are not full screen")
+        XCTAssertEqual(searchScreen.view.backgroundColor, UIColor.white, "Search screen background is not white")
     }
 
     func searchResultsAreDisplayed(_ expectedData: CitySearchResults) {

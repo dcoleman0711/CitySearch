@@ -79,7 +79,7 @@ class SearchViewBuilder {
         let searchView = SearchViewImp(searchResultsView: searchResultsView, model: model)
 
         openDetailsCommandFactory.searchView = searchView
-        
+
         searchResultsModel.setResults(initialData)
 
         return searchView

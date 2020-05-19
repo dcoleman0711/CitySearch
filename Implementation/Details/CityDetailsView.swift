@@ -12,5 +12,20 @@ protocol CityDetailsView where Self: UIViewController {
 
 class CityDetailsViewImp : UIViewController, CityDetailsView {
 
+    override func viewDidLoad() {
 
+        super.viewDidLoad()
+
+        setupView()
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+
+        UIInterfaceOrientationMask.portrait
+    }
+
+    private func setupView() {
+
+        view.backgroundColor = .white
+    }
 }
