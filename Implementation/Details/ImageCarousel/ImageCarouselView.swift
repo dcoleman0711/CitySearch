@@ -5,12 +5,12 @@
 
 import UIKit
 
-protocol MapView  {
+protocol ImageCarouselView {
 
     var view: UIView { get }
 }
 
-class MapViewImp: MapView {
+class ImageCarouselViewImp: ImageCarouselView {
 
     let view = UIView()
 }

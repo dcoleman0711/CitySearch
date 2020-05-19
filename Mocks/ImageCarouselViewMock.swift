@@ -5,7 +5,7 @@
 
 import UIKit
 
-class MapViewMock : MapView {
+class ImageCarouselViewMock : ImageCarouselView {
 
     var view = UIView()
 }

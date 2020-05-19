@@ -169,6 +169,29 @@ class DetailsScreenTests: XCTestCase {
 
         then.map(map, isHalfWidthWithCorrectAspectRatioOf: detailsScreen)
     }
+
+    func testImageCarouselPosition() {
+
+        let imageCarousel = given.imageCarousel()
+        let map = given.map()
+        let detailsScreen = given.detailsScreen(map: map, imageCarousel: imageCarousel)
+        given.detailsScreenIsLoaded(detailsScreen)
+
+        when.detailsViewAppearsOnScreen(detailsScreen)
+
+        then.imageCarousel(imageCarousel, isOnLeftEdgeOf: detailsScreen, andSpacedBelow: map)
+    }
+
+    func testImageCarouselSize() {
+
+        let imageCarousel = given.imageCarousel()
+        let detailsScreen = given.detailsScreen(imageCarousel: imageCarousel)
+        given.detailsScreenIsLoaded(detailsScreen)
+
+        when.detailsViewAppearsOnScreen(detailsScreen)
+
+        then.imageCarousel(imageCarousel, isWidthOfWithCorrectHeight: detailsScreen)
+    }
 }
 
 class DetailsScreenSteps {
@@ -198,6 +221,11 @@ class DetailsScreenSteps {
     func map() -> MapViewMock {
 
         MapViewMock()
+    }
+
+    func imageCarousel() -> ImageCarouselViewMock {
+
+        ImageCarouselViewMock()
     }
 
     func populationTitleText() -> String {
@@ -230,9 +258,14 @@ class DetailsScreenSteps {
         searchResult.name
     }
 
-    func detailsScreen(searchResult: CitySearchResult = CitySearchResultsStub.stubResults().results[0], titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), populationLabel: UILabel = UILabel(), map: MapViewMock = MapViewMock()) -> CityDetailsView {
+    func detailsScreen(searchResult: CitySearchResult = CitySearchResultsStub.stubResults().results[0],
+                       titleLabel: UILabel = UILabel(),
+                       populationTitleLabel: UILabel = UILabel(),
+                       populationLabel: UILabel = UILabel(),
+                       map: MapViewMock = MapViewMock(),
+                       imageCarousel: ImageCarouselViewMock = ImageCarouselViewMock()) -> CityDetailsView {
 
-        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: map, viewModel: CityDetailsViewModelImp(model: CityDetailsModelImp(searchResult: searchResult)), binder: ViewBinderImp())
+        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: map, imageCarouselView: imageCarousel, viewModel: CityDetailsViewModelImp(model: CityDetailsModelImp(searchResult: searchResult)), binder: ViewBinderImp())
     }
 
     func detailsScreenIsLoaded(_ detailsScreen: CityDetailsView) {
@@ -286,5 +319,17 @@ class DetailsScreenSteps {
 
         XCTAssertEqual(map.view.frame.width, safeAreaFrame.maxX - detailsScreen.view.frame.center.x, "Map is not half-width of details screen")
         XCTAssertEqual(map.view.frame.height, map.view.frame.width / 2.0, "Map does not have the correct aspect ratio")
+    }
+
+    func imageCarousel(_ imageCarousel: ImageCarouselViewMock, isOnLeftEdgeOf detailsScreen: CityDetailsView, andSpacedBelow map: MapViewMock) {
+
+        XCTAssertEqual(imageCarousel.view.frame.minX, safeAreaFrame.minX, "Image carousel is not on left edge of details screen safe area")
+        XCTAssertEqual(imageCarousel.view.frame.minY, map.view.frame.maxY + 16.0, "Image carousel does not have the correct aspect ratio")
+    }
+
+    func imageCarousel(_ imageCarousel: ImageCarouselViewMock, isWidthOfWithCorrectHeight detailsScreen: CityDetailsView) {
+
+        XCTAssertEqual(imageCarousel.view.frame.width, safeAreaFrame.width, "Image carousel is not width of details screen safe area")
+        XCTAssertEqual(imageCarousel.view.frame.height, 256.0, "Image carousel does not have the correct height")
     }
 }

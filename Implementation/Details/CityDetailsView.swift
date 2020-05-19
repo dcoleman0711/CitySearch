@@ -16,6 +16,7 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
     private let populationTitleLabel: UILabel
     private let populationLabel: UILabel
     private let mapView: MapView
+    private let imageCarouselView: ImageCarouselView
 
     private let viewModel: CityDetailsViewModel
     private let binder: ViewBinder
@@ -24,15 +25,16 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         let model = CityDetailsModelImp(searchResult: searchResult)
         let viewModel = CityDetailsViewModelImp(model: model)
-        self.init(titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(), viewModel: viewModel, binder: ViewBinderImp())
+        self.init(titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(), imageCarouselView: ImageCarouselViewImp(), viewModel: viewModel, binder: ViewBinderImp())
     }
 
-    init(titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, mapView: MapView, viewModel: CityDetailsViewModel, binder: ViewBinder) {
+    init(titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, mapView: MapView, imageCarouselView: ImageCarouselView, viewModel: CityDetailsViewModel, binder: ViewBinder) {
 
         self.titleLabel = titleLabel
         self.populationTitleLabel = populationTitleLabel
         self.populationLabel = populationLabel
         self.mapView = mapView
+        self.imageCarouselView = imageCarouselView
         
         self.viewModel = viewModel
         self.binder = binder
@@ -82,6 +84,9 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         view.addSubview(mapView.view)
         mapView.view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(imageCarouselView.view)
+        imageCarouselView.view.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buildLayout() {
@@ -101,14 +106,21 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
         let populationLabelYConstraint = populationLabel.centerYAnchor.constraint(equalTo: populationTitleLabel.centerYAnchor)
         let populationLabelConstraints = [populationLabelXConstraint, populationLabelYConstraint]
 
-        // Population Label
+        // Map View
         let mapViewXConstraint = mapView.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
         let mapViewYConstraint = mapView.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         let mapViewWidthConstraint = mapView.view.leftAnchor.constraint(equalTo: view.centerXAnchor)
         let mapViewAspectRatioConstraint = mapView.view.widthAnchor.constraint(equalTo: mapView.view.heightAnchor, multiplier: 2.0)
         let mapViewConstraints = [mapViewXConstraint, mapViewYConstraint, mapViewWidthConstraint, mapViewAspectRatioConstraint]
 
-        let constraints = [NSLayoutConstraint]([titleLabelConstraints, populationTitleLabelConstraints, populationLabelConstraints, mapViewConstraints].joined())
+        // Image Carousel View
+        let imageCarouselViewLeftConstraint = imageCarouselView.view.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor)
+        let imageCarouselViewRightConstraint = imageCarouselView.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
+        let imageCarouselViewTopConstraint = imageCarouselView.view.topAnchor.constraint(equalTo: mapView.view.bottomAnchor, constant: 16.0)
+        let imageCarouselViewHeightConstraint = imageCarouselView.view.heightAnchor.constraint(equalToConstant: 256.0)
+        let imageCarouselViewConstraints = [imageCarouselViewLeftConstraint, imageCarouselViewRightConstraint, imageCarouselViewTopConstraint, imageCarouselViewHeightConstraint]
+
+        let constraints = [NSLayoutConstraint]([titleLabelConstraints, populationTitleLabelConstraints, populationLabelConstraints, mapViewConstraints, imageCarouselViewConstraints].joined())
 
         view.addConstraints(constraints)
     }

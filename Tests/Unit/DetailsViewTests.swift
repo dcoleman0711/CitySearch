@@ -150,6 +150,28 @@ class DetailsViewTests: XCTestCase {
 
         then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
     }
+
+    func testImageCarouselViewAutoResizeMaskDisabled() {
+
+        let imageCarouselView = given.imageCarouselView()
+        let detailsView = given.detailsView(imageCarouselView: imageCarouselView)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.autoResizeMaskIsDisabled(imageCarouselView.view)
+    }
+
+    func testImageCarouselViewPositionConstraints() {
+
+        let imageCarouselView = given.imageCarouselView()
+        let mapView = given.mapView()
+        let detailsView = given.detailsView(mapView: mapView, imageCarouselView: imageCarouselView)
+        let expectedConstraints = given.imageCarouselView(imageCarouselView, constraintsToSafeAreaEdgesOf: detailsView, andSpacedBelowWithCorrectHeight: mapView)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
+    }
 }
 
 class DetailsViewSteps {
@@ -178,6 +200,11 @@ class DetailsViewSteps {
     func mapView() -> MapViewMock {
 
         MapViewMock()
+    }
+
+    func imageCarouselView() -> ImageCarouselViewMock {
+
+        ImageCarouselViewMock()
     }
 
     func viewModel() -> CityDetailsViewModelMock {
@@ -220,9 +247,15 @@ class DetailsViewSteps {
         return binder
     }
 
-    func detailsView(titleLabel: UILabel = UILabel(), populationTitleLabel: UILabel = UILabel(), populationLabel: UILabel = UILabel(), mapView: MapViewMock = MapViewMock(), viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
+    func detailsView(titleLabel: UILabel = UILabel(),
+                     populationTitleLabel: UILabel = UILabel(),
+                     populationLabel: UILabel = UILabel(),
+                     mapView: MapViewMock = MapViewMock(), 
+                     imageCarouselView: ImageCarouselViewMock = ImageCarouselViewMock(),
+                     viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(),
+                     binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
 
-        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: mapView, viewModel: viewModel, binder: binder)
+        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: mapView, imageCarouselView: imageCarouselView, viewModel: viewModel, binder: binder)
     }
 
     func detailsViewIsLoaded(_ detailsView: CityDetailsViewImp) {
@@ -254,6 +287,14 @@ class DetailsViewSteps {
          mapView.view.topAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.topAnchor),
          mapView.view.leftAnchor.constraint(equalTo: detailsView.view.centerXAnchor),
          mapView.view.widthAnchor.constraint(equalTo: mapView.view.heightAnchor, multiplier: 2.0)]
+    }
+
+    func imageCarouselView(_ imageCarouselView: ImageCarouselViewMock, constraintsToSafeAreaEdgesOf detailsView: CityDetailsViewImp, andSpacedBelowWithCorrectHeight mapView: MapViewMock) -> [NSLayoutConstraint] {
+
+        [imageCarouselView.view.leftAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.leftAnchor),
+         imageCarouselView.view.rightAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.rightAnchor),
+         imageCarouselView.view.topAnchor.constraint(equalTo: mapView.view.bottomAnchor, constant: 16.0),
+         imageCarouselView.view.heightAnchor.constraint(equalToConstant: 256.0)]
     }
 
     func autoResizeMaskIsDisabled(_ view: UIView) {
