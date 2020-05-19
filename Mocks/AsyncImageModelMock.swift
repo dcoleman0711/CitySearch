@@ -3,7 +3,13 @@
 // Copyright (c) 2020 Daniel Coleman. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class AsyncImageModelMock : AsyncImageModel {
+
+    var observeImageImp: (_ observer: @escaping ValueUpdate<UIImage>) -> Void = { observer in }
+    func observeImage(_ observer: @escaping ValueUpdate<UIImage>) {
+
+        observeImageImp(observer)
+    }
 }

@@ -3,11 +3,17 @@
 // Copyright (c) 2020 Daniel Coleman. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol AsyncImageModel: class {
 
+    func observeImage(_ observer: @escaping ValueUpdate<UIImage>)
 }
 
 class AsyncImageModelImp : AsyncImageModel {
+
+    func observeImage(_ observer: @escaping ValueUpdate<UIImage>) {
+
+
+    }
 }
