@@ -39,36 +39,45 @@ class CitySearchServiceImp : CitySearchService {
 
         SearchFuture({ promise in
 
-            let start = 0
-            let count = 10
+            let results = CitySearchResults(results: [
+                CitySearchResult(name: "City 1"),
+                CitySearchResult(name: "City 2"),
+                CitySearchResult(name: "City 3"),
+                CitySearchResult(name: "City 4"),
+                CitySearchResult(name: "City 5")
+            ])
 
-            let urlStr = CitySearchServiceImp.baseURL + "?skip=\(start)&limit=\(count)";
-            let url = URL(string: urlStr)!
-
-            var urlRequest = URLRequest(url: url)
-            urlRequest.setValue(CitySearchServiceImp.appId, forHTTPHeaderField: CitySearchServiceImp.appIdKey)
-            urlRequest.setValue(CitySearchServiceImp.appKey, forHTTPHeaderField: CitySearchServiceImp.appKeyKey)
-
-            let task = self.urlSession.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
-
-                guard let data = data else {
-
-                    promise(.failure(error ?? NSError(domain: URLError.errorDomain, code: URLError.unknown.rawValue)))
-                    return
-                }
-
-                do {
-
-                    let responseObj = try JSONDecoder().decode(CitySearchResults.self, from: data)
-                    promise(.success(responseObj))
-                }
-                catch {
-
-                    promise(.failure(error))
-                }
-            }
-
-            task.resume();
+            promise(.success(results))
+//            let start = 0
+//            let count = 10
+//
+//            let urlStr = CitySearchServiceImp.baseURL + "?skip=\(start)&limit=\(count)";
+//            let url = URL(string: urlStr)!
+//
+//            var urlRequest = URLRequest(url: url)
+//            urlRequest.setValue(CitySearchServiceImp.appId, forHTTPHeaderField: CitySearchServiceImp.appIdKey)
+//            urlRequest.setValue(CitySearchServiceImp.appKey, forHTTPHeaderField: CitySearchServiceImp.appKeyKey)
+//
+//            let task = self.urlSession.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+//
+//                guard let data = data else {
+//
+//                    promise(.failure(error ?? NSError(domain: URLError.errorDomain, code: URLError.unknown.rawValue)))
+//                    return
+//                }
+//
+//                do {
+//
+//                    let responseObj = try JSONDecoder().decode(CitySearchResults.self, from: data)
+//                    promise(.success(responseObj))
+//                }
+//                catch {
+//
+//                    promise(.failure(error))
+//                }
+//            }
+//
+//            task.resume();
         })
     }
 }

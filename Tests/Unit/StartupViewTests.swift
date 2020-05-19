@@ -163,7 +163,7 @@ class StartupViewSteps {
 
     func startupView(_ startupView: StartupViewImp, hasConstraints expectedConstraints: [NSLayoutConstraint]) {
 
-        XCTAssertTrue(startupView.view.constraints.contains { constraint in expectedConstraints.contains { expectedConstraint in constraint.isEqualToConstraint(expectedConstraint) } }, "Startup view does not contain expected constraints")
+        ViewConstraintValidator.validateThatView(startupView.view, hasConstraints: expectedConstraints, message: "Startup view does not contain expected constraints")
     }
 
     func appTitleLabel(_ appTitleLabel: UILabel, isBoundToViewModel model: StartupViewModelMock) {

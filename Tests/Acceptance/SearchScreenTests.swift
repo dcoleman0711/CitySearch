@@ -178,26 +178,7 @@ class SearchScreenSteps {
 
     func searchViewAppearsOnScreen(_ searchView: SearchView) {
 
-        // Testing the safe area insets requires placing the view into a hierarchy all the way up to a window.
-        let window = UIWindow()
-        window.makeKeyAndVisible()
-        window.rootViewController = searchView as? UIViewController
-        searchView.view.setNeedsLayout()
-        searchView.view.layoutIfNeeded()
-
-        var safeAreaFrame = searchView.view.bounds
-        let safeAreaInsets = searchView.view.safeAreaInsets
-
-        safeAreaFrame.origin.x += safeAreaInsets.left
-        safeAreaFrame.size.width -= (safeAreaInsets.left + safeAreaInsets.right)
-        safeAreaFrame.origin.y += safeAreaInsets.top
-        safeAreaFrame.size.height -= (safeAreaInsets.top + safeAreaInsets.bottom)
-
-        self.safeAreaFrame = safeAreaFrame
-
-        // Reset the window to avoid breaking other tests
-        window.isHidden = true
-        window.windowScene = nil
+        SafeAreaLayoutTest.layoutInWindow(searchView, andCaptureSafeAreaTo: &self.safeAreaFrame)
     }
 
     func searchResult(in searchResults: CitySearchResults) -> CitySearchResult {
@@ -257,5 +238,32 @@ class SearchScreenSteps {
     func detailsScreenIsPushedOntoNavigationStack(_ detailsScreen: CityDetailsViewMock) {
 
         XCTAssertEqual(pushedViewControllers, [detailsScreen], "Details screen was not pushed onto navigation stack")
+    }
+}
+
+class SafeAreaLayoutTest {
+
+    static func layoutInWindow(_ viewController: UIViewController, andCaptureSafeAreaTo safeArea: inout CGRect) {
+
+        // Testing the safe area insets requires placing the view into a hierarchy all the way up to a window.
+        let window = UIWindow()
+        window.makeKeyAndVisible()
+        window.rootViewController = viewController
+        viewController.view.setNeedsLayout()
+        viewController.view.layoutIfNeeded()
+
+        var safeAreaFrame = viewController.view.bounds
+        let safeAreaInsets = viewController.view.safeAreaInsets
+
+        safeAreaFrame.origin.x += safeAreaInsets.left
+        safeAreaFrame.size.width -= (safeAreaInsets.left + safeAreaInsets.right)
+        safeAreaFrame.origin.y += safeAreaInsets.top
+        safeAreaFrame.size.height -= (safeAreaInsets.top + safeAreaInsets.bottom)
+
+        safeArea = safeAreaFrame
+
+        // Reset the window to avoid breaking other tests
+        window.isHidden = true
+        window.windowScene = nil
     }
 }

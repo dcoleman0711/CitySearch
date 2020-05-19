@@ -35,7 +35,7 @@ class SearchViewTests: XCTestCase {
 
         when.searchViewIsLoaded(searchView)
 
-        then.searchResultsView(searchResultsView.view, isOnStartupView: searchView)
+        then.searchResultsView(searchResultsView.view, isOnSearchView: searchView)
     }
 
     func testSearchResultsViewAutoResizeMaskDisabled() {
@@ -97,9 +97,9 @@ class SearchViewSteps {
         searchView.loadViewIfNeeded()
     }
 
-    func searchResultsView(_ appTitleLabel: UIView, isOnStartupView startupView: SearchViewImp) {
+    func searchResultsView(_ appTitleLabel: UIView, isOnSearchView searchView: SearchViewImp) {
 
-        XCTAssertTrue(startupView.view.subviews.contains(appTitleLabel), "Startup view does not contain app title label")
+        XCTAssertTrue(searchView.view.subviews.contains(appTitleLabel), "Search view does not contain app title label")
     }
 
     func autoResizeMaskIsDisabled(_ view: UIView) {
@@ -109,6 +109,14 @@ class SearchViewSteps {
 
     func searchView(_ searchView: SearchViewImp, hasConstraints expectedConstraints: [NSLayoutConstraint]) {
 
-        XCTAssertTrue(searchView.view.constraints.contains { constraint in expectedConstraints.contains { expectedConstraint in constraint.isEqualToConstraint(expectedConstraint) } }, "Startup view does not contain expected constraints")
+        ViewConstraintValidator.validateThatView(searchView.view, hasConstraints: expectedConstraints, message: "Search view does not contain expected constraints")
+    }
+}
+
+class ViewConstraintValidator {
+
+    static func validateThatView(_ view: UIView, hasConstraints expectedConstraints: [NSLayoutConstraint], message: String) {
+
+        XCTAssertTrue(view.constraints.contains { constraint in expectedConstraints.contains { expectedConstraint in constraint.isEqualToConstraint(expectedConstraint) } }, message)
     }
 }
