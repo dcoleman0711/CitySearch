@@ -7,9 +7,9 @@ import Foundation
 
 class SearchModelFactoryMock : SearchModelFactory {
 
-    var searchModelImp: (_ searchResultsModel: SearchResultsModel, _ initialData: CitySearchResults) -> SearchModel = { (searchResultsModel, initialData) in SearchModelMock() }
-    func searchModel(searchResultsModel: SearchResultsModel, initialData: CitySearchResults) -> SearchModel {
+    var searchModelImp: (_ searchResultsModel: SearchResultsModel) -> SearchModel = { (searchResultsModel) in SearchModelMock() }
+    func searchModel(searchResultsModel: SearchResultsModel) -> SearchModel {
 
-        searchModelImp(searchResultsModel, initialData)
+        searchModelImp(searchResultsModel)
     }
 }

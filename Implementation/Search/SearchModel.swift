@@ -10,8 +10,7 @@ protocol SearchModel {
 
 class SearchModelImp : SearchModel {
 
-    init(searchResultsModel: SearchResultsModel, initialData: CitySearchResults) {
+    init(searchResultsModel: SearchResultsModel) {
 
-        searchResultsModel.setResults(initialData)
     }
 }

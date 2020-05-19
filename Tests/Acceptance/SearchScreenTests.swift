@@ -87,8 +87,8 @@ class SearchScreenTests: XCTestCase {
         let searchResult = given.searchResult(in: initialData)
         let detailsScreen = given.detailsScreen(for: searchResult)
         let searchView = given.searchScreen(searchResults: searchResults, initialData: initialData)
-        let openDetailsCommand = given.openDetailsCommand(for: searchResult)
         given.searchScreenIsLoaded(searchView)
+        let openDetailsCommand = given.openDetailsCommand(for: searchResult)
 
         when.invoke(openDetailsCommand)
 
@@ -98,19 +98,31 @@ class SearchScreenTests: XCTestCase {
 
 class SearchScreenSteps {
 
+    private let navigationStack = UINavigationControllerMock()
     private let searchResultsModel = SearchResultsModelMock()
+    private let cityDetailsViewFactory = CityDetailsViewFactoryMock()
 
     private var displayedSearchResults: CitySearchResults?
 
     private var safeAreaFrame = CGRect.zero
 
-    private var openDetailsCommandFactory: OpenDetailsCommandFactory?
+    private var openDetailsCommandFactory: OpenDetailsCommandFactory!
+
+    private var pushedViewControllers: [UIViewController] = []
+
+    private var openDetailsCommands: [String: OpenDetailsCommand] = [:]
 
     init() {
 
         searchResultsModel.setResultsImp = { (results) in
 
             self.displayedSearchResults = results
+            self.openDetailsCommands = [String: OpenDetailsCommand](uniqueKeysWithValues: results.results.map { result -> (String, OpenDetailsCommand) in (result.name, self.openDetailsCommandFactory.openDetailsCommand(for: result)) })
+        }
+
+        navigationStack.pushViewControllerImp = { viewController, animated in
+
+            self.pushedViewControllers.append(viewController)
         }
     }
 
@@ -152,8 +164,11 @@ class SearchScreenSteps {
         builder.initialData = initialData
         builder.searchResultsViewFactory = searchResultsViewFactory
         builder.searchResultsModelFactory = searchResultsModelFactory
+        builder.cityDetailsViewFactory = cityDetailsViewFactory
 
-        return builder.build()
+        let searchScreen = builder.build()
+        navigationStack.viewControllers = [searchScreen]
+        return searchScreen
     }
 
     func searchScreenIsLoaded(_ searchView: SearchView) {
@@ -192,12 +207,21 @@ class SearchScreenSteps {
 
     func openDetailsCommand(for searchResult: CitySearchResult) -> OpenDetailsCommand {
 
-        self.openDetailsCommandFactory!.openDetailsCommand(for: searchResult)
+        openDetailsCommands[searchResult.name]!
     }
 
-    func detailsScreen(for: CitySearchResult) -> CityDetailsViewMock {
+    func detailsScreen(for searchResult: CitySearchResult) -> CityDetailsViewMock {
 
-        CityDetailsViewMock()
+        let detailsScreen = CityDetailsViewMock()
+
+        cityDetailsViewFactory.detailsViewImp = { result in
+
+            if result == searchResult { return detailsScreen }
+
+            return CityDetailsViewMock()
+        }
+
+        return detailsScreen
     }
 
     func invoke(_ openDetailsCommand: OpenDetailsCommand) {
@@ -232,6 +256,6 @@ class SearchScreenSteps {
 
     func detailsScreenIsPushedOntoNavigationStack(_ detailsScreen: CityDetailsViewMock) {
 
-
+        XCTAssertEqual(pushedViewControllers, [detailsScreen], "Details screen was not pushed onto navigation stack")
     }
 }

@@ -7,13 +7,13 @@ import Foundation
 
 protocol SearchModelFactory {
 
-    func searchModel(searchResultsModel: SearchResultsModel, initialData: CitySearchResults) -> SearchModel
+    func searchModel(searchResultsModel: SearchResultsModel) -> SearchModel
 }
 
 class SearchModelFactoryImp: SearchModelFactory {
 
-    func searchModel(searchResultsModel: SearchResultsModel, initialData: CitySearchResults) -> SearchModel {
+    func searchModel(searchResultsModel: SearchResultsModel) -> SearchModel {
 
-        SearchModelImp(searchResultsModel: searchResultsModel, initialData: initialData)
+        SearchModelImp(searchResultsModel: searchResultsModel)
     }
 }

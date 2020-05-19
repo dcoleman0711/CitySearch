@@ -27,16 +27,6 @@ class SearchModelTests: XCTestCase {
 
         super.tearDown()
     }
-
-    func testSetInitialData() {
-
-        let initialData = given.initialData()
-        let searchResultsModel = given.searchResultsModel()
-
-        let searchModel = when.createSearchModel(searchResultsModel: searchResultsModel, initialData: initialData)
-
-        then.searchResultsModel(searchResultsModel, isDisplayingData: initialData)
-    }
 }
 
 class SearchModelSteps {
@@ -58,11 +48,6 @@ class SearchModelSteps {
         }
 
         return model
-    }
-
-    func createSearchModel(searchResultsModel: SearchResultsModelMock, initialData: CitySearchResults) -> SearchModelImp {
-
-        SearchModelFactoryImp().searchModel(searchResultsModel: searchResultsModel, initialData: initialData) as! SearchModelImp
     }
 
     func searchResultsModel(_ searchResultsModel: SearchResultsModelMock, isDisplayingData expectedData: CitySearchResults) {

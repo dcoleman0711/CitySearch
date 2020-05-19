@@ -70,11 +70,6 @@ class SearchViewSteps {
         SearchResultsModelMock()
     }
 
-    func initialData() -> CitySearchResults {
-
-        CitySearchResultsStub.stubResults()
-    }
-
     func searchResultsView(_ searchResultsModel: SearchResultsModelMock = SearchResultsModelMock()) -> SearchResultsViewMock {
 
         let searchResultsView = SearchResultsViewMock()
@@ -92,9 +87,9 @@ class SearchViewSteps {
          view.bottomAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.bottomAnchor)]
     }
 
-    func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), model: SearchModelMock = SearchModelMock(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchViewImp {
+    func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), model: SearchModelMock = SearchModelMock()) -> SearchViewImp {
 
-        SearchViewImp(searchResultsView: searchResultsView, model: model, initialData: initialData)
+        SearchViewImp(searchResultsView: searchResultsView, model: model)
     }
 
     func searchViewIsLoaded(_ searchView: SearchViewImp) {
