@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		CC89D00469174B23D30B305C /* MapViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DFAB4CF54A386ED52B24 /* MapViewMock.swift */; };
 		CC89D00C615108339BCB7F7F /* StartupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3FDB4DEB245D133848B /* StartupTests.swift */; };
+		CC89D01BF31EAD52C3DAF85E /* AsyncImageModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D8822E7D09928B75D585 /* AsyncImageModelFactory.swift */; };
+		CC89D0229F1475BAA675BC75 /* AsyncImageModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D8822E7D09928B75D585 /* AsyncImageModelFactory.swift */; };
 		CC89D05815406F3841CFD56D /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3E44FBBC5A28919165D /* SearchResultsView.swift */; };
 		CC89D0967ABB218C31DD97F2 /* OpenDetailsCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D57FC3211763C110F14C /* OpenDetailsCommand.swift */; };
 		CC89D0CBC1454E3E20CFC45B /* ObservableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA56BF041782346D32D /* ObservableMock.swift */; };
@@ -70,6 +72,7 @@
 		CC89D6C4C9DFA67EB208A65D /* CitySearchResultViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DB4CDCA5D378BFA18374 /* CitySearchResultViewModelTests.swift */; };
 		CC89D6E6D67DA4DD5DE4BC2D /* SearchModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DEF542473ED0FFBDDBF1 /* SearchModelTests.swift */; };
 		CC89D6E872583590E44945E1 /* StartupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DDCB89011CC7C78FE88A /* StartupViewModel.swift */; };
+		CC89D6F5A6CB8129AD75AA22 /* AsyncImageModelFactoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DDAF97B4D7A9897F0792 /* AsyncImageModelFactoryMock.swift */; };
 		CC89D6FD006A7B0B12F9F955 /* CityDetailsViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D26A7D281ECB1482B04F /* CityDetailsViewModelMock.swift */; };
 		CC89D7271E366504E3521EA4 /* ViewBinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */; };
 		CC89D727A4FBA921E7804D31 /* CityDetailsViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DF340BF848135A3C7222 /* CityDetailsViewMock.swift */; };
@@ -168,6 +171,7 @@
 		CEEC6DA924738F0D00DB0785 /* SearchResultsViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEC6DA824738F0C00DB0785 /* SearchResultsViewFactory.swift */; };
 		CEEC6DAA24738F0D00DB0785 /* SearchResultsViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEC6DA824738F0C00DB0785 /* SearchResultsViewFactory.swift */; };
 		CEEC6DAD24738F2000DB0785 /* SearchResultsViewFactoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEC6DAB24738F2000DB0785 /* SearchResultsViewFactoryMock.swift */; };
+		CEEC6DB1247495C400DB0785 /* ImageCarouselModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEC6DB0247495C400DB0785 /* ImageCarouselModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -236,6 +240,7 @@
 		CC89D7761BB6CA8BCBB4E428 /* StartupTransitionCommandFactoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupTransitionCommandFactoryMock.swift; sourceTree = "<group>"; };
 		CC89D82308943896F1BE16AF /* SearchModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchModelFactory.swift; sourceTree = "<group>"; };
 		CC89D832C620C5873DFFF62C /* SearchResultsViewMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsViewMock.swift; sourceTree = "<group>"; };
+		CC89D8822E7D09928B75D585 /* AsyncImageModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImageModelFactory.swift; sourceTree = "<group>"; };
 		CC89D8A5AC65CAFCC36816D0 /* CitySearchResultViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySearchResultViewModel.swift; sourceTree = "<group>"; };
 		CC89D8EED0A2A66AD0894B4F /* AsyncImageViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImageViewModelFactory.swift; sourceTree = "<group>"; };
 		CC89D8F3513B39303C869FF0 /* DetailsModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsModelTests.swift; sourceTree = "<group>"; };
@@ -268,6 +273,7 @@
 		CC89DD14C18D86008B0B9112 /* ObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableTests.swift; sourceTree = "<group>"; };
 		CC89DD536B13979E2490793C /* SearchViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewTests.swift; sourceTree = "<group>"; };
 		CC89DD8A2944AF69EF70128C /* ImageCarouselViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCarouselViewTests.swift; sourceTree = "<group>"; };
+		CC89DDAF97B4D7A9897F0792 /* AsyncImageModelFactoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImageModelFactoryMock.swift; sourceTree = "<group>"; };
 		CC89DDCB89011CC7C78FE88A /* StartupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupViewModel.swift; sourceTree = "<group>"; };
 		CC89DDED87D00E409217CD41 /* CitySearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySearchResultCell.swift; sourceTree = "<group>"; };
 		CC89DDFC07A2EBF032D82DC1 /* CityDetailsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityDetailsModel.swift; sourceTree = "<group>"; };
@@ -301,6 +307,7 @@
 		CEEC6DA62473330900DB0785 /* stubCityResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = stubCityResponse.json; sourceTree = "<group>"; };
 		CEEC6DA824738F0C00DB0785 /* SearchResultsViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsViewFactory.swift; sourceTree = "<group>"; };
 		CEEC6DAB24738F2000DB0785 /* SearchResultsViewFactoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsViewFactoryMock.swift; sourceTree = "<group>"; };
+		CEEC6DB0247495C400DB0785 /* ImageCarouselModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCarouselModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,6 +418,7 @@
 				CC89DF2EA5F826F2BF897610 /* AsyncImageViewModelFactoryMock.swift */,
 				CC89D8EED0A2A66AD0894B4F /* AsyncImageViewModelFactory.swift */,
 				CC89D425FF0A2FDA81F4B13B /* AsyncImageModel.swift */,
+				CC89D8822E7D09928B75D585 /* AsyncImageModelFactory.swift */,
 			);
 			path = AsyncImage;
 			sourceTree = "<group>";
@@ -472,6 +480,7 @@
 				CC89D8F3513B39303C869FF0 /* DetailsModelTests.swift */,
 				CC89DD8A2944AF69EF70128C /* ImageCarouselViewTests.swift */,
 				CC89D0E542189346368BAD57 /* ImageCarouselViewModelTests.swift */,
+				CEEC6DB0247495C400DB0785 /* ImageCarouselModelTests.swift */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -586,6 +595,7 @@
 				CC89DE1FB1C60BFDCCCD3BF9 /* AsyncImageViewModelMock.swift */,
 				CC89DE1FCE2FD688ED6AC129 /* AsyncImageModelMock.swift */,
 				CC89D40B63D90281B8F69949 /* ImageCarouselModelMock.swift */,
+				CC89DDAF97B4D7A9897F0792 /* AsyncImageModelFactoryMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -761,6 +771,7 @@
 				CC89DDFAF9F0C71B88F66D0F /* AsyncImageViewModelFactory.swift in Sources */,
 				CC89D1967BF1C3E03EA9F3D6 /* AsyncImageModel.swift in Sources */,
 				CC89D8F2341DCA4F6A8C5DD5 /* ImageCarouselModel.swift in Sources */,
+				CC89D01BF31EAD52C3DAF85E /* AsyncImageModelFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -779,6 +790,7 @@
 				CC89DB65A510EAAA2C92E015 /* StartupModel.swift in Sources */,
 				CC89DD97540BB4AD7C9C2DB0 /* ViewBinderMock.swift in Sources */,
 				CC89D1E083F1F14548E8E3FB /* ViewBinder.swift in Sources */,
+				CEEC6DB1247495C400DB0785 /* ImageCarouselModelTests.swift in Sources */,
 				CC89D7271E366504E3521EA4 /* ViewBinderTests.swift in Sources */,
 				CC89D6A392D180DD5D84816E /* StartupModelTests.swift in Sources */,
 				CC89D0CBC1454E3E20CFC45B /* ObservableMock.swift in Sources */,
@@ -880,6 +892,8 @@
 				CC89DCAC7012ADAB9BD61216 /* AsyncImageModel.swift in Sources */,
 				CC89D988255058367318DC6D /* ImageCarouselModelMock.swift in Sources */,
 				CC89DCCC6154DB65EAD8D528 /* ImageCarouselModel.swift in Sources */,
+				CC89D6F5A6CB8129AD75AA22 /* AsyncImageModelFactoryMock.swift in Sources */,
+				CC89D0229F1475BAA675BC75 /* AsyncImageModelFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
