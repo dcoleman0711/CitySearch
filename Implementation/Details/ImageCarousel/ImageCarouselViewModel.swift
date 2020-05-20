@@ -7,7 +7,7 @@ import UIKit
 
 protocol ImageCarouselViewModel {
 
-    func observeResults(_ observer: @escaping ValueUpdate<[CellData<AsyncImageViewModel>]>)
+    func observeResults(_ observer: @escaping ValueUpdate<CollectionViewModel<AsyncImageViewModel>>)
 }
 
 class ImageCarouselViewModelImp : ImageCarouselViewModel {
@@ -18,6 +18,9 @@ class ImageCarouselViewModelImp : ImageCarouselViewModel {
 
     private let viewModels = Observable<[AsyncImageViewModel]>([])
     private let cellDataArray = Observable<[CellData<AsyncImageViewModel>]>([])
+
+    private let itemSpacing: CGFloat = 0.0
+    private let lineSpacing: CGFloat = 32.0
 
     convenience init(model: ImageCarouselModel) {
 
@@ -31,6 +34,11 @@ class ImageCarouselViewModelImp : ImageCarouselViewModel {
         self.resultsQueue = resultsQueue
 
         setupPipeline()
+    }
+
+    func observeResults(_ observer: @escaping ValueUpdate<CollectionViewModel<AsyncImageViewModel>>) {
+
+        cellDataArray.subscribe(mapUpdate(observer, ImageCarouselViewModelImp.viewModel(self)), updateImmediately: true)
     }
 
     private func setupPipeline() {
@@ -48,11 +56,6 @@ class ImageCarouselViewModelImp : ImageCarouselViewModel {
         }, updateImmediately: true)
     }
 
-    func observeResults(_ observer: @escaping ValueUpdate<[CellData<AsyncImageViewModel>]>) {
-
-        cellDataArray.subscribe(observer, updateImmediately: true)
-    }
-
     private func viewModel(for model: AsyncImageModel) -> AsyncImageViewModel {
 
         viewModelFactory.viewModel(model: model)
@@ -62,6 +65,11 @@ class ImageCarouselViewModelImp : ImageCarouselViewModel {
 
         let cellSize = self.cellSize(for: image)
         return CellData<AsyncImageViewModel>(viewModel: viewModel, size: cellSize, tapCommand: nil)
+    }
+
+    private func viewModel(cellData: [CellData<AsyncImageViewModel>]) -> CollectionViewModel<AsyncImageViewModel> {
+
+        CollectionViewModel<AsyncImageViewModel>(cells: cellData, itemSpacing: self.itemSpacing, lineSpacing: self.lineSpacing)
     }
 
     private func observeResultViewModels(_ viewModels: [AsyncImageViewModel]) {

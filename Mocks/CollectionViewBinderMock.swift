@@ -7,8 +7,8 @@ import UIKit
 
 class CollectionViewBinderMock<ViewModel, CellType: MVVMCollectionViewCell<ViewModel>>: CollectionViewBinder<ViewModel, CellType> {
 
-    var bindCellsImp: (_ collectionView: UICollectionView) -> ValueUpdate<[CellData<ViewModel>]> = { (collectionView) in { (viewModels) in } }
-    override func bindCells(collectionView: UICollectionView) -> ValueUpdate<[CellData<ViewModel>]> {
+    var bindCellsImp: (_ collectionView: UICollectionView) -> ValueUpdate<CollectionViewModel<ViewModel>> = { (collectionView) in { viewModel in } }
+    override func bindCells(collectionView: UICollectionView) -> ValueUpdate<CollectionViewModel<ViewModel>> {
 
         bindCellsImp(collectionView)
     }

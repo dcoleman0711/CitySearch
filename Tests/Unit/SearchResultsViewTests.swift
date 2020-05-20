@@ -55,7 +55,7 @@ class SearchResultsViewSteps {
 
         viewModel.observeResultsViewModelsImp = { (observer) in
 
-            observer([])
+            observer(CollectionViewModel<CitySearchResultViewModel>(cells: [], itemSpacing: 0.0, lineSpacing: 0.0))
         }
 
         return viewModel

@@ -16,9 +16,16 @@ struct CellData<ViewModel> {
     let tapCommand: CellTapCommand?
 }
 
+struct CollectionViewModel<ViewModel> {
+
+    let cells: [CellData<ViewModel>]
+    let itemSpacing: CGFloat
+    let lineSpacing: CGFloat
+}
+
 class CollectionViewBinder<ViewModel, CellType: MVVMCollectionViewCell<ViewModel>> {
 
-    func bindCells(collectionView: UICollectionView) -> ValueUpdate<[CellData<ViewModel>]> {
+    func bindCells(collectionView: UICollectionView) -> ValueUpdate<CollectionViewModel<ViewModel>> {
 
         fatalError("CollectionViewBinder is abstract.  Subclasses must override bindCells")
     }
@@ -26,7 +33,7 @@ class CollectionViewBinder<ViewModel, CellType: MVVMCollectionViewCell<ViewModel
 
 class CollectionViewBinderImp<ViewModel, CellType: MVVMCollectionViewCell<ViewModel>>: CollectionViewBinder<ViewModel, CellType> {
 
-    override func bindCells(collectionView: UICollectionView) -> ValueUpdate<[CellData<ViewModel>]> {
+    override func bindCells(collectionView: UICollectionView) -> ValueUpdate<CollectionViewModel<ViewModel>> {
 
         collectionView.register(CellType.self, forCellWithReuseIdentifier: BindingCellReuseId.reuseId)
 
@@ -36,10 +43,10 @@ class CollectionViewBinderImp<ViewModel, CellType: MVVMCollectionViewCell<ViewMo
         let delegate = BindingDelegate<ViewModel>()
         collectionView.delegate = delegate
 
-        return { (viewModels) in
+        return { (viewModel) in
 
-            dataSource.cellData = viewModels
-            delegate.cellData = viewModels
+            dataSource.cellData = viewModel.cells
+            delegate.viewModel = viewModel
             collectionView.reloadData()
         }
     }
@@ -67,16 +74,18 @@ class BindingDataSource<ViewModel>: NSObject, UICollectionViewDataSource {
 
 class BindingDelegate<ViewModel>: NSObject, UICollectionViewDelegateFlowLayout {
 
-    var cellData: [CellData<ViewModel>] = []
+    var viewModel: CollectionViewModel<ViewModel>?
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        if cellData.isEmpty { return CGSize.zero }
+        guard let cellData = viewModel?.cells, !cellData.isEmpty else { return CGSize.zero }
 
         return cellData[indexPath.item].size
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        guard let cellData = viewModel?.cells else { return }
 
         cellData[indexPath.item].tapCommand?.invoke()
     }

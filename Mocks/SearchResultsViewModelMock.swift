@@ -9,8 +9,8 @@ class SearchResultsViewModelMock: SearchResultsViewModel {
 
     var model: SearchResultsModel = SearchResultsModelMock()
 
-    var observeResultsViewModelsImp: (_ observer: @escaping ValueUpdate<[CellData<CitySearchResultViewModel>]>) -> Void = { (observer) in }
-    func observeResultsViewModels(_ observer: @escaping ValueUpdate<[CellData<CitySearchResultViewModel>]>) {
+    var observeResultsViewModelsImp: (_ observer: @escaping ValueUpdate<CollectionViewModel<CitySearchResultViewModel>>) -> Void = { (observer) in }
+    func observeResultsViewModels(_ observer: @escaping ValueUpdate<CollectionViewModel<CitySearchResultViewModel>>) {
 
         observeResultsViewModelsImp(observer)
     }

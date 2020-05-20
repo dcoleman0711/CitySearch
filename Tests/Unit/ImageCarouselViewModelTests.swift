@@ -65,7 +65,7 @@ class ImageCarouselViewModelSteps {
 
     private let resultViewModelFactory = AsyncImageViewModelFactoryMock()
 
-    private var valuePassedToObserver: [CellData<AsyncImageViewModel>]?
+    private var valuePassedToObserver: CollectionViewModel<AsyncImageViewModel>?
     private var modelObserver: ValueUpdate<[AsyncImageModel]>?
 
     private var images: [ObjectIdentifier: UIImageMock] = [:]
@@ -109,7 +109,7 @@ class ImageCarouselViewModelSteps {
         return resultModels.map( { resultViewModelFactory.viewModel(model: $0) as! AsyncImageViewModelMock } )
     }
 
-    func resultsObserver() -> ValueUpdate<[CellData<AsyncImageViewModel>]> {
+    func resultsObserver() -> ValueUpdate<CollectionViewModel<AsyncImageViewModel>> {
 
         { (value) in
 
@@ -159,9 +159,9 @@ class ImageCarouselViewModelSteps {
         (0..<5).map({ _ in AsyncImageModelMock() })
     }
 
-    func resultsData(for viewModels: [AsyncImageViewModel]) -> [CellData<AsyncImageViewModel>] {
+    func resultsData(for viewModels: [AsyncImageViewModel]) -> CollectionViewModel<AsyncImageViewModel> {
 
-        viewModels.map({ viewModel in
+        let cells: [CellData<AsyncImageViewModel>] = viewModels.map({ viewModel in
 
             let image = images[ObjectIdentifier(viewModel)]!
             let aspectRatio = image.size.width / image.size.height
@@ -170,19 +170,21 @@ class ImageCarouselViewModelSteps {
 
             return CellData<AsyncImageViewModel>(viewModel: viewModel, size: cellSize, tapCommand: nil)
         })
+
+        return CollectionViewModel<AsyncImageViewModel>(cells: cells, itemSpacing: 0.0, lineSpacing: 0.0)
     }
 
-    func observeSearchResults(_ viewModel: ImageCarouselViewModelImp, _ observer: @escaping ValueUpdate<[CellData<AsyncImageViewModel>]>) {
+    func observeSearchResults(_ viewModel: ImageCarouselViewModelImp, _ observer: @escaping ValueUpdate<CollectionViewModel<AsyncImageViewModel>>) {
 
         viewModel.observeResults(observer)
     }
 
-    func observer(_ observer: ValueUpdate<[CellData<AsyncImageViewModel>]>, isNotifiedWith expectedResults: [CellData<AsyncImageViewModel>]) {
+    func observer(_ observer: ValueUpdate<CollectionViewModel<AsyncImageViewModel>>, isNotifiedWith expectedResults: CollectionViewModel<AsyncImageViewModel>) {
 
-        XCTAssertTrue(valuePassedToObserver?.elementsEqual(expectedResults) { first, second in first.viewModel === second.viewModel && first.size == second.size } ?? false, "Observer was not notified of correct results")
+        XCTAssertTrue(valuePassedToObserver?.cells.elementsEqual(expectedResults.cells) { first, second in first.viewModel === second.viewModel && first.size == second.size } ?? false, "Observer was not notified of correct results")
     }
 
-    func observer(_ observer: ValueUpdate<[CellData<AsyncImageViewModel>]>, isNotifiedWith expectedResults: [CellData<AsyncImageViewModel>], on resultsQueue: DispatchQueueMock) {
+    func observer(_ observer: ValueUpdate<CollectionViewModel<AsyncImageViewModel>>, isNotifiedWith expectedResults: CollectionViewModel<AsyncImageViewModel>, on resultsQueue: DispatchQueueMock) {
 
         self.observer(observer, isNotifiedWith: expectedResults)
         XCTAssertTrue(valuePassedOnResultsQueue, "Observer was not notified on results queue")

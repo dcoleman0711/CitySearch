@@ -9,7 +9,7 @@ protocol SearchResultsViewModel {
 
     var model: SearchResultsModel { get }
 
-    func observeResultsViewModels(_ observer: @escaping ValueUpdate<[CellData<CitySearchResultViewModel>]>)
+    func observeResultsViewModels(_ observer: @escaping ValueUpdate<CollectionViewModel<CitySearchResultViewModel>>)
 }
 
 class SearchResultsViewModelImp: SearchResultsViewModel {
@@ -18,39 +18,39 @@ class SearchResultsViewModelImp: SearchResultsViewModel {
 
     private let viewModelFactory: CitySearchResultViewModelFactory
 
-    private var resultsData: [CellData<CitySearchResultViewModel>] = [] {
-
-        didSet { resultsObserver?(resultsData) }
-    }
-
-    private var resultsObserver: ValueUpdate<[CellData<CitySearchResultViewModel>]>?
+    private let cellSize = CGSize(width: 128.0, height: 128.0)
+    private let itemSpacing: CGFloat = 0.0
+    private let lineSpacing: CGFloat = 0.0
 
     init(model: SearchResultsModel, viewModelFactory: CitySearchResultViewModelFactory) {
 
         self.model = model
         self.viewModelFactory = viewModelFactory
-
-        self.model.observeResultsModels(SearchResultsViewModelImp.resultsModelsUpdated(self))
     }
 
-    func observeResultsViewModels(_ observer: @escaping ValueUpdate<[CellData<CitySearchResultViewModel>]>) {
+    func observeResultsViewModels(_ observer: @escaping ValueUpdate<CollectionViewModel<CitySearchResultViewModel>>) {
 
-        self.resultsObserver = observer
-
-        observer(resultsData)
+        self.model.observeResultsModels(mapUpdate(observer, SearchResultsViewModelImp.mapResults(self)))
     }
 
-    private func resultsModelsUpdated(models: [CitySearchResultModel]) {
+    private func mapResults(models: [CitySearchResultModel]) -> CollectionViewModel<CitySearchResultViewModel> {
 
-        resultsData = models.map({ model in
-
-            let viewModel = self.viewModelFactory.resultViewModel(model: model)
-            return CellData<CitySearchResultViewModel>(viewModel: viewModel, size: cellSize(), tapCommand: viewModel.tapCommand)
-        })
+        cellViewModel(cellData: self.cellData(models: models))
     }
 
-    private func cellSize() -> CGSize {
+    private func cellData(models: [CitySearchResultModel]) -> [CellData<CitySearchResultViewModel>] {
 
-        CGSize(width: 128.0, height: 128.0)
+        models.map(SearchResultsViewModelImp.cellDatum(self))
+    }
+
+    private func cellDatum(model: CitySearchResultModel) -> CellData<CitySearchResultViewModel> {
+
+        let viewModel = self.viewModelFactory.resultViewModel(model: model)
+        return CellData<CitySearchResultViewModel>(viewModel: viewModel, size: cellSize, tapCommand: viewModel.tapCommand)
+    }
+
+    private func cellViewModel(cellData: [CellData<CitySearchResultViewModel>]) -> CollectionViewModel<CitySearchResultViewModel> {
+
+        CollectionViewModel<CitySearchResultViewModel>(cells: cellData, itemSpacing: self.itemSpacing, lineSpacing: self.lineSpacing)
     }
 }

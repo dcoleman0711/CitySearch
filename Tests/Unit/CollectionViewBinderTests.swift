@@ -33,12 +33,13 @@ class CollectionViewBinderTests: XCTestCase {
         let collectionView = given.collectionView()
         let binder = given.binder()
         let cellUpdate = given.bindCells(binder, collectionView)
-        let viewModels = given.viewModels()
-        let cellData = given.cellData(viewModels)
+        let cellViewModels = given.cellViewModels()
+        let cellData = given.cellData(cellViewModels: cellViewModels)
+        let viewModel = given.viewModel(cellData: cellData)
 
-        when.updateViewModels(cellUpdate, cellData)
+        when.updateViewModels(cellUpdate, viewModel)
 
-        then.collectionView(collectionView, cellsHaveViewModels: viewModels)
+        then.collectionView(collectionView, cellsHaveViewModels: cellViewModels)
     }
 
     func testBindCollectionViewSizes() {
@@ -46,11 +47,12 @@ class CollectionViewBinderTests: XCTestCase {
         let collectionView = given.collectionView()
         let binder = given.binder()
         let cellUpdate = given.bindCells(binder, collectionView)
-        let viewModels = given.viewModels()
-        let cellData = given.cellData(viewModels)
+        let cellViewModels = given.cellViewModels()
+        let cellData = given.cellData(cellViewModels: cellViewModels)
         let cellSizes = given.cellSizes(cellData)
+        let viewModel = given.viewModel(cellData: cellData)
 
-        when.updateViewModels(cellUpdate, cellData)
+        when.updateViewModels(cellUpdate, viewModel)
 
         then.collectionView(collectionView, cellsHaveSizes: cellSizes)
     }
@@ -60,10 +62,11 @@ class CollectionViewBinderTests: XCTestCase {
         let collectionView = given.collectionView()
         let binder = given.binder()
         let cellUpdate = given.bindCells(binder, collectionView)
-        let viewModels = given.viewModels()
-        let cellData = given.cellData(viewModels)
+        let cellViewModels = given.cellViewModels()
+        let cellData = given.cellData(cellViewModels: cellViewModels)
+        let viewModel = given.viewModel(cellData: cellData)
         let expectedTapCommands = given.tapCommands(cellData)
-        given.updateViewModels(cellUpdate, cellData)
+        given.updateViewModels(cellUpdate, viewModel)
 
         let tapCommands = when.tapOnCells(in: collectionView)
 
@@ -91,19 +94,19 @@ class CollectionViewBinderSteps {
         CollectionViewBinderImp()
     }
 
-    func bindCells(_ binder: CollectionViewBinderImp<String, TestMVVMCell>, _ collectionView: UICollectionViewMock) -> ValueUpdate<[CellData<String>]> {
+    func bindCells(_ binder: CollectionViewBinderImp<String, TestMVVMCell>, _ collectionView: UICollectionViewMock) -> ValueUpdate<CollectionViewModel<String>> {
 
         binder.bindCells(collectionView: collectionView)
     }
 
-    func viewModels() -> [String] {
+    func cellViewModels() -> [String] {
 
         (0..<5).map( { "StubViewModel #\($0)" })
     }
 
-    func cellData(_ viewModels: [String]) -> [CellData<String>] {
+    func cellData(cellViewModels: [String]) -> [CellData<String>] {
 
-        viewModels.enumerated().map { (index, viewModel) in
+        cellViewModels.enumerated().map { (index, viewModel) in
 
             let command = CellTapCommandMock()
 
@@ -123,9 +126,14 @@ class CollectionViewBinderSteps {
         cellData.map({$0.tapCommand as! CellTapCommandMock})
     }
 
-    func updateViewModels(_ cellUpdate: ValueUpdate<[CellData<String>]>, _ cellData: [CellData<String>]) {
+    func viewModel(cellData: [CellData<String>] = [], itemSpacing: CGFloat = 0.0, lineSpacing: CGFloat = 0.0) -> CollectionViewModel<String> {
 
-        cellUpdate(cellData)
+        CollectionViewModel<String>(cells: cellData, itemSpacing: itemSpacing, lineSpacing: lineSpacing)
+    }
+
+    func updateViewModels(_ cellUpdate: ValueUpdate<CollectionViewModel<String>>, _ viewModel: CollectionViewModel<String>) {
+
+        cellUpdate(viewModel)
     }
 
     func tapOnCells(in collectionView: UICollectionViewMock) -> [CellTapCommandMock] {

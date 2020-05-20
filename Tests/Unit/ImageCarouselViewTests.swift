@@ -73,7 +73,7 @@ class ImageCarouselViewSteps {
 
         viewModel.observeResultsViewModelsImp = { (observer) in
 
-            observer([])
+            observer(CollectionViewModel<AsyncImageViewModel>(cells: [], itemSpacing: 0.0, lineSpacing: 0.0))
         }
 
         return viewModel
