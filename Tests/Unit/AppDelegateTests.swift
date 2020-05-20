@@ -58,7 +58,7 @@ class AppDelegateSteps {
 
             self.serviceUsedToBuildStartupView = builder.searchService
 
-            return StartupViewImp(appTitleLabel: UILabel(), viewModel: StartupViewModelMock(), binder: ViewBinderMock())
+            return StartupViewImp(appTitleLabel: RollingAnimationLabelMock(), viewModel: StartupViewModelMock())
         }
 
         return builder

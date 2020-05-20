@@ -63,8 +63,7 @@ class StartupViewTests: XCTestCase {
 
         let appTitleLabel = given.appTitleLabel()
         let startupViewModel = given.startupViewModel()
-        let binder = given.binder()
-        let startupView = given.startupView(appTitleLabel: appTitleLabel, startupViewModel: startupViewModel, binder: binder)
+        let startupView = given.startupView(appTitleLabel: appTitleLabel, startupViewModel: startupViewModel)
 
         when.startupViewIsLoaded(startupView)
 
@@ -84,25 +83,15 @@ class StartupViewTests: XCTestCase {
 
 class StartupViewSteps {
 
-    private var labelBoundToModel: UILabel?
     private var textUpdatePassedToViewModel: ValueUpdate<LabelViewModel>?
 
     private var transitionScheduled = false
 
-    func binder() -> ViewBinderMock {
+    private let stubText = "stubText"
+    private let stubFont = UIFont.systemFont(ofSize: 123.0)
 
-        let binder = ViewBinderMock()
-
-        binder.bindLabelTextImp = { (label) in
-
-            { (text) in
-
-                self.labelBoundToModel = label
-            }
-        }
-
-        return binder
-    }
+    private var titleLabelText: String?
+    private var titleLabelFont: UIFont?
 
     func startupModel() -> StartupModelMock {
 
@@ -122,28 +111,36 @@ class StartupViewSteps {
 
         startupViewModel.observeAppTitleImp = { (viewModelUpdate) in
 
-            viewModelUpdate(LabelViewModel.emptyData)
+            viewModelUpdate(LabelViewModel(text: self.stubText, font: self.stubFont))
         }
 
         return startupViewModel
     }
 
-    func constraintsForCenter(_ appTitleLabel: UILabel, equalTo startupView: StartupViewImp) -> [NSLayoutConstraint] {
+    func constraintsForCenter(_ appTitleLabel: RollingAnimationLabelMock, equalTo startupView: StartupViewImp) -> [NSLayoutConstraint] {
 
         [appTitleLabel.centerXAnchor.constraint(equalTo: startupView.view.centerXAnchor),
          appTitleLabel.centerYAnchor.constraint(equalTo: startupView.view.centerYAnchor)]
     }
 
-    func startupView(appTitleLabel: UILabel = UILabel(), startupModel: StartupModelMock = StartupModelMock(), startupViewModel: StartupViewModelMock = StartupViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> StartupViewImp {
+    func startupView(appTitleLabel: RollingAnimationLabelMock = RollingAnimationLabelMock(), startupModel: StartupModelMock = StartupModelMock(), startupViewModel: StartupViewModelMock = StartupViewModelMock()) -> StartupViewImp {
 
         startupViewModel.model = startupModel
 
-        return StartupViewImp(appTitleLabel: appTitleLabel, viewModel: startupViewModel, binder: binder)
+        return StartupViewImp(appTitleLabel: appTitleLabel, viewModel: startupViewModel)
     }
 
-    func appTitleLabel() -> UILabel {
+    func appTitleLabel() -> RollingAnimationLabelMock {
 
-        UILabel()
+        let titleLabel = RollingAnimationLabelMock()
+
+        titleLabel.startImp = { text, font in
+
+            self.titleLabelText = text
+            self.titleLabelFont = font
+        }
+
+        return titleLabel
     }
 
     func startupViewIsLoaded(_ startupView: StartupViewImp) {
@@ -151,7 +148,7 @@ class StartupViewSteps {
         startupView.loadViewIfNeeded()
     }
 
-    func appTitleLabel(_ appTitleLabel: UILabel, isOnStartupView startupView: StartupViewImp) {
+    func appTitleLabel(_ appTitleLabel: RollingAnimationLabelMock, isOnStartupView startupView: StartupViewImp) {
 
         XCTAssertTrue(startupView.view.subviews.contains(appTitleLabel), "Startup view does not contain app title label")
     }
@@ -166,9 +163,9 @@ class StartupViewSteps {
         ViewConstraintValidator.validateThatView(startupView.view, hasConstraints: expectedConstraints, message: "Startup view does not contain expected constraints")
     }
 
-    func appTitleLabel(_ appTitleLabel: UILabel, isBoundToViewModel model: StartupViewModelMock) {
+    func appTitleLabel(_ appTitleLabel: RollingAnimationLabelMock, isBoundToViewModel model: StartupViewModelMock) {
 
-        XCTAssertEqual(labelBoundToModel, appTitleLabel, "App title text is not bound to model")
+        XCTAssertTrue(titleLabelText == stubText && titleLabelFont == stubFont, "App title text is not bound to model")
     }
 
     func transitionIsScheduled(_ startupModel: StartupModelMock) {

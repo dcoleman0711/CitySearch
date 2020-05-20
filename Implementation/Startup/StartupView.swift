@@ -12,20 +12,16 @@ protocol StartupView where Self: UIViewController {
 
 class StartupViewImp : UIViewController, StartupView {
 
-    private let appTitleLabel: UILabel
+    private let appTitleLabel: RollingAnimationLabel
 
     private let viewModel: StartupViewModel
-    private let binder: ViewBinder
 
-    init(appTitleLabel: UILabel, viewModel: StartupViewModel, binder: ViewBinder) {
+    init(appTitleLabel: RollingAnimationLabel, viewModel: StartupViewModel) {
 
         self.appTitleLabel = appTitleLabel
         self.viewModel = viewModel
-        self.binder = binder
 
         super.init(nibName: nil, bundle: nil)
-
-        bindViews()
     }
 
     required init?(coder: NSCoder) {
@@ -41,6 +37,8 @@ class StartupViewImp : UIViewController, StartupView {
         buildLayout()
 
         viewModel.model.startTransitionTimer()
+
+        bindViews()
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -53,15 +51,14 @@ class StartupViewImp : UIViewController, StartupView {
         view.backgroundColor = UIColor.white
 
         view.addSubview(appTitleLabel)
+        appTitleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buildLayout() {
 
         // App Title
-        appTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        let appCenterXConstraint = appTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        let appCenterYConstraint = appTitleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        let appTitleConstraints = [appCenterXConstraint, appCenterYConstraint]
+        let appTitleConstraints = [appTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                   appTitleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)]
 
         let constraints = [NSLayoutConstraint]([appTitleConstraints].joined())
 
@@ -70,6 +67,6 @@ class StartupViewImp : UIViewController, StartupView {
 
     private func bindViews() {
 
-        viewModel.observeAppTitle(binder.bindText(label: appTitleLabel))
+        viewModel.observeAppTitle { viewModel in self.appTitleLabel.start(with: viewModel.text, font: viewModel.font) }
     }
 }

@@ -199,6 +199,9 @@ class StartupScreenSteps {
 
     private var resultsReturnedExpectation: XCTestExpectation?
 
+    private var titleLabelText: String?
+    private var titleLabelFont: UIFont?
+
     init(_ tests: XCTestCase) {
 
         self.tests = tests
@@ -302,9 +305,17 @@ class StartupScreenSteps {
         [CGSize(width: 1024, height: 768), CGSize(width: 2048, height: 768), CGSize(width: 2048, height: 1536)]
     }
 
-    func appTitleLabel() -> UILabel {
+    func appTitleLabel() -> RollingAnimationLabelMock {
 
-        UILabel()
+        let titleLabel = RollingAnimationLabelMock()
+
+        titleLabel.startImp = { text, font in
+
+            self.titleLabelText = text
+            self.titleLabelFont = font
+        }
+
+        return titleLabel
     }
 
     func landscapeOrientations() -> UIInterfaceOrientationMask {
@@ -312,7 +323,7 @@ class StartupScreenSteps {
         UIInterfaceOrientationMask.landscape
     }
 
-    func startupScreen(appTitleLabel: UILabel = UILabel(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock(), searchService: CitySearchServiceMock = CitySearchServiceMock()) -> StartupView {
+    func startupScreen(appTitleLabel: RollingAnimationLabelMock = RollingAnimationLabelMock(), transitionCommand: StartupTransitionCommandMock = StartupTransitionCommandMock(), searchService: CitySearchServiceMock = CitySearchServiceMock()) -> StartupView {
 
         let builder = StartupViewBuilderImp()
         builder.appTitleLabel = appTitleLabel
@@ -359,30 +370,30 @@ class StartupScreenSteps {
         XCTAssertEqual(startupScreen.supportedInterfaceOrientations, expectedOrientations)
     }
 
-    func appTitleIsVisible(_ startupScreen: StartupView, _ appTitleLabel: UILabel) {
+    func appTitleIsVisible(_ startupScreen: StartupView, _ appTitleLabel: RollingAnimationLabelMock) {
 
         XCTAssertTrue(appTitleLabel.isDescendant(of: startupScreen.view), "App title is not visible on startup screen")
     }
 
-    func appTitleLabel(_ appTitleLabel: UILabel, isCenteredIn screenSize: CGSize) {
+    func appTitleLabel(_ appTitleLabel: RollingAnimationLabelMock, isCenteredIn screenSize: CGSize) {
 
         // The values aren't exact when the size of the view is non-integer.  We need to round down
         XCTAssertEqual(CGPoint(x: floor(appTitleLabel.center.x), y: floor(appTitleLabel.center.y)), CGPoint(x: screenSize.width / 2, y: screenSize.height / 2), "App title center is not screen center")
     }
 
-    func appTitleLabel(_ appTitleLabel: UILabel, textIs expectedText: String) {
+    func appTitleLabel(_ appTitleLabel: RollingAnimationLabelMock, textIs expectedText: String) {
 
-        XCTAssertEqual(appTitleLabel.text, expectedText, "App title text is not app title")
+        XCTAssertEqual(titleLabelText, expectedText, "App title text is not app title")
     }
 
-    func appTitleLabelSizeFitsText(_ appTitleLabel: UILabel) {
+    func appTitleLabelSizeFitsText(_ appTitleLabel: RollingAnimationLabelMock) {
 
         XCTAssertEqual(appTitleLabel.frame.size, appTitleLabel.sizeThatFits(CGSize.zero), "App title size does not fit text")
     }
 
-    func appTitleLabel(_ appTitleLabel: UILabel, fontIs font: UIFont) {
+    func appTitleLabel(_ appTitleLabel: RollingAnimationLabelMock, fontIs font: UIFont) {
 
-        XCTAssertEqual(appTitleLabel.font, font, "App title font is not correct")
+        XCTAssertEqual(titleLabelFont, font, "App title font is not correct")
     }
 
     func transitionToCitySearchScreenHasStarted(withInitialResults expectedResults: CitySearchResults) {

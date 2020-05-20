@@ -85,6 +85,7 @@
 		CC89D7271E366504E3521EA4 /* ViewBinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D951DBE5EBDD53926D81 /* ViewBinderTests.swift */; };
 		CC89D727A4FBA921E7804D31 /* CityDetailsViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DF340BF848135A3C7222 /* CityDetailsViewMock.swift */; };
 		CC89D7390DF2B68DA975EB50 /* ImageSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D312F3E8460B4DB8BBCE /* ImageSearchService.swift */; };
+		CC89D760571F6B28002D7EAF /* RollingAnimationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D320C56BDBF0CA5AE469 /* RollingAnimationLabel.swift */; };
 		CC89D774F10AB0E852CB03BC /* AsyncImageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DB33AA0B2F451DDA97E2 /* AsyncImageModelTests.swift */; };
 		CC89D7E19D06E39E7992FE70 /* ImageCarouselViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D9C473145FAAEBEA82BE /* ImageCarouselViewModelMock.swift */; };
 		CC89D7F7307CD162EDBB69CB /* OpenDetailsCommandFactoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D615C8F4876CA8C69C3F /* OpenDetailsCommandFactoryMock.swift */; };
@@ -112,6 +113,7 @@
 		CC89D99EBD72719B95F440EC /* StartupViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DBA8247771E50DC535C2 /* StartupViewMock.swift */; };
 		CC89D9A692997268FF02A347 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D201749FD9ACB7C1CF35 /* ImageLoader.swift */; };
 		CC89D9A6C96736600F9AD2F4 /* StartupTransitionCommandFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DB1E4E1008D647AA75F0 /* StartupTransitionCommandFactory.swift */; };
+		CC89D9F85EFA1CFACA7F32BD /* RollingAnimationLabelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D22BA4455E9B2FE671B7 /* RollingAnimationLabelMock.swift */; };
 		CC89D9FAB79B0C1FBDFAD437 /* CityDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D55672BD194A75E2D2DC /* CityDetailsView.swift */; };
 		CC89DA15734314FC0D039354 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D61FE647F61D7EF2AF44 /* StartupView.swift */; };
 		CC89DA31D1001179B073E9F4 /* CityDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D55672BD194A75E2D2DC /* CityDetailsView.swift */; };
@@ -139,6 +141,7 @@
 		CC89DC1790FDA58A78EC8908 /* CitySearchServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D98440C5C0DFC257E38C /* CitySearchServiceMock.swift */; };
 		CC89DC346FCD67D835F90D0D /* StartupTransitionCommandFactoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D7761BB6CA8BCBB4E428 /* StartupTransitionCommandFactoryMock.swift */; };
 		CC89DC449D34A78B4ECF2DBA /* StartupViewBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D163628745B221E03B78 /* StartupViewBuilderMock.swift */; };
+		CC89DC5CAC07E757FB692B90 /* RollingAnimationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D320C56BDBF0CA5AE469 /* RollingAnimationLabel.swift */; };
 		CC89DC721788453CD3CE313C /* CityDetailsModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D9A9F479233EE0A5FFF8 /* CityDetailsModelMock.swift */; };
 		CC89DC72C48B9F00922EC1FC /* DetailsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DE92D5287A814E33B9DE /* DetailsViewTests.swift */; };
 		CC89DC9AB008F7DCCB90D3FE /* CitySearchResultModelFactoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D9B81C626BA8116F0F11 /* CitySearchResultModelFactoryMock.swift */; };
@@ -231,6 +234,7 @@
 		CC89D1C38E2D239CE04D226F /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		CC89D1D87FDD94778CE20982 /* CitySearchResultsStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySearchResultsStub.swift; sourceTree = "<group>"; };
 		CC89D201749FD9ACB7C1CF35 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		CC89D22BA4455E9B2FE671B7 /* RollingAnimationLabelMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RollingAnimationLabelMock.swift; sourceTree = "<group>"; };
 		CC89D23EF75A7B436FCA9031 /* SearchResultsModelMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsModelMock.swift; sourceTree = "<group>"; };
 		CC89D26A7D281ECB1482B04F /* CityDetailsViewModelMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityDetailsViewModelMock.swift; sourceTree = "<group>"; };
 		CC89D28BF65040868D7C44EC /* CitySearchResultModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySearchResultModel.swift; sourceTree = "<group>"; };
@@ -238,6 +242,7 @@
 		CC89D2E058169AA0C6A5D534 /* CitySearchResultViewModelFactoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySearchResultViewModelFactoryMock.swift; sourceTree = "<group>"; };
 		CC89D2ECB33EC15A78207BCA /* CitySearchResultCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySearchResultCellTests.swift; sourceTree = "<group>"; };
 		CC89D312F3E8460B4DB8BBCE /* ImageSearchService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchService.swift; sourceTree = "<group>"; };
+		CC89D320C56BDBF0CA5AE469 /* RollingAnimationLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RollingAnimationLabel.swift; sourceTree = "<group>"; };
 		CC89D369682729CBB06BC2F0 /* CitySearchService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySearchService.swift; sourceTree = "<group>"; };
 		CC89D3828C68B33BDAD6B731 /* ImageSearchServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchServiceTests.swift; sourceTree = "<group>"; };
 		CC89D39B501C1D26F04DDB77 /* CollectionViewBinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewBinder.swift; sourceTree = "<group>"; };
@@ -596,6 +601,7 @@
 				CC89D7EA5E82DA14AFB765D2 /* Reactive */,
 				CC89DC10E8CB5C24011D5A9B /* Data */,
 				CC89D773334459FAD97A071D /* Details */,
+				CEEC6DC724751CB800DB0785 /* Animations */,
 				CC89D811CA615C844E330557 /* Shared */,
 				CC89DD0EF336BFF87EDA3D44 /* Utilities */,
 			);
@@ -666,6 +672,7 @@
 				CC89DDAF97B4D7A9897F0792 /* AsyncImageModelFactoryMock.swift */,
 				CEEC6DB72474B6D100DB0785 /* ImageServiceMock.swift */,
 				CC89D74948377F1A82B328F6 /* ImageSearchServiceMock.swift */,
+				CC89D22BA4455E9B2FE671B7 /* RollingAnimationLabelMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -704,6 +711,14 @@
 				CEEC6DBE24750C4B00DB0785 /* City4.png */,
 			);
 			path = Icons;
+			sourceTree = "<group>";
+		};
+		CEEC6DC724751CB800DB0785 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				CC89D320C56BDBF0CA5AE469 /* RollingAnimationLabel.swift */,
+			);
+			path = Animations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -870,6 +885,7 @@
 				CC89D7390DF2B68DA975EB50 /* ImageSearchService.swift in Sources */,
 				CC89D8DDAB615D9588473F05 /* URLSession.swift in Sources */,
 				CC89DB10D6F7E64709B39341 /* URLUtilities.swift in Sources */,
+				CC89D760571F6B28002D7EAF /* RollingAnimationLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,6 +1022,8 @@
 				CC89DF486F3B74E5C0CFB855 /* URLUtilities.swift in Sources */,
 				CC89D2649E5BC87428E3E484 /* ImageSearchServiceMock.swift in Sources */,
 				CC89D5290B8AA9BA48C047F5 /* ImageSearchResultsStub.swift in Sources */,
+				CC89DC5CAC07E757FB692B90 /* RollingAnimationLabel.swift in Sources */,
+				CC89D9F85EFA1CFACA7F32BD /* RollingAnimationLabelMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

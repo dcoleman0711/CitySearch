@@ -15,7 +15,7 @@ protocol StartupViewBuilder: class {
 
 class StartupViewBuilderImp: StartupViewBuilder {
 
-    var appTitleLabel = UILabel()
+    var appTitleLabel: RollingAnimationLabel = RollingAnimationLabelImp()
     var transitionCommand: StartupTransitionCommand = StartupTransitionCommandNull()
     var searchService: CitySearchService = CitySearchServiceImp()
 
@@ -23,6 +23,6 @@ class StartupViewBuilderImp: StartupViewBuilder {
 
         let model = StartupModelImp(timerType: Timer.self, transitionCommand: transitionCommand, searchService: searchService, invocationQueue: DispatchQueue.main)
         let viewModel = StartupViewModelImp(model: model)
-        return StartupViewImp(appTitleLabel: appTitleLabel, viewModel: viewModel, binder: ViewBinderImp())
+        return StartupViewImp(appTitleLabel: appTitleLabel, viewModel: viewModel)
     }
 }
