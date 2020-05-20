@@ -138,6 +138,6 @@ class CitySearchResultViewModelSteps {
 
     func observer(_ observer: @escaping ValueUpdate<UIImage>, receivedValue icon: UIImage) {
 
-        XCTAssertTrue(observedImage?.isSameImageAs(icon) ?? false, "Icon Observer did not receive correct image")
+        XCTAssertTrue(UIImage.compareImages(lhs: observedImage, rhs: icon), "Icon Observer did not receive correct image")
     }
 }

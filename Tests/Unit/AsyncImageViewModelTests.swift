@@ -141,7 +141,12 @@ class AsyncImageViewModelSteps {
 
     func observer(_ observer: ValueUpdate<UIImage?>, isNotifiedWith expectedValue: UIImage, on resultsQueue: DispatchQueueMock) {
 
-        XCTAssertTrue(valuePassedToObserver??.isSameImageAs(expectedValue) ?? false, "Observer was not notified of correct results")
+        guard let image = valuePassedToObserver else {
+            XCTFail("Observer was not notified")
+            return
+        }
+
+        XCTAssertTrue(UIImage.compareImages(lhs: image, rhs: expectedValue), "Observer was not notified of correct results")
         XCTAssertTrue(valuePassedOnResultsQueue, "Observer was not notified on results queue")
     }
 

@@ -9,6 +9,8 @@ protocol ParallaxViewModel {
 
     func subscribeToContentOffset() -> ValueUpdate<CGPoint>
 
+    func observeImages(_ observer: @escaping ValueUpdate<[UIImage]>)
+
     func observeOffsets(_ observer: @escaping ValueUpdate<[CGPoint]>)
 }
 
@@ -31,6 +33,11 @@ class ParallaxViewModelImp: ParallaxViewModel {
     func subscribeToContentOffset() -> ValueUpdate<CGPoint> {
 
         { contentOffset in self.contentOffset.value = contentOffset }
+    }
+
+    func observeImages(_ observer: @escaping ValueUpdate<[UIImage]>) {
+
+
     }
 
     func observeOffsets(_ observer: @escaping ValueUpdate<[CGPoint]>) {

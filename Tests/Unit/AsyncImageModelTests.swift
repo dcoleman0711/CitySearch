@@ -145,6 +145,6 @@ class AsyncImageModelSteps {
 
     func observerIsNotified(_ observer: ValueUpdate<UIImage>, ofNewValue newValue: UIImage) {
 
-        XCTAssertTrue(valuePassedToObserver?.isSameImageAs(newValue) ?? false, "Observer was not notified of correct results")
+        XCTAssertTrue(UIImage.compareImages(lhs: valuePassedToObserver, rhs: newValue), "Observer was not notified of correct results")
     }
 }

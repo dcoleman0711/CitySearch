@@ -13,9 +13,15 @@ class ParallaxViewModelMock : ParallaxViewModel {
         subscribeToContentOffsetImp()
     }
 
-    var observerOffsetsImp: () -> ValueUpdate<[CGPoint]> = { { offsets in } }
+    var observeImagesImp: (_ observer: @escaping ValueUpdate<[UIImage]>) -> Void = { observer in }
+    func observeImages(_ observer: @escaping ValueUpdate<[UIImage]>) {
+
+        observeImagesImp(observer)
+    }
+
+    var observeOffsetsImp: (_ observer: @escaping ValueUpdate<[CGPoint]>) -> Void = { observer in }
     func observeOffsets(_ observer: @escaping ValueUpdate<[CGPoint]>) {
 
-
+        observeOffsetsImp(observer)
     }
 }

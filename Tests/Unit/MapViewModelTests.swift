@@ -169,7 +169,7 @@ class MapViewModelSteps {
 
     func observer(_ observer: @escaping ValueUpdate<UIImage>, receivedValue backgroundImage: UIImage) {
 
-        XCTAssertTrue(observedImage?.isSameImageAs(backgroundImage) ?? false, "Marker Image Observer did not receive correct image")
+        XCTAssertTrue(UIImage.compareImages(lhs: observedImage, rhs: backgroundImage), "Marker Image Observer did not receive correct image")
     }
 
     func observer(_ frameObserver: ValueUpdate<CGRect>, receivedValueWithSize expectedSize: CGSize) {

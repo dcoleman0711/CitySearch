@@ -94,16 +94,22 @@ class ImageServiceSteps {
 
     func result(_ result: UIImage?, isEqualTo expectedResult: UIImage) {
 
-        XCTAssertTrue(result?.isSameImageAs(expectedResult) ?? false, "Result is not the expected result")
+        XCTAssertTrue(UIImage.compareImages(lhs: result, rhs: expectedResult), "Result is not the expected result")
     }
 }
 
 extension UIImage {
 
-    func isSameImageAs(_ other: UIImage) -> Bool {
+    static func compareImages(lhs: UIImage?, rhs: UIImage?) -> Bool {
 
-        guard let png = self.pngData(), let otherPng = other.pngData() else { return self.isEqual(other) }
+        guard let first = lhs,
+              let firstPng = first.pngData(),
+              let second = rhs,
+              let secondPng = second.pngData() else {
 
-        return png == otherPng
+            return lhs == rhs
+        }
+
+        return firstPng == secondPng
     }
 }
