@@ -195,6 +195,14 @@
 		CEEC6DB62474B59A00DB0785 /* TestCityImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DB52474B59A00DB0785 /* TestCityImage.jpg */; };
 		CEEC6DB82474B6D100DB0785 /* ImageServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEC6DB72474B6D100DB0785 /* ImageServiceMock.swift */; };
 		CEEC6DB92474B6E000DB0785 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D201749FD9ACB7C1CF35 /* ImageLoader.swift */; };
+		CEEC6DBF24750C4B00DB0785 /* City1.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DBB24750C4B00DB0785 /* City1.png */; };
+		CEEC6DC024750C4B00DB0785 /* City1.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DBB24750C4B00DB0785 /* City1.png */; };
+		CEEC6DC124750C4B00DB0785 /* City2.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DBC24750C4B00DB0785 /* City2.png */; };
+		CEEC6DC224750C4B00DB0785 /* City2.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DBC24750C4B00DB0785 /* City2.png */; };
+		CEEC6DC324750C4B00DB0785 /* City3.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DBD24750C4B00DB0785 /* City3.png */; };
+		CEEC6DC424750C4B00DB0785 /* City3.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DBD24750C4B00DB0785 /* City3.png */; };
+		CEEC6DC524750C4B00DB0785 /* City4.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DBE24750C4B00DB0785 /* City4.png */; };
+		CEEC6DC624750C4B00DB0785 /* City4.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DBE24750C4B00DB0785 /* City4.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -348,6 +356,10 @@
 		CEEC6DB22474B55300DB0785 /* MissingImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MissingImage.jpg; sourceTree = "<group>"; };
 		CEEC6DB52474B59A00DB0785 /* TestCityImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TestCityImage.jpg; sourceTree = "<group>"; };
 		CEEC6DB72474B6D100DB0785 /* ImageServiceMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageServiceMock.swift; sourceTree = "<group>"; };
+		CEEC6DBB24750C4B00DB0785 /* City1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = City1.png; sourceTree = "<group>"; };
+		CEEC6DBC24750C4B00DB0785 /* City2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = City2.png; sourceTree = "<group>"; };
+		CEEC6DBD24750C4B00DB0785 /* City3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = City3.png; sourceTree = "<group>"; };
+		CEEC6DBE24750C4B00DB0785 /* City4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = City4.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -566,6 +578,7 @@
 				CEEC6DB22474B55300DB0785 /* MissingImage.jpg */,
 				CE5D9D792472C76300A45702 /* TestImage.jpg */,
 				CEEC6DB52474B59A00DB0785 /* TestCityImage.jpg */,
+				CEEC6DBA24750C4B00DB0785 /* Icons */,
 				CE2C62F4246E137100C1D25A /* Info.plist */,
 				CE3967BD246EDBB300478E39 /* TestInfo.plist */,
 				CEEC6DA62473330900DB0785 /* stubCityResponse.json */,
@@ -682,6 +695,17 @@
 			path = CitySearchResultCell;
 			sourceTree = "<group>";
 		};
+		CEEC6DBA24750C4B00DB0785 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				CEEC6DBB24750C4B00DB0785 /* City1.png */,
+				CEEC6DBC24750C4B00DB0785 /* City2.png */,
+				CEEC6DBD24750C4B00DB0785 /* City3.png */,
+				CEEC6DBE24750C4B00DB0785 /* City4.png */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -763,9 +787,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEEC6DB62474B59A00DB0785 /* TestCityImage.jpg in Resources */,
+				CEEC6DC524750C4B00DB0785 /* City4.png in Resources */,
+				CEEC6DC324750C4B00DB0785 /* City3.png in Resources */,
+				CEEC6DC124750C4B00DB0785 /* City2.png in Resources */,
 				CEEC6DB32474B55300DB0785 /* MissingImage.jpg in Resources */,
 				CE2C62F3246E137100C1D25A /* LaunchScreen.storyboard in Resources */,
 				CE2C62F0246E137100C1D25A /* Assets.xcassets in Resources */,
+				CEEC6DBF24750C4B00DB0785 /* City1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,9 +802,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEEC6DB42474B55300DB0785 /* MissingImage.jpg in Resources */,
+				CEEC6DC624750C4B00DB0785 /* City4.png in Resources */,
+				CEEC6DC424750C4B00DB0785 /* City3.png in Resources */,
+				CEEC6DC224750C4B00DB0785 /* City2.png in Resources */,
 				CEEC6DA72473330900DB0785 /* stubCityResponse.json in Resources */,
 				CE5D9D7B2472CC1800A45702 /* TestImage.jpg in Resources */,
 				CC89DDF7D2B5AB02538EADAE /* stubImageResponse.json in Resources */,
+				CEEC6DC024750C4B00DB0785 /* City1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,9 +11,7 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
         didSet {
 
-            guard let viewModel = viewModel else {
-                return
-            }
+            guard let viewModel = viewModel else { return }
 
             self.bindToViewModel(viewModel)
         }
@@ -21,6 +19,7 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
     private let titleLabel: UILabel
     private let imageView: UIImageView
+    private let binder: ViewBinder
 
     private let updateTitle: ValueUpdate<LabelViewModel>
 
@@ -35,6 +34,7 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
         self.titleLabel = titleLabel
         self.imageView = imageView
+        self.binder = binder
 
         self.updateTitle = binder.bindText(label: self.titleLabel)
 
@@ -84,5 +84,7 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
     private func bindToViewModel(_ viewModel: CitySearchResultViewModel) {
 
         self.updateTitle(viewModel.titleData)
+
+        viewModel.observeIconImage(self.binder.bindImage(imageView: self.imageView))
     }
 }

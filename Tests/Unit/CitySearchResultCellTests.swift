@@ -58,6 +58,18 @@ class CitySearchResultCellTests: XCTestCase {
         then.titleLabel(titleLabel, isConstrainedToBottomCenterOf: searchResultCell)
     }
 
+    func testImageViewData() {
+
+        let viewModel = given.viewModel()
+        let imageView = given.imageView()
+        let binder = given.binder()
+        let searchResultCell = given.searchResultCellIsCreated(imageView: imageView, binder: binder)
+
+        when.assignViewModel(viewModel, toCell: searchResultCell)
+
+        then.imageView(imageView, isBoundTo: viewModel)
+    }
+    
     func testImageViewAutoResizeMaskDisabled() {
 
         let imageView = given.imageView()
@@ -86,7 +98,12 @@ class CitySearchResultCellTests: XCTestCase {
 
 class CitySearchResultCellSteps {
 
-    var labelBindings: [UILabel: LabelViewModel] = [:]
+    private var labelBindings: [UILabel: LabelViewModel] = [:]
+    private var boundImageView: UIImageView?
+
+    private var iconImageObserver: ValueUpdate<UIImage>?
+
+    private var imageViewBoundToIcon: UIImageView?
 
     func binder() -> ViewBinderMock {
 
@@ -97,6 +114,14 @@ class CitySearchResultCellSteps {
             { (viewModel) in
 
                 self.labelBindings[label] = viewModel
+            }
+        }
+
+        binder.bindImageImp = { imageView in
+
+            { (image) in
+
+                self.boundImageView = imageView
             }
         }
 
@@ -118,11 +143,17 @@ class CitySearchResultCellSteps {
         UIImageView()
     }
 
-    func viewModel(_ titleData: LabelViewModel) -> CitySearchResultViewModelMock {
+    func viewModel(_ titleData: LabelViewModel = LabelViewModel.emptyData) -> CitySearchResultViewModelMock {
 
         let viewModel = CitySearchResultViewModelMock()
 
         viewModel.titleData = titleData
+
+        viewModel.observeIconImageImp = { observer in
+
+            observer(UIImageMock())
+            self.imageViewBoundToIcon = self.boundImageView
+        }
 
         return viewModel
     }
@@ -171,8 +202,14 @@ class CitySearchResultCellSteps {
         validateConstraints(expectedConstraints: expectedConstraints, cell: cell, message: "Image view is not constrained to horizontal center and above title label")
     }
 
+    func imageView(_ imageView: UIImageView, isBoundTo viewModel: CitySearchResultViewModelMock) {
+
+        XCTAssertEqual(imageViewBoundToIcon, imageView, "Icon Image View was not bound to view model")
+    }
+
     private func validateConstraints(expectedConstraints: [NSLayoutConstraint], cell: CitySearchResultCell, message: String) {
 
         XCTAssertTrue(expectedConstraints.allSatisfy( { (first) in cell.constraints.contains(where: { (second) in first.isEqualToConstraint(second)}) }), message)
     }
+
 }

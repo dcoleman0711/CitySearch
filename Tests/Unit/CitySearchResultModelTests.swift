@@ -38,6 +38,16 @@ class CitySearchResultViewModelTests: XCTestCase {
         then.model(model, titleIs: searchResult.name)
     }
 
+    func testPopulationClass() {
+
+        let searchResult = given.searchResult()
+        let populationClass = given.populationClass(for: searchResult)
+
+        let model = when.modelIsCreated(searchResult: searchResult)
+
+        then.model(model, populationClassIs: populationClass)
+    }
+
     func testTapCommand() {
 
         let searchResult = given.searchResult()
@@ -54,7 +64,16 @@ class CitySearchResultViewModelSteps {
 
     func searchResult() -> CitySearchResult {
 
-        CitySearchResultsStub.stubResults().results[0]
+        // This only tests one population class.  There should be one test for each class that produces a distinct output
+        CitySearchResult(name: "Test City", population: 100000)
+    }
+
+    func populationClass(for searchResult: CitySearchResult) -> PopulationClass {
+
+        ([PopulationClassSmall(), PopulationClassMedium(), PopulationClassLarge(), PopulationClassVeryLarge()].first { populationClass in
+
+            populationClass.range.contains(searchResult.population)
+        })!
     }
 
     func tapCommandFactory() -> OpenDetailsCommandFactoryMock {
@@ -84,6 +103,11 @@ class CitySearchResultViewModelSteps {
     func model(_ model: CitySearchResultModelImp, titleIs expectedTitle: String) {
 
         XCTAssertEqual(model.titleText, expectedTitle, "Model title is not search result name")
+    }
+
+    func model(_ model: CitySearchResultModelImp, populationClassIs expectedPopulationClass: PopulationClass) {
+
+        XCTAssertTrue(model.populationClass.equals(expectedPopulationClass), "Model population class is not correct")
     }
 
     func model(_ model: CitySearchResultModelImp, tapCommandIs expectedTapCommand: OpenDetailsCommandMock) {

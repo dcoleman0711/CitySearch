@@ -39,6 +39,19 @@ class CitySearchResultModelTests: XCTestCase {
         then.viewModel(viewModel, textIs: titleText)
     }
 
+    func testIcon() {
+
+        let populationClass = given.populationClass()
+        let model = given.model(populationClass: populationClass)
+        let icon = given.icon(for: populationClass)
+        let imageObserver = given.imageObserver()
+        let viewModel = given.viewModelIsCreated(model: model)
+
+        when.observer(imageObserver, observesIconIn: viewModel)
+
+        then.observer(imageObserver, receivedValue: icon)
+    }
+
     func testTapCommand() {
 
         let tapCommand = given.tapCommand()
@@ -52,9 +65,24 @@ class CitySearchResultModelTests: XCTestCase {
 
 class CitySearchResultModelSteps {
 
+    private var observedImage: UIImage?
+
     func titleText() -> String {
 
         "Test Title"
+    }
+
+    func populationClass() -> PopulationClass {
+
+        PopulationClassMedium()
+    }
+
+    func imageObserver() -> ValueUpdate<UIImage> {
+
+        { image in
+
+            self.observedImage = image
+        }
     }
 
     func tapCommand() -> OpenDetailsCommandMock {
@@ -62,14 +90,36 @@ class CitySearchResultModelSteps {
         OpenDetailsCommandMock()
     }
 
-    func model(titleText: String = "", tapCommand: OpenDetailsCommandMock = OpenDetailsCommandMock()) -> CitySearchResultModelMock {
+    func observer(_ imageObserver: @escaping ValueUpdate<UIImage>, observesIconIn viewModel: CitySearchResultViewModelImp) {
+
+        viewModel.observeIconImage(imageObserver)
+    }
+
+    func model(titleText: String = "", populationClass: PopulationClass = PopulationClassSmall(), tapCommand: OpenDetailsCommandMock = OpenDetailsCommandMock()) -> CitySearchResultModelMock {
 
         let model = CitySearchResultModelMock()
 
         model.titleText = titleText
+        model.populationClass = populationClass
+
         model.tapCommand = tapCommand
 
         return model
+    }
+
+    func icon(for populationClass: PopulationClass) -> UIImage {
+
+        class ImageSelector: PopulationClassVisitor {
+
+            typealias T = UIImage
+
+            func visitSmall(_ class: PopulationClassSmall) -> UIImage { ImageLoader.loadImage(name: "City1")! }
+            func visitMedium(_ class: PopulationClassMedium) -> UIImage { ImageLoader.loadImage(name: "City2")! }
+            func visitLarge(_ class: PopulationClassLarge) -> UIImage { ImageLoader.loadImage(name: "City3")! }
+            func visitVeryLarge(_ class: PopulationClassVeryLarge) -> UIImage { ImageLoader.loadImage(name: "City4")! }
+        }
+
+        return populationClass.accept(ImageSelector())
     }
 
     func viewModelIsCreated(model: CitySearchResultModelMock) -> CitySearchResultViewModelImp {
@@ -85,5 +135,10 @@ class CitySearchResultModelSteps {
     func viewModel(_ viewModel: CitySearchResultViewModelImp, tapCommandIs expectedCommand: OpenDetailsCommandMock) {
 
         XCTAssertTrue(viewModel.tapCommand === expectedCommand, "Tap command is not correct")
+    }
+
+    func observer(_ observer: @escaping ValueUpdate<UIImage>, receivedValue icon: UIImage) {
+
+        XCTAssertTrue(observedImage?.isSameImageAs(icon) ?? false, "Icon Observer did not receive correct image")
     }
 }
