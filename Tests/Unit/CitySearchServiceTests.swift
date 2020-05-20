@@ -81,16 +81,16 @@ class CitySearchServiceSteps {
     func expectedResults() -> CitySearchResults {
 
         CitySearchResults(results: [
-            CitySearchResult(name: "la Massana", population: 7211),
-            CitySearchResult(name: "El Tarter", population: 1052),
-            CitySearchResult(name: "Arinsal", population: 1419),
-            CitySearchResult(name: "les Escaldes", population: 15853),
-            CitySearchResult(name: "Canillo", population: 3292),
-            CitySearchResult(name: "Pas de la Casa", population: 2363),
-            CitySearchResult(name: "Andorra la Vella", population: 20430),
-            CitySearchResult(name: "Encamp", population: 11223),
-            CitySearchResult(name: "Ordino", population: 3066),
-            CitySearchResult(name: "Sant Julià de Lòria", population: 8022)
+            CitySearchResult(name: "la Massana", population: 7211, location: GeoPoint(latitude: 42.54499, longitude: 1.51483)),
+            CitySearchResult(name: "El Tarter", population: 1052, location: GeoPoint(latitude: 42.57952, longitude: 1.65362)),
+            CitySearchResult(name: "Arinsal", population: 1419, location: GeoPoint(latitude: 42.57205, longitude: 1.48453)),
+            CitySearchResult(name: "les Escaldes", population: 15853, location: GeoPoint(latitude: 42.50729, longitude: 1.53414)),
+            CitySearchResult(name: "Canillo", population: 3292, location: GeoPoint(latitude: 42.5676, longitude: 1.59756)),
+            CitySearchResult(name: "Pas de la Casa", population: 2363, location: GeoPoint(latitude: 42.54277, longitude: 1.73361)),
+            CitySearchResult(name: "Andorra la Vella", population: 20430, location: GeoPoint(latitude: 42.50779, longitude: 1.52109)),
+            CitySearchResult(name: "Encamp", population: 11223, location: GeoPoint(latitude: 42.53474, longitude: 1.58014)),
+            CitySearchResult(name: "Ordino", population: 3066, location: GeoPoint(latitude: 42.55623, longitude: 1.53319)),
+            CitySearchResult(name: "Sant Julià de Lòria", population: 8022, location: GeoPoint(latitude: 42.46372, longitude: 1.49129))
         ])
     }
 

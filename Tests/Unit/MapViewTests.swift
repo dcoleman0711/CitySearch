@@ -75,11 +75,11 @@ class MapViewTests: XCTestCase {
         let viewModel = given.viewModel()
         given.viewModel(viewModel, hasUpdatedFrameTo: frame)
         let markerImageView = given.markerImageView()
-        let binder = given.binder()
+        let mapView = given.mapViewIsCreated(markerImageView: markerImageView, viewModel: viewModel)
 
-        let mapView = when.mapViewIsCreated(markerImageView: markerImageView, viewModel: viewModel, binder: binder)
+        when.mapViewIsLayedOut(mapView)
 
-        then.markerImageView(markerImageView, frameIsBoundTo: viewModel, withFrameTransformedFrom: frame, in: mapView)
+        then.markerImageView(markerImageView, bottomLeftIsPercentage: frame, inView: mapView)
     }
 }
 
@@ -87,14 +87,14 @@ class MapViewSteps {
 
     private var boundImageView: UIImageView?
 
-    private var boundedFrames: [UIView: CGRect] = [:]
-
     private var backgroundImageObserver: ValueUpdate<UIImage>?
 
     private var imageViewBoundToBackground: UIImageView?
     private var imageViewBoundToMarker: UIImageView?
 
     private var updatedFrame = CGRect.zero
+
+    private var markerFrameObserver: ValueUpdate<CGRect>?
 
     func binder() -> ViewBinderMock {
 
@@ -105,14 +105,6 @@ class MapViewSteps {
             { (image) in
 
                 self.boundImageView = imageView
-            }
-        }
-
-        binder.bindFrameImp = { view in
-
-            { (frame) in
-
-                self.boundedFrames[view] = frame
             }
         }
 
@@ -162,6 +154,7 @@ class MapViewSteps {
 
         viewModel.observeMarkerFrameImp = { observer in
 
+            self.markerFrameObserver = observer
             observer(self.updatedFrame)
         }
 
@@ -171,6 +164,7 @@ class MapViewSteps {
     func viewModel(_ viewModel: MapViewModelMock, hasUpdatedFrameTo frame: CGRect) {
 
         self.updatedFrame = frame
+        markerFrameObserver?(frame)
     }
 
     func mapViewIsCreated(backgroundImageView: UIImageView = UIImageView(), markerImageView: UIImageView = UIImageView(), viewModel: MapViewModelMock = MapViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> MapViewImp {
@@ -198,9 +192,19 @@ class MapViewSteps {
         XCTAssertFalse(view.translatesAutoresizingMaskIntoConstraints, "Autoresizing mask is not disabled")
     }
 
-    func markerImageView(_ markerImageView: UIImageView, frameIsBoundTo: MapViewModelMock, withFrameTransformedFrom frame:CGRect, in mapView: MapViewImp) {
+    func mapViewIsLayedOut(_ mapView: MapViewImp) {
 
-        let transformedFrame = CGRect(origin: CGPoint(x: frame.origin.x * mapView.view.frame.size.width, y: frame.origin.y * mapView.view.frame.size.height + frame.size.height), size: frame.size)
-        XCTAssertEqual(boundedFrames[markerImageView], transformedFrame, "Marker Image View was not bound to view model with the transformed frame")
+        mapView.view.bounds = CGRect(origin: .zero, size: CGSize(width: 256.0, height: 128.0))
+        mapView.view.setNeedsLayout()
+        mapView.view.layoutIfNeeded()
+    }
+
+    func markerImageView(_ markerImageView: UIImageView, bottomLeftIsPercentage frame: CGRect, inView mapView: MapViewImp) {
+
+        let markerFrame = markerImageView.frame
+        let frameIsCorrect = markerFrame.minX == floor(frame.origin.x * mapView.view.frame.size.width) &&
+                markerFrame.maxY == floor(frame.origin.y * mapView.view.frame.size.height)
+
+        XCTAssertTrue(frameIsCorrect, "Marker frame is not positioned correctly")
     }
 }

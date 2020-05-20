@@ -18,10 +18,4 @@ class ViewBinderMock : ViewBinder {
 
         bindImageImp(imageView)
     }
-
-    var bindFrameImp: (_ view: UIView) -> ValueUpdate<CGRect> = { view in { frame in }}
-    func bindFrame(view: UIView) -> ValueUpdate<CGRect> {
-
-        bindFrameImp(view)
-    }
 }

@@ -12,14 +12,6 @@ class StartupTestConstants {
 
     static let transitionDuration = 1.0
     static let transitionType = UIView.AnimationOptions.transitionFlipFromRight
-
-    static let initialData = CitySearchResults(results: [
-        CitySearchResult(name: "Test City 1", population: 1000),
-        CitySearchResult(name: "Test City 2", population: 1000),
-        CitySearchResult(name: "Test City 3", population: 1000),
-        CitySearchResult(name: "Test City 4", population: 1000),
-        CitySearchResult(name: "Test City 5", population: 1000)
-    ])
 }
 
 class StartupTests : XCTestCase {
@@ -163,7 +155,7 @@ class StartupSteps {
 
     func initialData() -> CitySearchResults {
 
-        let initialData = StartupTestConstants.initialData
+        let initialData = CitySearchResultsStub.stubResults()
 
         let future = CitySearchService.SearchFuture({ promise in
 

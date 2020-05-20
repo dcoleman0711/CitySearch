@@ -262,7 +262,7 @@ class DetailsScreenSteps {
 
     func searchResult() -> CitySearchResult {
 
-        CitySearchResult(name: "Test City", population: 1234567)
+        CitySearchResult(name: "Test City", population: 1234567, location: GeoPoint(latitude: 0.0, longitude: 0.0))
     }
 
     func titleText(for searchResult: CitySearchResult) -> String {

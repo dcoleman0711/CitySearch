@@ -22,9 +22,9 @@ class MapViewModelImp: MapViewModel {
 
     private let markerSize = CGSize(width: 16.0, height: 16.0)
 
-    convenience init() {
+    convenience init(searchResult: CitySearchResult) {
 
-        self.init(model: MapModelImp())
+        self.init(model: MapModelImp(searchResult: searchResult))
     }
 
     init(model: MapModel) {
@@ -49,7 +49,7 @@ class MapViewModelImp: MapViewModel {
 
     private func markerFrame(for geoCoordinates: CLLocationCoordinate2D) -> CGRect {
 
-        let position = CGPoint(x: geoCoordinates.longitude / 360.0, y: (geoCoordinates.latitude + 90.0) / 180.0)
+        let position = CGPoint(x: fmod((geoCoordinates.longitude / 360.0) + 0.5, 1.0), y: 1.0 - (geoCoordinates.latitude + 90.0) / 180.0)
         return CGRect(origin: position, size: markerSize)
     }
 }

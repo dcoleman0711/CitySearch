@@ -150,6 +150,6 @@ class CityDetailsViewBuilder {
 
         let model = CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: carouselModel)
         let viewModel = CityDetailsViewModelImp(model: model)
-        return CityDetailsViewImp(contentView: UIView(), titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(), imageCarouselView: carouselView, viewModel: viewModel, binder: ViewBinderImp())
+        return CityDetailsViewImp(contentView: UIView(), titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(searchResult: searchResult), imageCarouselView: carouselView, viewModel: viewModel, binder: ViewBinderImp())
     }
 }

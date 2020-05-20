@@ -9,4 +9,11 @@ struct CitySearchResult: Codable, Equatable {
 
     let name: String
     let population: Int
+    let location: GeoPoint
+}
+
+struct GeoPoint: Codable, Equatable {
+
+    let latitude: Double
+    let longitude: Double
 }

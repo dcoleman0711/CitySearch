@@ -138,7 +138,7 @@ class MapViewModelSteps {
 
     func markerPosition(for geoCoordinates: CLLocationCoordinate2D) -> CGPoint {
 
-        CGPoint(x: geoCoordinates.longitude / 360.0, y: (geoCoordinates.latitude + 90.0) / 180.0)
+        CGPoint(x: fmod((geoCoordinates.longitude / 360.0) + 0.5, 1.0), y: 1.0 - (geoCoordinates.latitude + 90.0) / 180.0)
     }
 
     func viewModelIsCreated(model: MapModelMock = MapModelMock()) -> MapViewModelImp {

@@ -65,7 +65,7 @@ class CitySearchResultModelSteps {
     func searchResult() -> CitySearchResult {
 
         // This only tests one population class.  There should be one test for each class that produces a distinct output
-        CitySearchResult(name: "Test City", population: 100000)
+        CitySearchResult(name: "Test City", population: 100000, location: GeoPoint(latitude: 0.0, longitude: 0.0))
     }
 
     func populationClass(for searchResult: CitySearchResult) -> PopulationClass {
