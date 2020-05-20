@@ -21,13 +21,6 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
     private let viewModel: CityDetailsViewModel
     private let binder: ViewBinder
 
-    convenience init(searchResult: CitySearchResult) {
-
-        let model = CityDetailsModelImp(searchResult: searchResult)
-        let viewModel = CityDetailsViewModelImp(model: model)
-        self.init(titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(), imageCarouselView: ImageCarouselViewImp(), viewModel: viewModel, binder: ViewBinderImp())
-    }
-
     init(titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, mapView: MapView, imageCarouselView: ImageCarouselView, viewModel: CityDetailsViewModel, binder: ViewBinder) {
 
         self.titleLabel = titleLabel
@@ -123,5 +116,19 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
         let constraints = [NSLayoutConstraint]([titleLabelConstraints, populationTitleLabelConstraints, populationLabelConstraints, mapViewConstraints, imageCarouselViewConstraints].joined())
 
         view.addConstraints(constraints)
+    }
+}
+
+class CityDetailsViewBuilder {
+
+    func build(searchResult: CitySearchResult) -> CityDetailsView {
+
+        let carouselModel = ImageCarouselModelImp()
+        let carouselViewModel = ImageCarouselViewModelImp(model: carouselModel)
+        let carouselView = ImageCarouselViewImp(viewModel: carouselViewModel)
+
+        let model = CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: carouselModel)
+        let viewModel = CityDetailsViewModelImp(model: model)
+        return CityDetailsViewImp(titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(), imageCarouselView: carouselView, viewModel: viewModel, binder: ViewBinderImp())
     }
 }

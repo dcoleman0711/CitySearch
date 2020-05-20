@@ -14,6 +14,6 @@ class CityDetailsViewFactoryImp: CityDetailsViewFactory {
 
     func detailsView(searchResult: CitySearchResult) -> CityDetailsView {
 
-        CityDetailsViewImp(searchResult: searchResult)
+        CityDetailsViewBuilder().build(searchResult: searchResult)
     }
 }

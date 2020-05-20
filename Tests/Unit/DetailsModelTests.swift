@@ -72,15 +72,17 @@ class DetailsModelTests: XCTestCase {
         let carouselModel = given.imageCarouselModel()
         let imageResults = given.imageResults()
         let imageURLs = given.imageURLs(for: imageResults)
-        let detailsModel = given.detailsModelIsCreated(for: searchResult, imageCarouselModel: carouselModel, imageSearchService: imageSearchService)
+        let resultsQueue = given.resultsQueue()
+        let detailsModel = given.detailsModelIsCreated(for: searchResult, imageCarouselModel: carouselModel, imageSearchService: imageSearchService, resultsQueue: resultsQueue)
 
         when.imageService(imageSearchService, returns: imageResults)
 
-        then.carouselModel(carouselModel, resultsAreSetTo: imageURLs)
+        then.carouselModel(carouselModel, resultsAreSetTo: imageURLs, on: resultsQueue)
     }
 }
 
 class DetailsModelSteps {
+
 
     private let titleTextObservable = ObservableMock<String>("")
     private let populationObservable = ObservableMock<Int>(0)
@@ -93,6 +95,9 @@ class DetailsModelSteps {
     private var carouselModelResults: [URL]?
 
     private var imageSearchPromise: Future<ImageSearchResults, Error>.Promise?
+
+    private var isOnResultsQueue = false
+    private var resultsSetOnResultsQueue = false
 
     init() {
 
@@ -171,6 +176,7 @@ class DetailsModelSteps {
         carouselModel.setResultsImp = { urls in
 
             self.carouselModelResults = urls
+            self.resultsSetOnResultsQueue = self.isOnResultsQueue
         }
 
         return carouselModel
@@ -186,9 +192,23 @@ class DetailsModelSteps {
         imageSearchPromise?(.success(imageResults))
     }
 
-    func detailsModelIsCreated(for searchResult: CitySearchResult, imageCarouselModel: ImageCarouselModelMock = ImageCarouselModelMock(), imageSearchService: ImageSearchServiceMock = ImageSearchServiceMock()) -> CityDetailsModelImp {
+    func resultsQueue() -> DispatchQueueMock {
 
-        CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: imageCarouselModel, imageSearchService: imageSearchService, titleText: titleTextObservable, population: populationObservable)
+        let queue = DispatchQueueMock()
+
+        queue.asyncImp = { work in
+
+            self.isOnResultsQueue = true
+            work()
+            self.isOnResultsQueue = false
+        }
+
+        return queue
+    }
+
+    func detailsModelIsCreated(for searchResult: CitySearchResult, imageCarouselModel: ImageCarouselModelMock = ImageCarouselModelMock(), imageSearchService: ImageSearchServiceMock = ImageSearchServiceMock(), resultsQueue: DispatchQueueMock = DispatchQueueMock()) -> CityDetailsModelImp {
+
+        CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: imageCarouselModel, imageSearchService: imageSearchService, titleText: titleTextObservable, population: populationObservable, resultsQueue: resultsQueue)
     }
 
     func textObserver() -> ValueUpdate<String> {
@@ -232,8 +252,9 @@ class DetailsModelSteps {
         XCTAssertEqual(imageSearchQuery, expectedQuery, "Image search request was not made with expected query")
     }
 
-    func carouselModel(_ carouselModel: ImageCarouselModelMock, resultsAreSetTo urls: [URL]) {
+    func carouselModel(_ carouselModel: ImageCarouselModelMock, resultsAreSetTo urls: [URL], on resultsQueue: DispatchQueueMock) {
 
         XCTAssertEqual(carouselModelResults, urls, "Carousel model results were not set to correct results")
+        XCTAssertTrue(resultsSetOnResultsQueue, "Carousel model results were not set on results queue")
     }
 }

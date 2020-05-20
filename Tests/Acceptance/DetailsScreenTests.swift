@@ -265,7 +265,10 @@ class DetailsScreenSteps {
                        map: MapViewMock = MapViewMock(),
                        imageCarousel: ImageCarouselViewMock = ImageCarouselViewMock()) -> CityDetailsView {
 
-        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: map, imageCarouselView: imageCarousel, viewModel: CityDetailsViewModelImp(model: CityDetailsModelImp(searchResult: searchResult)), binder: ViewBinderImp())
+        // TODO: Use Builder
+        let model = CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: ImageCarouselModelImp())
+        let viewModel = CityDetailsViewModelImp(model: model)
+        return CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: map, imageCarouselView: imageCarousel, viewModel: viewModel, binder: ViewBinderImp())
     }
 
     func detailsScreenIsLoaded(_ detailsScreen: CityDetailsView) {

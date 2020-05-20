@@ -20,6 +20,11 @@ class AsyncImageCell : MVVMCollectionViewCell<AsyncImageViewModel> {
     private let imageView: UIImageView
     private let binder: ViewBinder
 
+    override convenience init(frame: CGRect) {
+
+        self.init(imageView: UIImageView(), binder: ViewBinderImp())
+    }
+
     init(imageView: UIImageView, binder: ViewBinder) {
 
         self.imageView = imageView

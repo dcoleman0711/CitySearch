@@ -21,15 +21,18 @@ class CityDetailsModelImp: CityDetailsModel {
     private let titleText: Observable<String>
     private let population: Observable<Int>
 
-    convenience init(searchResult: CitySearchResult) {
+    private let resultsQueue: IDispatchQueue
 
-        self.init(searchResult: searchResult, imageCarouselModel: ImageCarouselModelImp(), imageSearchService: ImageSearchServiceImp(), titleText: Observable<String>(""), population: Observable<Int>(0))
+    convenience init(searchResult: CitySearchResult, imageCarouselModel: ImageCarouselModel) {
+
+        self.init(searchResult: searchResult, imageCarouselModel: imageCarouselModel, imageSearchService: ImageSearchServiceImp(), titleText: Observable<String>(""), population: Observable<Int>(0), resultsQueue: DispatchQueue.main)
     }
 
-    init(searchResult: CitySearchResult, imageCarouselModel: ImageCarouselModel, imageSearchService: ImageSearchService, titleText: Observable<String>, population: Observable<Int>) {
+    init(searchResult: CitySearchResult, imageCarouselModel: ImageCarouselModel, imageSearchService: ImageSearchService, titleText: Observable<String>, population: Observable<Int>, resultsQueue: IDispatchQueue) {
 
         self.searchResult = searchResult
         self.imageCarouselModel = imageCarouselModel
+        self.resultsQueue = resultsQueue
 
         self.titleText = titleText
         self.population = population
@@ -58,8 +61,10 @@ class CityDetailsModelImp: CityDetailsModel {
         var publisher: AnyCancellable?
         publisher = imageURLs.sink(receiveCompletion: { completion in }, receiveValue: { imageURLs in
 
-            self.imageCarouselModel.setResults(imageURLs)
+            let truncatedResults = [URL](imageURLs.prefix(20))
             publisher = nil
+
+            self.resultsQueue.async { self.imageCarouselModel.setResults(truncatedResults) }
         })
     }
 }

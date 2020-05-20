@@ -18,9 +18,9 @@ class ImageCarouselViewModelImp : ImageCarouselViewModel {
     private let viewModels = Observable<[AsyncImageViewModel]>([])
     private let cellDataArray = Observable<[CellData<AsyncImageViewModel>]>([])
 
-    convenience init() {
+    convenience init(model: ImageCarouselModel) {
 
-        self.init(model: ImageCarouselModelImp(), viewModelFactory: AsyncImageViewModelFactoryImp())
+        self.init(model: model, viewModelFactory: AsyncImageViewModelFactoryImp())
     }
 
     init(model: ImageCarouselModel, viewModelFactory: AsyncImageViewModelFactory) {

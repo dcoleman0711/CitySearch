@@ -14,6 +14,6 @@ class AsyncImageViewModelFactoryImp : AsyncImageViewModelFactory {
 
     func viewModel(model: AsyncImageModel) -> AsyncImageViewModel {
 
-        fatalError("Implement")
+        AsyncImageViewModelImp(model: model)
     }
 }

@@ -28,13 +28,31 @@ class ImageCarouselViewTests: XCTestCase {
         super.tearDown()
     }
 
+    func testLayoutIsHorizontalFlow() {
+
+        let collectionView = given.collectionView()
+
+        let view = when.imageCarouselViewIsCreated(collectionView: collectionView)
+
+        then.collectionViewLayoutIsHorizontalFlow(collectionView)
+    }
+
+    func testBackgroundColorIsClear() {
+
+        let collectionView = given.collectionView()
+
+        let view = when.imageCarouselViewIsCreated(collectionView: collectionView)
+
+        then.collectionViewBackgroundColorIsClear(collectionView)
+    }
+
     func testBindCollectionViewCells() {
 
         let collectionView = given.collectionView()
         let viewModel = given.imageCarouselViewModel()
         let binder = given.viewBinder()
 
-        let view = when.searchResultsViewCreated(collectionView: collectionView, viewModel: viewModel, binder: binder)
+        let view = when.imageCarouselViewIsCreated(collectionView: collectionView, viewModel: viewModel, binder: binder)
 
         then.collectionView(collectionView, cellsAreBoundTo: viewModel)
     }
@@ -76,13 +94,28 @@ class ImageCarouselViewSteps {
         return viewBinder
     }
 
-    func searchResultsViewCreated(collectionView: UICollectionViewMock, viewModel: ImageCarouselViewModelMock, binder: CollectionViewBinderMock<AsyncImageViewModel, AsyncImageCell>) -> ImageCarouselViewImp {
+    func imageCarouselViewIsCreated(collectionView: UICollectionViewMock, viewModel: ImageCarouselViewModelMock = ImageCarouselViewModelMock(), binder: CollectionViewBinderMock<AsyncImageViewModel, AsyncImageCell> = CollectionViewBinderMock<AsyncImageViewModel, AsyncImageCell>()) -> ImageCarouselViewImp {
 
         ImageCarouselViewImp(collectionView: collectionView, viewModel: viewModel, binder: binder)
     }
 
+    func collectionViewLayoutIsHorizontalFlow(_ collectionView: UICollectionViewMock) {
+
+        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            XCTFail("Collection view layout is not a flow layout")
+            return
+        }
+
+        XCTAssertEqual(flowLayout.scrollDirection, .horizontal, "Collection view layout flow direction is not horizontal")
+    }
+
+    func collectionViewBackgroundColorIsClear(_ collectionView: UICollectionViewMock) {
+
+        XCTAssertEqual(collectionView.backgroundColor, .clear, "Collection view background color is not clear")
+    }
+
     func collectionView(_ collectionView: UICollectionViewMock, cellsAreBoundTo: ImageCarouselViewModelMock) {
 
-        XCTAssertEqual(boundCollectionView, collectionView)
+        XCTAssertEqual(boundCollectionView, collectionView, "Collection view was not bound to view model")
     }
 }
