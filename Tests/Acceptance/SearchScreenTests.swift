@@ -7,6 +7,11 @@ import XCTest
 
 import UIKit
 
+class SearchScreenTestConstants {
+
+    static let resultsHeight: CGFloat = 256.0
+}
+
 class SearchScreenTests: XCTestCase {
 
     var steps: SearchScreenSteps!
@@ -58,7 +63,7 @@ class SearchScreenTests: XCTestCase {
         then.searchScreen(searchScreen, supportedOrientationsAre: landscapeOrientations)
     }
     
-    func testSearchResultsFullScreenSafeArea() {
+    func testSearchResultsFullWidthAndCenteredVerticallyInSafeArea() {
 
         let searchResults = given.searchResults()
         let searchView = given.searchScreen(searchResults: searchResults)
@@ -66,7 +71,7 @@ class SearchScreenTests: XCTestCase {
 
         when.searchViewAppearsOnScreen(searchView)
 
-        then.searchResultsIsFullScreenInSafeArea(searchResults)
+        then.searchResultsFillsHorizontallyAndIsCenteredVerticallyInSafeArea(searchResults)
     }
 
     func testSearchResultsDisplaysInitialData() {
@@ -215,9 +220,18 @@ class SearchScreenSteps {
         XCTAssertTrue(searchResults.view.isDescendant(of: searchView.view), "Search results are not displayed in search view")
     }
 
-    func searchResultsIsFullScreenInSafeArea(_ searchResults: SearchResultsView) {
+    func searchResultsFillsHorizontallyAndIsCenteredVerticallyInSafeArea(_ searchResults: SearchResultsView) {
 
-        XCTAssertEqual(searchResults.view.frame, safeAreaFrame, "Search results are not full screen")
+        let fillsHorizontally =
+                searchResults.view.frame.minX == safeAreaFrame.minX &&
+                searchResults.view.frame.maxX == safeAreaFrame.maxX
+
+        let centeredVertically = searchResults.view.center.y == safeAreaFrame.center.y
+        let correctHeight = searchResults.view.frame.size.height == SearchScreenTestConstants.resultsHeight
+
+        XCTAssertTrue(fillsHorizontally, "Search results do not fill safe area horizontally")
+        XCTAssertTrue(centeredVertically, "Search results are not centered vertically")
+        XCTAssertTrue(correctHeight, "Search results does not have correct height")
     }
 
     func searchScreenBackgroundIsWhite(_ searchScreen: SearchView) {

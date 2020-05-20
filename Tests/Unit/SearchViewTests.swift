@@ -48,11 +48,11 @@ class SearchViewTests: XCTestCase {
         then.autoResizeMaskIsDisabled(searchResultsView.view)
     }
 
-    func testSearchResultsViewFillsParentSafeArea() {
+    func testSearchResultsViewFillsHorizontallyAndIsCenteredVerticallyInParentSafeArea() {
 
         let searchResultsView = given.searchResultsView()
         let searchView = given.searchViewIsCreated(searchResultsView: searchResultsView)
-        let expectedConstraints = given.constraintsFor(searchResultsView.view, toFillParentSafeArea: searchView)
+        let expectedConstraints = given.constraintsFor(searchResultsView.view, toFillHorizontallyAndCenterVerticallyInParentSafeArea: searchView)
 
         when.searchViewIsLoaded(searchView)
 
@@ -79,12 +79,12 @@ class SearchViewSteps {
         return searchResultsView
     }
 
-    func constraintsFor(_ view: UIView, toFillParentSafeArea searchView: SearchViewImp) -> [NSLayoutConstraint] {
+    func constraintsFor(_ view: UIView, toFillHorizontallyAndCenterVerticallyInParentSafeArea searchView: SearchViewImp) -> [NSLayoutConstraint] {
 
         [view.leftAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.leftAnchor),
          view.rightAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.rightAnchor),
-         view.topAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.topAnchor),
-         view.bottomAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.bottomAnchor)]
+         view.centerYAnchor.constraint(equalTo: searchView.view.centerYAnchor),
+         view.heightAnchor.constraint(equalToConstant: SearchScreenTestConstants.resultsHeight)]
     }
 
     func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), model: SearchModelMock = SearchModelMock()) -> SearchViewImp {

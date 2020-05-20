@@ -43,17 +43,16 @@ class SearchViewImp: UIViewController, SearchView {
         view.backgroundColor = UIColor.white
 
         view.addSubview(searchResultsView.view)
+        searchResultsView.view.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buildLayout() {
 
         // App Title
-        searchResultsView.view.translatesAutoresizingMaskIntoConstraints = false
-        let searchResultsLeftConstraint = searchResultsView.view.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor)
-        let searchResultsRightConstraint = searchResultsView.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
-        let searchResultsTopConstraint = searchResultsView.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let searchResultsBottomConstraint = searchResultsView.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        let searchResultsViewContraints = [searchResultsLeftConstraint, searchResultsRightConstraint, searchResultsTopConstraint, searchResultsBottomConstraint]
+        let searchResultsViewContraints = [searchResultsView.view.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+                                           searchResultsView.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+                                           searchResultsView.view.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                                           searchResultsView.view.heightAnchor.constraint(equalToConstant: 256.0)]
 
         let constraints = [NSLayoutConstraint]([searchResultsViewContraints].joined())
 
