@@ -59,9 +59,24 @@ class SearchResultsViewModelTests: XCTestCase {
 
         then.observer(observer, isNotifiedWith: resultsData)
     }
+
+    func testSubscribeToContentOffset() {
+
+        let model = given.searchResultsModel()
+        let viewModel = given.searchResultsViewModelCreated(model: model)
+        let contentOffset = given.contentOffset()
+        let contentOffsetObserver = given.contentOffsetObserver()
+        given.contentOffsetObserver(contentOffsetObserver, observesContentOffsetOn: viewModel)
+
+        when.viewModel(viewModel, isNotifiedOfContentOffsetUpdateTo: contentOffset)
+
+        then.contentOffsetObserver(contentOffsetObserver, isNotifiedWith: contentOffset)
+    }
 }
 
 class SearchResultsViewModelSteps {
+
+    private var updatedContentOffset: CGPoint?
 
     private let resultViewModelFactory = CitySearchResultViewModelFactoryMock()
 
@@ -113,6 +128,24 @@ class SearchResultsViewModelSteps {
         return model
     }
 
+    func contentOffset() -> CGPoint {
+
+        CGPoint(x: 435.0, y: 0.0)
+    }
+
+    func contentOffsetObserver() -> ValueUpdate<CGPoint> {
+
+        { contentOffset in
+
+            self.updatedContentOffset = contentOffset
+        }
+    }
+
+    func contentOffsetObserver(_ contentOffsetObserver: @escaping ValueUpdate<CGPoint>, observesContentOffsetOn viewModel: SearchResultsViewModelImp) {
+
+        viewModel.observeContentOffset(contentOffsetObserver)
+    }
+
     func model(_ model: SearchResultsModelMock, updatedResultsTo resultModels: [CitySearchResultModelMock]) {
 
         self.updatedResultModels = resultModels
@@ -140,8 +173,20 @@ class SearchResultsViewModelSteps {
         viewModel.observeResultsViewModels(observer)
     }
 
+    func viewModel(_ viewModel: SearchResultsViewModelImp, isNotifiedOfContentOffsetUpdateTo contentOffset: CGPoint) {
+
+        let observer = viewModel.subscribeToContentOffset()
+        observer(contentOffset)
+    }
+
     func observer(_ observer: ValueUpdate<CollectionViewModel<CitySearchResultViewModel>>, isNotifiedWith expectedResults: CollectionViewModel<CitySearchResultViewModel>) {
 
         XCTAssertTrue(valuePassedToObserver?.cells.elementsEqual(expectedResults.cells) { first, second in first.viewModel === second.viewModel && first.size == second.size && first.tapCommand === second.tapCommand } ?? false, "Observer was not notified of correct results")
     }
+
+    func contentOffsetObserver(_ contentOffsetObserver: ValueUpdate<CGPoint>, isNotifiedWith expectedContentOffset: CGPoint) {
+
+        XCTAssertEqual(updatedContentOffset, expectedContentOffset, "Content offset update was not published")
+    }
+
 }

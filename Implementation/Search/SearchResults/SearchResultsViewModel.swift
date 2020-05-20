@@ -12,6 +12,8 @@ protocol SearchResultsViewModel {
     func observeResultsViewModels(_ observer: @escaping ValueUpdate<CollectionViewModel<CitySearchResultViewModel>>)
 
     func observeContentOffset(_ observer: @escaping ValueUpdate<CGPoint>)
+
+    func subscribeToContentOffset() -> ValueUpdate<CGPoint>
 }
 
 class SearchResultsViewModelImp: SearchResultsViewModel {
@@ -23,6 +25,8 @@ class SearchResultsViewModelImp: SearchResultsViewModel {
     private let cellSize = CGSize(width: 128.0, height: 128.0)
     private let itemSpacing: CGFloat = 0.0
     private let lineSpacing: CGFloat = 0.0
+
+    private let contentOffset = Observable<CGPoint>(.zero)
 
     init(model: SearchResultsModel, viewModelFactory: CitySearchResultViewModelFactory) {
 
@@ -37,7 +41,12 @@ class SearchResultsViewModelImp: SearchResultsViewModel {
 
     func observeContentOffset(_ observer: @escaping ValueUpdate<CGPoint>) {
 
+        contentOffset.subscribe(observer)
+    }
 
+    func subscribeToContentOffset() -> ValueUpdate<CGPoint> {
+
+        { contentOffset in self.contentOffset.value = contentOffset }
     }
 
     private func mapResults(models: [CitySearchResultModel]) -> CollectionViewModel<CitySearchResultViewModel> {

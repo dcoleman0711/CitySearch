@@ -20,4 +20,10 @@ class SearchResultsViewModelMock: SearchResultsViewModel {
 
         observeContentOffsetImp(observer)
     }
+
+    var subscribeToContentOffsetImp: () -> ValueUpdate<CGPoint> = { { contentOffset in } }
+    func subscribeToContentOffset() -> ValueUpdate<CGPoint> {
+
+        subscribeToContentOffsetImp()
+    }
 }

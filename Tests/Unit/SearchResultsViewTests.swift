@@ -38,15 +38,36 @@ class SearchResultsViewTests: XCTestCase {
 
         then.collectionView(collectionView, cellsAreBoundTo: viewModel)
     }
+
+    func testSubscribeViewModelToContentOffset() {
+
+        let collectionView = given.collectionView()
+        let viewModel = given.searchResultsViewModel()
+        let contentOffset = given.contentOffset()
+        let view = given.searchResultsViewCreated(collectionView: collectionView, viewModel: viewModel)
+
+        when.collectionView(collectionView, contentOffsetUpdatesTo: contentOffset)
+
+        then.viewModel(viewModel, isNotifiedOf: contentOffset)
+    }
 }
 
 class SearchResultsViewSteps {
 
     private var boundCollectionView: UICollectionView?
 
+    private var contentOffsetSentToViewModel: CGPoint?
+
+    private var contentOffsetUpdate: [UIScrollView: CGPoint] = [:]
+
     func collectionView() -> UICollectionViewMock {
 
         UICollectionViewMock()
+    }
+
+    func contentOffset() -> CGPoint {
+
+        CGPoint(x: 453.0, y: 0.0)
     }
 
     func searchResultsViewModel() -> SearchResultsViewModelMock {
@@ -56,6 +77,11 @@ class SearchResultsViewSteps {
         viewModel.observeResultsViewModelsImp = { (observer) in
 
             observer(CollectionViewModel<CitySearchResultViewModel>(cells: [], itemSpacing: 0.0, lineSpacing: 0.0))
+        }
+
+        viewModel.subscribeToContentOffsetImp = {
+
+            { contentOffset in self.contentOffsetSentToViewModel = contentOffset }
         }
 
         return viewModel
@@ -76,13 +102,23 @@ class SearchResultsViewSteps {
         return viewBinder
     }
 
-    func searchResultsViewCreated(collectionView: UICollectionViewMock, viewModel: SearchResultsViewModelMock, binder: CollectionViewBinderMock<CitySearchResultViewModel, CitySearchResultCell>) -> SearchResultsViewImp {
+    func searchResultsViewCreated(collectionView: UICollectionViewMock, viewModel: SearchResultsViewModelMock, binder: CollectionViewBinderMock<CitySearchResultViewModel, CitySearchResultCell> = CollectionViewBinderMock<CitySearchResultViewModel, CitySearchResultCell>()) -> SearchResultsViewImp {
 
         SearchResultsViewImp(collectionView: collectionView, viewModel: viewModel, binder: binder)
+    }
+
+    func collectionView(_ collectionView: UICollectionViewMock, contentOffsetUpdatesTo contentOffset: CGPoint) {
+
+        collectionView.contentOffset = contentOffset
     }
 
     func collectionView(_ collectionView: UICollectionViewMock, cellsAreBoundTo: SearchResultsViewModelMock) {
 
         XCTAssertEqual(boundCollectionView, collectionView)
+    }
+
+    func viewModel(_ viewModel: SearchResultsViewModelMock, isNotifiedOf expectedContentOffset: CGPoint) {
+
+        XCTAssertEqual(contentOffsetSentToViewModel, expectedContentOffset, "View model was not notified of correct content offset")
     }
 }

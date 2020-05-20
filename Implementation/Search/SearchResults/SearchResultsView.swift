@@ -19,6 +19,8 @@ class SearchResultsViewImp : SearchResultsView {
     private let collectionView: UICollectionView
     private let viewModel: SearchResultsViewModel
 
+    private let contentOffsetSubscriber: NSKeyValueObservation
+
     convenience init(viewModel: SearchResultsViewModel) {
 
         self.init(collectionView: UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout()), viewModel: viewModel, binder: CollectionViewBinderImp<CitySearchResultViewModel, CitySearchResultCell>())
@@ -30,6 +32,9 @@ class SearchResultsViewImp : SearchResultsView {
         self.viewModel = viewModel
 
         self.viewModel.observeResultsViewModels(binder.bindCells(collectionView: self.collectionView))
+
+        let viewModelObserver = viewModel.subscribeToContentOffset()
+        self.contentOffsetSubscriber = collectionView.observe(\UICollectionView.contentOffset) { response, change in viewModelObserver(collectionView.contentOffset) }
 
         setupView()
     }
