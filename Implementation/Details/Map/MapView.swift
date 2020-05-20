@@ -12,5 +12,28 @@ protocol MapView  {
 
 class MapViewImp: MapView {
 
-    let view = UIView()
+    var view: UIView { backgroundImageView }
+
+    private var backgroundImageView: UIImageView
+    private var viewModel: MapViewModel
+    private var binder: ViewBinder
+
+    convenience init() {
+
+        self.init(backgroundImageView: UIImageView(), viewModel: MapViewModelImp(), binder: ViewBinderImp())
+    }
+
+    init(backgroundImageView: UIImageView, viewModel: MapViewModel, binder: ViewBinder) {
+
+        self.backgroundImageView = backgroundImageView
+        self.viewModel = viewModel
+        self.binder = binder
+
+        bindViews()
+    }
+
+    private func bindViews() {
+
+        viewModel.observeBackgroundImage(binder.bindImage(imageView: backgroundImageView))
+    }
 }
