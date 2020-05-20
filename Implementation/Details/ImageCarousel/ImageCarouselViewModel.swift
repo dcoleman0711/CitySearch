@@ -19,8 +19,8 @@ class ImageCarouselViewModelImp : ImageCarouselViewModel {
     private let viewModels = Observable<[AsyncImageViewModel]>([])
     private let cellDataArray = Observable<[CellData<AsyncImageViewModel>]>([])
 
-    private let itemSpacing: CGFloat = 0.0
-    private let lineSpacing: CGFloat = 32.0
+    private let itemSpacing: CGFloat = 32.0
+    private let lineSpacing: CGFloat = 0.0
 
     convenience init(model: ImageCarouselModel) {
 

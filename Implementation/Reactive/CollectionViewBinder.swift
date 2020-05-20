@@ -83,6 +83,16 @@ class BindingDelegate<ViewModel>: NSObject, UICollectionViewDelegateFlowLayout {
         return cellData[indexPath.item].size
     }
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+
+        viewModel?.itemSpacing ?? 0.0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+
+        viewModel?.lineSpacing ?? 0.0
+    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         guard let cellData = viewModel?.cells else { return }

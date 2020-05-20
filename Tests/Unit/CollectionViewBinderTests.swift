@@ -57,6 +57,32 @@ class CollectionViewBinderTests: XCTestCase {
         then.collectionView(collectionView, cellsHaveSizes: cellSizes)
     }
 
+    func testBindCollectionViewItemSpacing() {
+
+        let collectionView = given.collectionView()
+        let binder = given.binder()
+        let cellUpdate = given.bindCells(binder, collectionView)
+        let itemSpacing = given.itemSpacing()
+        let viewModel = given.viewModel(itemSpacing: itemSpacing)
+
+        when.updateViewModels(cellUpdate, viewModel)
+
+        then.collectionView(collectionView, hasItemSpacing: itemSpacing)
+    }
+
+    func testBindCollectionViewLineSpacing() {
+
+        let collectionView = given.collectionView()
+        let binder = given.binder()
+        let cellUpdate = given.bindCells(binder, collectionView)
+        let lineSpacing = given.lineSpacing()
+        let viewModel = given.viewModel(lineSpacing: lineSpacing)
+
+        when.updateViewModels(cellUpdate, viewModel)
+
+        then.collectionView(collectionView, hasLineSpacing: lineSpacing)
+    }
+
     func testBindCollectionViewTapCommands() {
 
         let collectionView = given.collectionView()
@@ -124,6 +150,16 @@ class CollectionViewBinderSteps {
     func tapCommands(_ cellData: [CellData<String>]) -> [CellTapCommandMock] {
 
         cellData.map({$0.tapCommand as! CellTapCommandMock})
+    }
+
+    func itemSpacing() -> CGFloat {
+
+        12.0
+    }
+
+    func lineSpacing() -> CGFloat {
+
+        14.0
     }
 
     func viewModel(cellData: [CellData<String>] = [], itemSpacing: CGFloat = 0.0, lineSpacing: CGFloat = 0.0) -> CollectionViewModel<String> {
@@ -203,6 +239,36 @@ class CollectionViewBinderSteps {
     func tapCommands(_ tapCommands: [CellTapCommandMock], areEqualTo expectedTapCommands: [CellTapCommandMock]) {
 
         XCTAssertTrue(tapCommands.elementsEqual(expectedTapCommands) { first, second in first === second })
+    }
+
+    func collectionView(_ collectionView: UICollectionViewMock, hasItemSpacing expectedSpacing: CGFloat) {
+
+        guard let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else {
+            XCTFail("Collection view does not have flow layout delegate")
+            return
+        }
+
+        guard let itemSpacing = delegate.collectionView?(collectionView, layout: collectionView.collectionViewLayout, minimumInteritemSpacingForSectionAt: 0) else {
+            XCTFail("Collection view delegate does not implement item spacing")
+            return
+        }
+
+        XCTAssertEqual(itemSpacing, expectedSpacing, "Collection view does not have correct item spacing")
+    }
+
+    func collectionView(_ collectionView: UICollectionViewMock, hasLineSpacing expectedSpacing: CGFloat) {
+
+        guard let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else {
+            XCTFail("Collection view does not have flow layout delegate")
+            return
+        }
+
+        guard let itemSpacing = delegate.collectionView?(collectionView, layout: collectionView.collectionViewLayout, minimumLineSpacingForSectionAt: 0) else {
+            XCTFail("Collection view does not implement line spacing")
+            return
+        }
+
+        XCTAssertEqual(itemSpacing, expectedSpacing, "Collection view does not have correct line spacing")
     }
 }
 
