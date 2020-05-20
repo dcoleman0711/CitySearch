@@ -7,13 +7,13 @@ import Foundation
 
 protocol SearchModelFactory {
 
-    func searchModel(searchResultsModel: SearchResultsModel) -> SearchModel
+    func searchModel(parallaxModel: ParallaxModel, searchResultsModel: SearchResultsModel) -> SearchModel
 }
 
 class SearchModelFactoryImp: SearchModelFactory {
 
-    func searchModel(searchResultsModel: SearchResultsModel) -> SearchModel {
+    func searchModel(parallaxModel: ParallaxModel, searchResultsModel: SearchResultsModel) -> SearchModel {
 
-        SearchModelImp(searchResultsModel: searchResultsModel)
+        SearchModelImp(parallaxModel: parallaxModel, searchResultsModel: searchResultsModel)
     }
 }

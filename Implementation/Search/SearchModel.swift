@@ -10,7 +10,17 @@ protocol SearchModel {
 
 class SearchModelImp : SearchModel {
 
-    init(searchResultsModel: SearchResultsModel) {
+    private let parallaxModel: ParallaxModel
+    private let searchResultsModel: SearchResultsModel
 
+    init(parallaxModel: ParallaxModel, searchResultsModel: SearchResultsModel) {
+
+        self.parallaxModel = parallaxModel
+        self.searchResultsModel = searchResultsModel
+
+        let layers = [ParallaxLayer(distance: 4.0, image: ImageLoader.loadImage(name: "Parallax2.jpg")!),
+                      ParallaxLayer(distance: 2.0, image: ImageLoader.loadImage(name: "Parallax1.png")!)]
+
+        parallaxModel.setLayers(layers)
     }
 }

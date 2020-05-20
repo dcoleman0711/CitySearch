@@ -7,13 +7,13 @@ import Foundation
 
 protocol ParallaxViewModelFactory {
 
-    func parallaxViewModel() -> ParallaxViewModel
+    func parallaxViewModel(model: ParallaxModel) -> ParallaxViewModel
 }
 
 class ParallaxViewModelFactoryImp: ParallaxViewModelFactory {
 
-    func parallaxViewModel() -> ParallaxViewModel {
+    func parallaxViewModel(model: ParallaxModel) -> ParallaxViewModel {
 
-        ParallaxViewModelImp()
+        ParallaxViewModelImp(model: model)
     }
 }

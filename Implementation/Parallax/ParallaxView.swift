@@ -18,11 +18,6 @@ class ParallaxViewImp: ParallaxView {
 
     private var offsetConstraints: [NSLayoutConstraint] = []
 
-    convenience init() {
-
-        self.init(viewModel: ParallaxViewModelImp())
-    }
-
     init(viewModel: ParallaxViewModel) {
 
         self.viewModel = viewModel

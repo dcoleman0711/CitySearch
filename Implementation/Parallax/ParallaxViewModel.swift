@@ -20,11 +20,6 @@ class ParallaxViewModelImp: ParallaxViewModel {
 
     private let contentOffset = Observable<CGPoint>(.zero)
 
-    convenience init() {
-
-        self.init(model: ParallaxModelImp())
-    }
-
     init(model: ParallaxModel) {
 
         self.model = model
@@ -50,7 +45,7 @@ class ParallaxViewModelImp: ParallaxViewModel {
 
     func merge(_ offset: CGPoint, _ layers: [ParallaxLayer]) -> [CGPoint] {
 
-        layers.map { layer in CGPoint(x: offset.x / layer.distance, y: offset.y / layer.distance) }
+        layers.map { layer in CGPoint(x: -offset.x / layer.distance, y: -offset.y / layer.distance) }
     }
 
     private func mapLayers(_ layers: [ParallaxLayer]) -> [UIImage] {

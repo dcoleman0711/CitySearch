@@ -126,7 +126,7 @@ class ParallaxViewModelSteps {
 
     func expectedOffsets(for layers: [ParallaxLayer], andOffset offset: CGPoint) -> [CGPoint] {
 
-        layers.map { layer in CGPoint(x: offset.x / layer.distance, y: offset.y / layer.distance) }
+        layers.map { layer in CGPoint(x: -offset.x / layer.distance, y: -offset.y / layer.distance) }
     }
 
     func detailsViewModel(_ viewModel: ParallaxViewModelImp, offsetIsUpdatedTo offset: CGPoint) {

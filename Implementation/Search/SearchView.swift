@@ -93,7 +93,8 @@ class SearchViewBuilder {
 
     func build() -> SearchView {
 
-        let parallaxViewModel = parallaxViewModelFactory.parallaxViewModel()
+        let parallaxModel = ParallaxModelImp()
+        let parallaxViewModel = parallaxViewModelFactory.parallaxViewModel(model: parallaxModel)
         let parallaxView = parallaxViewFactory.parallaxView(viewModel: parallaxViewModel)
 
         let openDetailsCommandFactory = OpenDetailsCommandFactoryImp(cityDetailsViewFactory: cityDetailsViewFactory)
@@ -101,7 +102,7 @@ class SearchViewBuilder {
         let searchResultsViewModel = searchResultsViewModelFactory.searchResultsViewModel(model: searchResultsModel, viewModelFactory: CitySearchResultViewModelFactoryImp())
         let searchResultsView = searchResultsViewFactory.searchResultsView(viewModel: searchResultsViewModel)
 
-        let model = modelFactory.searchModel(searchResultsModel: searchResultsModel)
+        let model = modelFactory.searchModel(parallaxModel: parallaxModel, searchResultsModel: searchResultsModel)
         let viewModel = viewModelFactory.searchViewModel(model: model, parallaxViewModel: parallaxViewModel, searchResultsViewModel: searchResultsViewModel)
         let searchView = SearchViewImp(parallaxView: parallaxView, searchResultsView: searchResultsView, viewModel: viewModel)
 

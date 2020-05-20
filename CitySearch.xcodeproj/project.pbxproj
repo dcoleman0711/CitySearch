@@ -221,6 +221,10 @@
 		CE2C62F3246E137100C1D25A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE2C62F1246E137100C1D25A /* LaunchScreen.storyboard */; };
 		CE2C62FD246E19AE00C1D25A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2C62FC246E19AE00C1D25A /* AppDelegate.swift */; };
 		CE3967EB246F254100478E39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2C62FC246E19AE00C1D25A /* AppDelegate.swift */; };
+		CE4074952475C44800DB22D0 /* Parallax2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE4074932475C44700DB22D0 /* Parallax2.jpg */; };
+		CE4074962475C44800DB22D0 /* Parallax2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE4074932475C44700DB22D0 /* Parallax2.jpg */; };
+		CE4074972475C44800DB22D0 /* Parallax1.png in Resources */ = {isa = PBXBuildFile; fileRef = CE4074942475C44800DB22D0 /* Parallax1.png */; };
+		CE4074982475C44800DB22D0 /* Parallax1.png in Resources */ = {isa = PBXBuildFile; fileRef = CE4074942475C44800DB22D0 /* Parallax1.png */; };
 		CE5D9D69246F4FA800A45702 /* StartupScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D96B27C6258BB75EB8E3 /* StartupScreenTests.swift */; };
 		CE5D9D6C24701E1700A45702 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D9D6B24701E1700A45702 /* Observable.swift */; };
 		CE5D9D6D24701F5700A45702 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D9D6B24701E1700A45702 /* Observable.swift */; };
@@ -424,6 +428,8 @@
 		CE2C62FC246E19AE00C1D25A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE3967B9246EDBB300478E39 /* CitySearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CitySearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE3967BD246EDBB300478E39 /* TestInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = TestInfo.plist; sourceTree = "<group>"; };
+		CE4074932475C44700DB22D0 /* Parallax2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Parallax2.jpg; sourceTree = "<group>"; };
+		CE4074942475C44800DB22D0 /* Parallax1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Parallax1.png; sourceTree = "<group>"; };
 		CE5D9D6B24701E1700A45702 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		CE5D9D752472042800A45702 /* SearchResultCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCellTests.swift; sourceTree = "<group>"; };
 		CE5D9D792472C76300A45702 /* TestImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TestImage.jpg; sourceTree = "<group>"; };
@@ -686,6 +692,8 @@
 				CEEC6DB52474B59A00DB0785 /* TestCityImage.jpg */,
 				CEEC6DC82475442900DB0785 /* MapBackground.jpg */,
 				CEEC6DCE2475565C00DB0785 /* MapMarker.png */,
+				CE4074942475C44800DB22D0 /* Parallax1.png */,
+				CE4074932475C44700DB22D0 /* Parallax2.jpg */,
 				CEEC6DBA24750C4B00DB0785 /* Icons */,
 				CE2C62F4246E137100C1D25A /* Info.plist */,
 				CE3967BD246EDBB300478E39 /* TestInfo.plist */,
@@ -918,7 +926,9 @@
 			files = (
 				CEEC6DB62474B59A00DB0785 /* TestCityImage.jpg in Resources */,
 				CEEC6DC524750C4B00DB0785 /* City4.png in Resources */,
+				CE4074972475C44800DB22D0 /* Parallax1.png in Resources */,
 				CEEC6DC324750C4B00DB0785 /* City3.png in Resources */,
+				CE4074952475C44800DB22D0 /* Parallax2.jpg in Resources */,
 				CEEC6DC124750C4B00DB0785 /* City2.png in Resources */,
 				CEEC6DB32474B55300DB0785 /* MissingImage.jpg in Resources */,
 				CEEC6DC92475442A00DB0785 /* MapBackground.jpg in Resources */,
@@ -935,7 +945,9 @@
 			files = (
 				CEEC6DB42474B55300DB0785 /* MissingImage.jpg in Resources */,
 				CEEC6DC624750C4B00DB0785 /* City4.png in Resources */,
+				CE4074982475C44800DB22D0 /* Parallax1.png in Resources */,
 				CEEC6DC424750C4B00DB0785 /* City3.png in Resources */,
+				CE4074962475C44800DB22D0 /* Parallax2.jpg in Resources */,
 				CEEC6DC224750C4B00DB0785 /* City2.png in Resources */,
 				CEEC6DA72473330900DB0785 /* stubCityResponse.json in Resources */,
 				CEEC6DCA2475442A00DB0785 /* MapBackground.jpg in Resources */,

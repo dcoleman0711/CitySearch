@@ -200,10 +200,10 @@ class SearchScreenSteps {
         ParallaxViewImp(viewModel: parallaxViewModel)
     }
 
-    func searchScreen(parallaxView: ParallaxView = ParallaxViewImp(), searchResults: SearchResultsView = SearchResultsViewImp(viewModel: SearchResultsViewModelMock()), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchView {
+    func searchScreen(parallaxView: ParallaxView = ParallaxViewImp(viewModel: ParallaxViewModelImp(model: ParallaxModelImp())), searchResults: SearchResultsView = SearchResultsViewImp(viewModel: SearchResultsViewModelMock()), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchView {
 
         let parallaxViewModelFactory = ParallaxViewModelFactoryMock()
-        parallaxViewModelFactory.parallaxViewModelImp = { self.parallaxViewModel }
+        parallaxViewModelFactory.parallaxViewModelImp = { model in self.parallaxViewModel }
 
         let parallaxViewFactory = ParallaxViewFactoryMock()
         parallaxViewFactory.parallaxViewImp = { viewModel in parallaxView}

@@ -7,9 +7,9 @@ import Foundation
 
 class ParallaxViewModelFactoryMock: ParallaxViewModelFactory {
 
-    var parallaxViewModelImp: () -> ParallaxViewModel = { ParallaxViewModelMock() }
-    func parallaxViewModel() -> ParallaxViewModel {
+    var parallaxViewModelImp: (_ model: ParallaxModel) -> ParallaxViewModel = { model in ParallaxViewModelMock() }
+    func parallaxViewModel(model: ParallaxModel) -> ParallaxViewModel {
 
-        parallaxViewModelImp()
+        parallaxViewModelImp(model)
     }
 }
