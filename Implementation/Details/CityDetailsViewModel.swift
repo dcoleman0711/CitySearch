@@ -12,6 +12,8 @@ protocol CityDetailsViewModel {
     func observePopulationTitle(_ observer: @escaping ValueUpdate<LabelViewModel>)
 
     func observePopulation(_ observer: @escaping ValueUpdate<LabelViewModel>)
+
+    func observeShowLoader(_ observer: @escaping ValueUpdate<Bool>)
 }
 
 class CityDetailsViewModelImp: CityDetailsViewModel {
@@ -47,6 +49,11 @@ class CityDetailsViewModelImp: CityDetailsViewModel {
     func observePopulation(_ observer: @escaping ValueUpdate<LabelViewModel>) {
 
         model.observePopulation(mapUpdate(observer) { population in LabelViewModel(text: self.populationText(population), font: self.populationTitleFont) })
+    }
+
+    func observeShowLoader(_ observer: @escaping ValueUpdate<Bool>) {
+
+        model.observeLoading(observer)
     }
 
     private func populationText(_ population: Int) -> String {

@@ -96,6 +96,7 @@
 		CC89D67D9E545D5DA87D9820 /* SearchResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DB139501C2DE52BB87F5 /* SearchResultsViewModel.swift */; };
 		CC89D691BF1F9D606FFF1B7E /* ParallaxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DA7B6E6C89CC846B7CCF /* ParallaxViewModel.swift */; };
 		CC89D6935B08A07A8D8DB428 /* CitySearchResultViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D4E1A0B356504D776EF6 /* CitySearchResultViewModelFactory.swift */; };
+		CC89D693C99AE3932ACFEFEA /* ShimmeringLoaderViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D6AF704B1E890F0703E0 /* ShimmeringLoaderViewMock.swift */; };
 		CC89D6A392D180DD5D84816E /* StartupModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DF0778BA02CD9499EDDA /* StartupModelTests.swift */; };
 		CC89D6C4C9DFA67EB208A65D /* CitySearchResultViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DB4CDCA5D378BFA18374 /* CitySearchResultViewModelTests.swift */; };
 		CC89D6D7F2CEDA11A70E4648 /* ParallaxViewFactoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D5276B4623234344DA3A /* ParallaxViewFactoryMock.swift */; };
@@ -343,6 +344,7 @@
 		CC89D67786B2B71495A7EB76 /* CADisplayLinkFactoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CADisplayLinkFactoryMock.swift; sourceTree = "<group>"; };
 		CC89D67A939B8F032A8D3F48 /* ParallaxViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParallaxViewModelTests.swift; sourceTree = "<group>"; };
 		CC89D6941ABF608AEED4215A /* DispatchQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
+		CC89D6AF704B1E890F0703E0 /* ShimmeringLoaderViewMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShimmeringLoaderViewMock.swift; sourceTree = "<group>"; };
 		CC89D6C8FA67BE285C90CCC9 /* AsyncImageViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImageViewModelTests.swift; sourceTree = "<group>"; };
 		CC89D6CDDF10EB8790B82443 /* OpenDetailsCommandTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenDetailsCommandTests.swift; sourceTree = "<group>"; };
 		CC89D6DAAAF88A68396C72C1 /* ParallaxViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParallaxViewFactory.swift; sourceTree = "<group>"; };
@@ -808,6 +810,7 @@
 				CC89D2233B1647A2CE5F8109 /* SearchResultsViewModelFactoryMock.swift */,
 				CC89D88CA1CB2D4A1F1EEE10 /* ParallaxModelMock.swift */,
 				CC89D67786B2B71495A7EB76 /* CADisplayLinkFactoryMock.swift */,
+				CC89D6AF704B1E890F0703E0 /* ShimmeringLoaderViewMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -1216,6 +1219,7 @@
 				CC89D7B5F685A34221A5D195 /* ShimmeringLoaderView.swift in Sources */,
 				CC89DFBDE874A19C5E48055F /* CADisplayLinkFactory.swift in Sources */,
 				CC89D656BEEF070730605631 /* CADisplayLinkFactoryMock.swift in Sources */,
+				CC89D693C99AE3932ACFEFEA /* ShimmeringLoaderViewMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

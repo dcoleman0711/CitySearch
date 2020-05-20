@@ -11,6 +11,8 @@ protocol CityDetailsModel {
     func observeTitleText(_ update: @escaping ValueUpdate<String>)
 
     func observePopulation(_ update: @escaping ValueUpdate<Int>)
+
+    func observeLoading(_ update: @escaping ValueUpdate<Bool>)
 }
 
 class CityDetailsModelImp: CityDetailsModel {
@@ -22,6 +24,8 @@ class CityDetailsModelImp: CityDetailsModel {
     private let population: Observable<Int>
 
     private let resultsQueue: IDispatchQueue
+
+    private let loading = Observable<Bool>(true)
 
     convenience init(searchResult: CitySearchResult, imageCarouselModel: ImageCarouselModel) {
 
@@ -53,6 +57,11 @@ class CityDetailsModelImp: CityDetailsModel {
         population.subscribe(update, updateImmediately: true)
     }
 
+    func observeLoading(_ update: @escaping ValueUpdate<Bool>) {
+
+        loading.subscribe(update, updateImmediately: true)
+    }
+
     private func loadImages(imageSearchService: ImageSearchService) {
 
         let imageSearch = imageSearchService.imageSearch(query: searchResult.name)
@@ -63,12 +72,23 @@ class CityDetailsModelImp: CityDetailsModel {
                     .map({ original in URL(string: original) }) ?? nil }) }
 
         var publisher: AnyCancellable?
-        publisher = imageURLs.sink(receiveCompletion: { completion in }, receiveValue: { imageURLs in
-
+        publisher = imageURLs.sink(receiveCompletion: { completion in
+            
+            self.resultsQueue.async {
+                
+                self.loading.value = false
+            }
+            
+        }, receiveValue: { imageURLs in
+            
             let truncatedResults = [URL](imageURLs.prefix(20))
             publisher = nil
 
-            self.resultsQueue.async { self.imageCarouselModel.setResults(truncatedResults) }
+            self.resultsQueue.async {
+                
+                self.imageCarouselModel.setResults(truncatedResults)
+                self.loading.value = false
+            }
         })
     }
 }

@@ -280,7 +280,7 @@ class DetailsScreenSteps {
         // TODO: Use Builder
         let model = CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: ImageCarouselModelImp())
         let viewModel = CityDetailsViewModelImp(model: model)
-        return CityDetailsViewImp(contentView: UIView(), titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: map, imageCarouselView: imageCarousel, viewModel: viewModel, binder: ViewBinderImp())
+        return CityDetailsViewImp(contentView: UIView(), titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: map, imageCarouselView: imageCarousel, shimmeringLoader: ShimmeringLoaderViewImp(), viewModel: viewModel, binder: ViewBinderImp())
     }
 
     func detailsScreenIsLoaded(_ detailsScreen: CityDetailsView) {

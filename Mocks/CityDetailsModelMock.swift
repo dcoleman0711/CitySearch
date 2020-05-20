@@ -18,4 +18,10 @@ class CityDetailsModelMock : CityDetailsModel {
 
         observePopulationImp(update)
     }
+
+    var observeLoadingImp: (_ update: @escaping ValueUpdate<Bool>) -> Void = { update in }
+    func observeLoading(_ update: @escaping ValueUpdate<Bool>) {
+
+        observeLoadingImp(update)
+    }
 }

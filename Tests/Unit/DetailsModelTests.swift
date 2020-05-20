@@ -79,10 +79,37 @@ class DetailsModelTests: XCTestCase {
 
         then.carouselModel(carouselModel, resultsAreSetTo: imageURLs, on: resultsQueue)
     }
+
+    func testShowLoader() {
+
+        let searchResult = given.searchResult()
+        let detailsModel = given.detailsModelIsCreated(for: searchResult)
+        let loadingObserver = given.showLoaderObserver()
+
+        when.observer(loadingObserver, observesLoading: detailsModel)
+
+        then.observedLoading(on: loadingObserver, isEqualTo: true)
+    }
+
+    func testHideLoader() {
+
+        let searchResult = given.searchResult()
+        let imageSearchService = given.imageSearchService()
+        let resultsQueue = given.resultsQueue()
+        let detailsModel = given.detailsModelIsCreated(for: searchResult, resultsQueue: resultsQueue)
+        let loadingObserver = given.showLoaderObserver()
+        given.observer(loadingObserver, observesLoading: detailsModel)
+        let imageResults = given.imageResults()
+
+        when.imageService(imageSearchService, returns: imageResults)
+
+        then.observedLoading(on: loadingObserver, isEqualTo: false, on: resultsQueue)
+    }
 }
 
 class DetailsModelSteps {
 
+    private var observedLoading = false
 
     private let titleTextObservable = ObservableMock<String>("")
     private let populationObservable = ObservableMock<Int>(0)
@@ -98,6 +125,8 @@ class DetailsModelSteps {
 
     private var isOnResultsQueue = false
     private var resultsSetOnResultsQueue = false
+
+    private var observedLoadingSetOnResultsQueue = false
 
     init() {
 
@@ -206,6 +235,11 @@ class DetailsModelSteps {
         return queue
     }
 
+    func observer(_ loading: @escaping ValueUpdate<Bool>, observesLoading model: CityDetailsModelImp) {
+
+        model.observeLoading(loading)
+    }
+
     func detailsModelIsCreated(for searchResult: CitySearchResult, imageCarouselModel: ImageCarouselModelMock = ImageCarouselModelMock(), imageSearchService: ImageSearchServiceMock = ImageSearchServiceMock(), resultsQueue: DispatchQueueMock = DispatchQueueMock()) -> CityDetailsModelImp {
 
         CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: imageCarouselModel, imageSearchService: imageSearchService, titleText: titleTextObservable, population: populationObservable, resultsQueue: resultsQueue)
@@ -224,6 +258,15 @@ class DetailsModelSteps {
         { int in
 
             self.observedInt = int
+        }
+    }
+
+    func showLoaderObserver() -> ValueUpdate<Bool> {
+
+        { loading in
+
+            self.observedLoading = loading
+            self.observedLoadingSetOnResultsQueue = self.isOnResultsQueue
         }
     }
 
@@ -256,5 +299,16 @@ class DetailsModelSteps {
 
         XCTAssertEqual(carouselModelResults, urls, "Carousel model results were not set to correct results")
         XCTAssertTrue(resultsSetOnResultsQueue, "Carousel model results were not set on results queue")
+    }
+
+    func observedLoading(on observer: ValueUpdate<Bool>, isEqualTo expectedLoading: Bool) {
+
+        XCTAssertEqual(observedLoading, expectedLoading, "Observed loading flag is not correct")
+    }
+
+    func observedLoading(on observer: ValueUpdate<Bool>, isEqualTo expectedLoading: Bool, on resultsQueue: DispatchQueueMock) {
+
+        observedLoading(on: observer, isEqualTo: expectedLoading)
+        XCTAssertEqual(observedLoadingSetOnResultsQueue, expectedLoading, "Observed loading flag was not set on results queue")
     }
 }

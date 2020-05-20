@@ -100,6 +100,26 @@ class DetailsViewModelTests: XCTestCase {
 
         then.observedText(on: labelObserver, isEqualTo: populationText)
     }
+
+    func testShowLoader() {
+
+        for show in [false, true] {
+
+            testShowLoader(show)
+        }
+    }
+
+    func testShowLoader(_ show: Bool) {
+
+        let model = given.model()
+        let detailsViewModel = given.detailsViewModel(model: model)
+        let showLoaderObserver = given.showLoaderObserver()
+        given.observer(showLoaderObserver, observesShowLoader: detailsViewModel)
+
+        when.model(model, updatesShowLoader: show)
+
+        then.observedShowLoader(on: showLoaderObserver, isEqualTo: show)
+    }
 }
 
 class DetailsViewModelSteps {
@@ -110,6 +130,10 @@ class DetailsViewModelSteps {
     private var observedLabelData: LabelViewModel?
 
     private var modelTitleObserver: ValueUpdate<String>?
+
+    private var observedLoading = false
+
+    private var loadingObserver: ValueUpdate<Bool>?
 
     func titleFont() -> UIFont {
 
@@ -134,6 +158,14 @@ class DetailsViewModelSteps {
         }
     }
 
+    func showLoaderObserver() -> ValueUpdate<Bool> {
+
+        { showLoader in
+
+            self.observedLoading = showLoader
+        }
+    }
+
     func model() -> CityDetailsModelMock {
 
         let model = CityDetailsModelMock()
@@ -146,6 +178,12 @@ class DetailsViewModelSteps {
         model.observePopulationImp = { observer in
 
             observer(self.population)
+        }
+
+        model.observeLoadingImp = { observer in
+
+            self.loadingObserver = observer
+            observer(self.observedLoading)
         }
 
         return model
@@ -161,24 +199,34 @@ class DetailsViewModelSteps {
         "1,234,567"
     }
 
-    func detailsViewModel(model: CityDetailsModelMock) -> CityDetailsViewModel {
+    func detailsViewModel(model: CityDetailsModelMock) -> CityDetailsViewModelImp {
 
         CityDetailsViewModelImp(model: model)
     }
 
-    func observer(_ observer: @escaping ValueUpdate<LabelViewModel>, observesTitleOn viewModel: CityDetailsViewModel) {
+    func observer(_ observer: @escaping ValueUpdate<LabelViewModel>, observesTitleOn viewModel: CityDetailsViewModelImp) {
 
         viewModel.observeTitle(observer)
     }
 
-    func observer(_ observer: @escaping ValueUpdate<LabelViewModel>, observesPopulationTitleOn viewModel: CityDetailsViewModel) {
+    func observer(_ observer: @escaping ValueUpdate<LabelViewModel>, observesPopulationTitleOn viewModel: CityDetailsViewModelImp) {
 
         viewModel.observePopulationTitle(observer)
     }
 
-    func observer(_ observer: @escaping ValueUpdate<LabelViewModel>, observesPopulationOn viewModel: CityDetailsViewModel) {
+    func observer(_ observer: @escaping ValueUpdate<LabelViewModel>, observesPopulationOn viewModel: CityDetailsViewModelImp) {
 
         viewModel.observePopulation(observer)
+    }
+
+    func observer(_ observer: @escaping ValueUpdate<Bool>, observesShowLoader viewModel: CityDetailsViewModelImp) {
+
+        viewModel.observeShowLoader(observer)
+    }
+
+    func model(_ model: CityDetailsModelMock, updatesShowLoader showLoader: Bool) {
+
+        self.loadingObserver?(showLoader)
     }
 
     func observedFont(on: ValueUpdate<LabelViewModel>, isEqualTo expectedFont: UIFont) {
@@ -189,5 +237,10 @@ class DetailsViewModelSteps {
     func observedText(on: ValueUpdate<LabelViewModel>, isEqualTo expectedText: String) {
 
         XCTAssertEqual(observedLabelData?.text, expectedText, "Observed text is not correct text")
+    }
+
+    func observedShowLoader(on: ValueUpdate<Bool>, isEqualTo expectedLoading: Bool) {
+
+        XCTAssertEqual(self.observedLoading, expectedLoading, "Observed loading flag is not correct value")
     }
 }

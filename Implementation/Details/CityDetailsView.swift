@@ -19,11 +19,12 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
     private let populationLabel: UILabel
     private let mapView: MapView
     private let imageCarouselView: ImageCarouselView
+    private let shimmeringLoader: ShimmeringLoaderView
 
     private let viewModel: CityDetailsViewModel
     private let binder: ViewBinder
 
-    init(contentView: UIView, titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, mapView: MapView, imageCarouselView: ImageCarouselView, viewModel: CityDetailsViewModel, binder: ViewBinder) {
+    init(contentView: UIView, titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, mapView: MapView, imageCarouselView: ImageCarouselView, shimmeringLoader: ShimmeringLoaderView, viewModel: CityDetailsViewModel, binder: ViewBinder) {
 
         self.contentView = contentView
 
@@ -32,6 +33,7 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
         self.populationLabel = populationLabel
         self.mapView = mapView
         self.imageCarouselView = imageCarouselView
+        self.shimmeringLoader = shimmeringLoader
         
         self.viewModel = viewModel
         self.binder = binder
@@ -69,6 +71,11 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
         viewModel.observeTitle(binder.bindText(label: titleLabel))
         viewModel.observePopulationTitle(binder.bindText(label: populationTitleLabel))
         viewModel.observePopulation(binder.bindText(label: populationLabel))
+
+        viewModel.observeShowLoader { showLoader in
+
+            showLoader ? self.shimmeringLoader.startAnimating() : self.shimmeringLoader.stopAnimating()
+        }
     }
 
     private func setupView() {
@@ -92,6 +99,9 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         contentView.addSubview(imageCarouselView.view)
         imageCarouselView.view.translatesAutoresizingMaskIntoConstraints = false
+
+        shimmeringLoader.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(shimmeringLoader)
     }
 
     private func buildLayout() {
@@ -128,12 +138,20 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
                                             imageCarouselView.view.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
                                             imageCarouselView.view.heightAnchor.constraint(equalToConstant: 256.0)]
 
+
+        // Shimmering Loader
+        let shimmeringConstraints = [shimmeringLoader.leftAnchor.constraint(equalTo: imageCarouselView.view.leftAnchor),
+                                     shimmeringLoader.rightAnchor.constraint(equalTo: imageCarouselView.view.rightAnchor),
+                                     shimmeringLoader.topAnchor.constraint(equalTo: imageCarouselView.view.topAnchor),
+                                     shimmeringLoader.bottomAnchor.constraint(equalTo: imageCarouselView.view.bottomAnchor)]
+
         let constraints = [NSLayoutConstraint]([contentViewConstraints,
                                                 titleLabelConstraints,
                                                 populationTitleLabelConstraints,
                                                 populationLabelConstraints,
                                                 mapViewConstraints,
-                                                imageCarouselViewConstraints]
+                                                imageCarouselViewConstraints,
+                                                shimmeringConstraints]
                 .joined())
 
         view.addConstraints(constraints)
@@ -150,6 +168,6 @@ class CityDetailsViewBuilder {
 
         let model = CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: carouselModel)
         let viewModel = CityDetailsViewModelImp(model: model)
-        return CityDetailsViewImp(contentView: UIView(), titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(searchResult: searchResult), imageCarouselView: carouselView, viewModel: viewModel, binder: ViewBinderImp())
+        return CityDetailsViewImp(contentView: UIView(), titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(searchResult: searchResult), imageCarouselView: carouselView, shimmeringLoader: ShimmeringLoaderViewImp(), viewModel: viewModel, binder: ViewBinderImp())
     }
 }

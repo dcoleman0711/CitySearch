@@ -198,6 +198,42 @@ class DetailsViewTests: XCTestCase {
 
         then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
     }
+
+    func testShimmeringLoaderViewPositionConstraints() {
+
+        let shimmeringLoader = given.shimmeringLoader()
+        let imageCarouselView = given.imageCarouselView()
+        let detailsView = given.detailsView(imageCarouselView: imageCarouselView, shimmeringLoader: shimmeringLoader)
+        let expectedConstraints = given.shimmeringLoader(shimmeringLoader, constrainedToMatchFrameOf: imageCarouselView)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
+    }
+
+    func testShimmeringLoaderViewStartsAnimating() {
+
+        let shimmeringLoader = given.shimmeringLoader()
+        let viewModel = given.viewModel()
+        let detailsView = given.detailsView(shimmeringLoader: shimmeringLoader, viewModel: viewModel)
+        given.detailsViewIsLoaded(detailsView)
+
+        when.viewModelPublishesShowLoader(viewModel)
+
+        then.shimmeringLoaderStartedAnimating(shimmeringLoader)
+    }
+
+    func testShimmeringLoaderViewStopsAnimating() {
+
+        let shimmeringLoader = given.shimmeringLoader()
+        let viewModel = given.viewModel()
+        let detailsView = given.detailsView(shimmeringLoader: shimmeringLoader, viewModel: viewModel)
+        given.detailsViewIsLoaded(detailsView)
+
+        when.viewModelPublishesHideLoader(viewModel)
+
+        then.shimmeringLoaderStopppedAnimating(shimmeringLoader)
+    }
 }
 
 class DetailsViewSteps {
@@ -207,6 +243,10 @@ class DetailsViewSteps {
     private var boundTitleLabel: UILabel?
     private var boundPopulationTitleLabel: UILabel?
     private var boundPopulationLabel: UILabel?
+
+    private var showLoaderObserver: ValueUpdate<Bool>?
+
+    private var loaderIsAnimating = false
 
     func contentView() -> UIView {
 
@@ -238,6 +278,23 @@ class DetailsViewSteps {
         ImageCarouselViewMock()
     }
 
+    func shimmeringLoader() -> ShimmeringLoaderViewMock {
+
+        let loader = ShimmeringLoaderViewMock()
+
+        loader.startAnimatingImp = {
+
+            self.loaderIsAnimating = true
+        }
+
+        loader.stopAnimatingImp = {
+
+            self.loaderIsAnimating = false
+        }
+
+        return loader
+    }
+
     func viewModel() -> CityDetailsViewModelMock {
 
         let viewModel = CityDetailsViewModelMock()
@@ -258,6 +315,11 @@ class DetailsViewSteps {
 
             observer(LabelViewModel.emptyData)
             self.boundPopulationLabel = self.labelBoundToViewModel
+        }
+
+        viewModel.observeShowLoaderImp = { observer in
+
+            self.showLoaderObserver = observer
         }
 
         return viewModel
@@ -284,10 +346,11 @@ class DetailsViewSteps {
                      populationLabel: UILabel = UILabel(),
                      mapView: MapViewMock = MapViewMock(), 
                      imageCarouselView: ImageCarouselViewMock = ImageCarouselViewMock(),
+                     shimmeringLoader: ShimmeringLoaderViewMock = ShimmeringLoaderViewMock(),
                      viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(),
                      binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
 
-        CityDetailsViewImp(contentView: contentView, titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: mapView, imageCarouselView: imageCarouselView, viewModel: viewModel, binder: binder)
+        CityDetailsViewImp(contentView: contentView, titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: mapView, imageCarouselView: imageCarouselView, shimmeringLoader: shimmeringLoader, viewModel: viewModel, binder: binder)
     }
 
     func detailsViewIsLoaded(_ detailsView: CityDetailsViewImp) {
@@ -336,6 +399,34 @@ class DetailsViewSteps {
          imageCarouselView.view.topAnchor.constraint(equalTo: mapView.view.bottomAnchor, constant: 16.0),
          imageCarouselView.view.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
          imageCarouselView.view.heightAnchor.constraint(equalToConstant: 256.0)]
+    }
+
+    func shimmeringLoader(_ shimmeringLoader: ShimmeringLoaderViewMock, constrainedToMatchFrameOf imageCarouselView: ImageCarouselViewMock) -> [NSLayoutConstraint] {
+
+        [shimmeringLoader.leftAnchor.constraint(equalTo: imageCarouselView.view.leftAnchor),
+         shimmeringLoader.rightAnchor.constraint(equalTo: imageCarouselView.view.rightAnchor),
+         shimmeringLoader.topAnchor.constraint(equalTo: imageCarouselView.view.topAnchor),
+         shimmeringLoader.bottomAnchor.constraint(equalTo: imageCarouselView.view.bottomAnchor)]
+    }
+
+    func viewModelPublishesShowLoader(_ viewModel: CityDetailsViewModelMock) {
+
+        self.showLoaderObserver?(true)
+    }
+
+    func viewModelPublishesHideLoader(_ viewModel: CityDetailsViewModelMock) {
+
+        self.showLoaderObserver?(false)
+    }
+
+    func shimmeringLoaderStartedAnimating(_ loader: ShimmeringLoaderViewMock) {
+
+        XCTAssertTrue(loaderIsAnimating, "Shimmering loader is not animating")
+    }
+
+    func shimmeringLoaderStopppedAnimating(_ shimmeringLoader: ShimmeringLoaderViewMock) {
+
+        XCTAssertFalse(loaderIsAnimating, "Shimmering loader is still animating")
     }
 
     func autoResizeMaskIsDisabled(_ view: UIView) {

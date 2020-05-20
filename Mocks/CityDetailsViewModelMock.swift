@@ -24,4 +24,10 @@ class CityDetailsViewModelMock: CityDetailsViewModel {
 
         observePopulationImp(observer)
     }
+
+    var observeShowLoaderImp: (_ observer: @escaping ValueUpdate<Bool>) -> Void = { observer in }
+    func observeShowLoader(_ observer: @escaping ValueUpdate<Bool>) {
+
+        observeShowLoaderImp(observer)
+    }
 }
