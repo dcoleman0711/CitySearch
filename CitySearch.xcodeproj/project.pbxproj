@@ -11,6 +11,7 @@
 		CC89D00C615108339BCB7F7F /* StartupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3FDB4DEB245D133848B /* StartupTests.swift */; };
 		CC89D01BF31EAD52C3DAF85E /* AsyncImageModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D8822E7D09928B75D585 /* AsyncImageModelFactory.swift */; };
 		CC89D0229F1475BAA675BC75 /* AsyncImageModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D8822E7D09928B75D585 /* AsyncImageModelFactory.swift */; };
+		CC89D026BAC90F4ED30826C6 /* ImageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D6112974D6C1D320063B /* ImageServiceTests.swift */; };
 		CC89D05815406F3841CFD56D /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D3E44FBBC5A28919165D /* SearchResultsView.swift */; };
 		CC89D0967ABB218C31DD97F2 /* OpenDetailsCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89D57FC3211763C110F14C /* OpenDetailsCommand.swift */; };
 		CC89D0CBC1454E3E20CFC45B /* ObservableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89DAA56BF041782346D32D /* ObservableMock.swift */; };
@@ -238,6 +239,7 @@
 		CC89D5645062538568B99CE2 /* SearchModelFactoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchModelFactoryMock.swift; sourceTree = "<group>"; };
 		CC89D57FC3211763C110F14C /* OpenDetailsCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenDetailsCommand.swift; sourceTree = "<group>"; };
 		CC89D5D5C3F903E7FC905BF9 /* SearchScreenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchScreenTests.swift; sourceTree = "<group>"; };
+		CC89D6112974D6C1D320063B /* ImageServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageServiceTests.swift; sourceTree = "<group>"; };
 		CC89D615C8F4876CA8C69C3F /* OpenDetailsCommandFactoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenDetailsCommandFactoryMock.swift; sourceTree = "<group>"; };
 		CC89D6161961AD6B75005765 /* CGExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGExtensions.swift; sourceTree = "<group>"; };
 		CC89D61FE647F61D7EF2AF44 /* StartupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
@@ -504,6 +506,7 @@
 				CC89D4B5D9661340D3995963 /* AsyncImageCellTests.swift */,
 				CC89D6C8FA67BE285C90CCC9 /* AsyncImageViewModelTests.swift */,
 				CC89DB33AA0B2F451DDA97E2 /* AsyncImageModelTests.swift */,
+				CC89D6112974D6C1D320063B /* ImageServiceTests.swift */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -930,6 +933,7 @@
 				CC89D1B8C57BC005982A6030 /* AsyncImageViewModelTests.swift in Sources */,
 				CC89D774F10AB0E852CB03BC /* AsyncImageModelTests.swift in Sources */,
 				CC89DD233FB258B9FBEB715E /* ImageService.swift in Sources */,
+				CC89D026BAC90F4ED30826C6 /* ImageServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

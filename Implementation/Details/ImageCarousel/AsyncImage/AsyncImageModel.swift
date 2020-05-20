@@ -13,7 +13,7 @@ protocol AsyncImageModel: class {
 
 class AsyncImageModelImp : AsyncImageModel {
 
-    private let imageResult: ImageService.ImageFuture
+    private let imageResult: ImageService.ImagePublisher
 
     private var subscriber: Cancellable?
 

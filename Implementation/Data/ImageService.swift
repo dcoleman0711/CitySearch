@@ -8,17 +8,36 @@ import Combine
 
 protocol ImageService {
 
-    typealias ImageFuture = Future<UIImage, Error>
+    typealias ImagePublisher = AnyPublisher<UIImage, Error>
 
-    func fetchImage(_ url: URL) -> ImageFuture
+    func fetchImage(_ url: URL) -> ImagePublisher
 }
 
 class ImageServiceImp: ImageService {
 
-    func fetchImage(_ url: URL) -> ImageFuture {
+    private let urlSession: URLSession
 
-        ImageFuture({ promise in
+    convenience init() {
 
-        })
+        self.init(urlSession: URLSession.shared)
+    }
+
+    init(urlSession: URLSession) {
+
+        self.urlSession = urlSession
+    }
+
+    func fetchImage(_ url: URL) -> ImagePublisher {
+
+        self.urlSession.dataTaskPublisher(for: url).tryMap({ data, response in try self.parseResponse(data) }).eraseToAnyPublisher()
+    }
+
+    private func parseResponse(_ data: Data) throws -> UIImage {
+
+        guard let image = UIImage(data: data) else {
+            throw URLError(.cannotParseResponse) as Error
+        }
+
+        return image
     }
 }

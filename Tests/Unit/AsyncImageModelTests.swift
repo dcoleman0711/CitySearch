@@ -78,7 +78,7 @@ class AsyncImageModelSteps {
 
     private var listenerPassedToObservable: ValueUpdate<UIImage>?
 
-    private var imagePromises: [URL: ImageService.ImageFuture.Promise] = [:]
+    private var imagePromises: [URL: Future<UIImage, Error>.Promise] = [:]
 
     func imageService() -> ImageServiceMock {
 
@@ -86,10 +86,11 @@ class AsyncImageModelSteps {
 
         imageService.fetchImageImp = { requestURL in
 
-            ImageService.ImageFuture({ promise in
+            Future<UIImage, Error>({ promise in
 
                 self.imagePromises[requestURL] = promise
-            })
+
+            }).eraseToAnyPublisher()
         }
 
         return imageService
@@ -144,6 +145,6 @@ class AsyncImageModelSteps {
 
     func observerIsNotified(_ observer: ValueUpdate<UIImage>, ofNewValue newValue: UIImage) {
 
-        XCTAssertEqual(valuePassedToObserver, newValue, "Observer was not notified of correct results")
+        XCTAssertTrue(valuePassedToObserver?.isSameImageAs(newValue) ?? false, "Observer was not notified of correct results")
     }
 }

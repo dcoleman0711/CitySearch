@@ -118,14 +118,9 @@ class AsyncImageViewModelSteps {
         viewModel.observeImage(observer)
     }
 
-    func observer(_ observer: ValueUpdate<UIImage?>, isNotifiedWith expectedValue: UIImage?) {
+    func observer(_ observer: ValueUpdate<UIImage?>, isNotifiedWith expectedValue: UIImage) {
 
-        guard let image = valuePassedToObserver else {
-            XCTFail("Observer was not notified")
-            return
-        }
-
-        XCTAssertEqual(image, expectedValue, "Observer was not notified of correct results")
+        XCTAssertTrue(valuePassedToObserver??.isSameImageAs(expectedValue) ?? false, "Observer was not notified of correct results")
     }
 
     func observerIsNotifiedWithNil(_ observer: ValueUpdate<UIImage?>) {
