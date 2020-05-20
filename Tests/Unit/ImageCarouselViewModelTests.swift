@@ -31,7 +31,8 @@ class ImageCarouselViewModelTests: XCTestCase {
     func testObserveSearchResultsImmediate() {
 
         let model = given.imageCarouselModel()
-        let viewModel = given.imageCarouselViewModelIsCreated(model: model)
+        let resultsQueue = given.resultsQueue()
+        let viewModel = given.imageCarouselViewModelIsCreated(model: model, resultsQueue: resultsQueue)
         let resultModels = given.resultModels()
         let resultViewModels = given.resultViewModels(for: resultModels)
         let resultsData = given.resultsData(for: resultViewModels)
@@ -46,7 +47,8 @@ class ImageCarouselViewModelTests: XCTestCase {
     func testObserveSearchResultsUpdate() {
 
         let model = given.imageCarouselModel()
-        let viewModel = given.imageCarouselViewModelIsCreated(model: model)
+        let resultsQueue = given.resultsQueue()
+        let viewModel = given.imageCarouselViewModelIsCreated(model: model, resultsQueue: resultsQueue)
         let resultModels = given.resultModels()
         let resultViewModels = given.resultViewModels(for: resultModels)
         let resultsData = given.resultsData(for: resultViewModels)
@@ -55,11 +57,13 @@ class ImageCarouselViewModelTests: XCTestCase {
 
         when.model(model, updatedResultsTo: resultModels)
 
-        then.observer(observer, isNotifiedWith: resultsData)
+        then.observer(observer, isNotifiedWith: resultsData, on: resultsQueue)
     }
 }
 
 class ImageCarouselViewModelSteps {
+
+    private var isOnResultsQueue = false
 
     private let resultViewModelFactory = AsyncImageViewModelFactoryMock()
 
@@ -67,6 +71,8 @@ class ImageCarouselViewModelSteps {
     private var modelObserver: ValueUpdate<[AsyncImageModel]>?
 
     private var images: [ObjectIdentifier: UIImageMock] = [:]
+
+    private var valuePassedOnResultsQueue = false
 
     func resultViewModels(for resultModels: [AsyncImageModelMock]) -> [AsyncImageViewModelMock] {
 
@@ -109,12 +115,27 @@ class ImageCarouselViewModelSteps {
         { (value) in
 
             self.valuePassedToObserver = value
+            self.valuePassedOnResultsQueue = self.isOnResultsQueue
         }
     }
 
-    func imageCarouselViewModelIsCreated(model: ImageCarouselModelMock) -> ImageCarouselViewModelImp {
+    func resultsQueue() -> DispatchQueueMock {
 
-        ImageCarouselViewModelImp(model: model, viewModelFactory: resultViewModelFactory)
+        let queue = DispatchQueueMock()
+
+        queue.asyncImp = { work in
+
+            self.isOnResultsQueue = true
+            work()
+            self.isOnResultsQueue = false
+        }
+
+        return queue
+    }
+
+    func imageCarouselViewModelIsCreated(model: ImageCarouselModelMock, resultsQueue: DispatchQueueMock = DispatchQueueMock()) -> ImageCarouselViewModelImp {
+
+        ImageCarouselViewModelImp(model: model, viewModelFactory: resultViewModelFactory, resultsQueue: resultsQueue)
     }
 
     func imageCarouselModel() -> ImageCarouselModelMock {
@@ -160,6 +181,12 @@ class ImageCarouselViewModelSteps {
     func observer(_ observer: ValueUpdate<[CellData<AsyncImageViewModel>]>, isNotifiedWith expectedResults: [CellData<AsyncImageViewModel>]) {
 
         XCTAssertTrue(valuePassedToObserver?.elementsEqual(expectedResults) { first, second in first.viewModel === second.viewModel && first.size == second.size } ?? false, "Observer was not notified of correct results")
+    }
+
+    func observer(_ observer: ValueUpdate<[CellData<AsyncImageViewModel>]>, isNotifiedWith expectedResults: [CellData<AsyncImageViewModel>], on resultsQueue: DispatchQueueMock) {
+
+        self.observer(observer, isNotifiedWith: expectedResults)
+        XCTAssertTrue(valuePassedOnResultsQueue, "Observer was not notified on results queue")
     }
 }
 

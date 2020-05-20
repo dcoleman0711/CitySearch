@@ -42,7 +42,7 @@ class ImageCarouselViewImp: ImageCarouselView {
     private func setupView() {
 
         collectionView.backgroundColor = .clear
-        
+
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         collectionView.collectionViewLayout = layout

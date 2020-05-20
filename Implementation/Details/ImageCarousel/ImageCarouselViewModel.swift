@@ -14,19 +14,21 @@ class ImageCarouselViewModelImp : ImageCarouselViewModel {
 
     private let model: ImageCarouselModel
     private let viewModelFactory: AsyncImageViewModelFactory
+    private let resultsQueue: IDispatchQueue
 
     private let viewModels = Observable<[AsyncImageViewModel]>([])
     private let cellDataArray = Observable<[CellData<AsyncImageViewModel>]>([])
 
     convenience init(model: ImageCarouselModel) {
 
-        self.init(model: model, viewModelFactory: AsyncImageViewModelFactoryImp())
+        self.init(model: model, viewModelFactory: AsyncImageViewModelFactoryImp(), resultsQueue: DispatchQueue.main)
     }
 
-    init(model: ImageCarouselModel, viewModelFactory: AsyncImageViewModelFactory) {
+    init(model: ImageCarouselModel, viewModelFactory: AsyncImageViewModelFactory, resultsQueue: IDispatchQueue) {
 
         self.model = model
         self.viewModelFactory = viewModelFactory
+        self.resultsQueue = resultsQueue
 
         setupPipeline()
     }
@@ -64,15 +66,14 @@ class ImageCarouselViewModelImp : ImageCarouselViewModel {
 
     private func observeResultViewModels(_ viewModels: [AsyncImageViewModel]) {
 
-        for viewModel in viewModels {
-            observeResultViewModel(viewModel)
-        }
+        for viewModel in viewModels { observeResultViewModel(viewModel)  }
     }
 
     private func observeResultViewModel(_ viewModel: AsyncImageViewModel) {
 
         viewModel.observeImage { image in
-            self.refresh(viewModel: viewModel, image: image)
+
+            self.resultsQueue.async {  self.refresh(viewModel: viewModel, image: image) }
         }
     }
 
