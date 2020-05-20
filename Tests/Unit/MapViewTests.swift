@@ -29,24 +29,66 @@ class MapViewTests: XCTestCase {
         super.tearDown()
     }
 
-    func testImageViewData() {
+    func testBackgroundImageViewData() {
 
         let viewModel = given.viewModel()
-        let imageView = given.imageView()
+        let backgroundImageView = given.backgroundImageView()
         let binder = given.binder()
 
-        let mapView = when.mapViewIsCreated(backgroundImageView: imageView, viewModel: viewModel, binder: binder)
+        let mapView = when.mapViewIsCreated(backgroundImageView: backgroundImageView, viewModel: viewModel, binder: binder)
 
-        then.backgroundImageView(imageView, isBoundTo: viewModel)
+        then.backgroundImageView(backgroundImageView, isBoundTo: viewModel)
     }
 
-    func testImageViewIsView() {
+    func testBackgroundImageViewIsView() {
 
-        let imageView = given.imageView()
+        let backgroundImageView = given.backgroundImageView()
 
-        let mapView = when.mapViewIsCreated(backgroundImageView: imageView)
+        let mapView = when.mapViewIsCreated(backgroundImageView: backgroundImageView)
 
-        then.backgroundImageView(imageView, isViewOf: mapView)
+        then.backgroundImageView(backgroundImageView, isViewOf: mapView)
+    }
+
+    func testMarkerImageViewImage() {
+
+        let viewModel = given.viewModel()
+        let markerImageView = given.markerImageView()
+        let binder = given.binder()
+
+        let mapView = when.mapViewIsCreated(markerImageView: markerImageView, viewModel: viewModel, binder: binder)
+
+        then.markerImageView(markerImageView, isBoundTo: viewModel)
+    }
+
+    func testMarkerImageViewAutoResizeMaskDisabled() {
+
+        let markerImageView = given.markerImageView()
+
+        let mapView = when.mapViewIsCreated(markerImageView: markerImageView)
+
+        then.autoResizeMaskIsDisabled(for: markerImageView)
+    }
+
+    func testMarkerImageViewSizeConstraints() {
+
+        let markerImageView = given.markerImageView()
+        let markerSize = given.markerSize()
+
+        let mapView = when.mapViewIsCreated(markerImageView: markerImageView)
+
+        then.markerImageView(markerImageView, isConstrainedToSize: markerSize, in: mapView)
+    }
+
+    func testMarkerImageViewPositionConstraints() {
+
+        let viewModel = given.viewModel()
+        let markerPosition = given.markerPosition()
+        let markerImageView = given.markerImageView()
+        let mapView = given.mapViewIsCreated(markerImageView: markerImageView, viewModel: viewModel)
+
+        when.viewModel(viewModel, updatesMarkerPositionTo: markerPosition)
+
+        then.markerImageView(markerImageView, isPositionedIn: mapView, at: markerPosition)
     }
 }
 
@@ -57,6 +99,9 @@ class MapViewSteps {
     private var backgroundImageObserver: ValueUpdate<UIImage>?
 
     private var imageViewBoundToBackground: UIImageView?
+    private var imageViewBoundToMarker: UIImageView?
+
+    private var updateMarkerPositionObserver: ValueUpdate<CGPoint>?
 
     func binder() -> ViewBinderMock {
 
@@ -73,9 +118,24 @@ class MapViewSteps {
         return binder
     }
 
-    func imageView() -> UIImageView {
+    func backgroundImageView() -> UIImageView {
 
         UIImageView()
+    }
+
+    func markerImageView() -> UIImageView {
+
+        UIImageView()
+    }
+
+    func markerSize() -> CGSize {
+
+        CGSize(width: 16.0, height: 16.0)
+    }
+
+    func markerPosition() -> CGPoint {
+
+        CGPoint(x: 64.0, y: 128.0)
     }
 
     func viewModel() -> MapViewModelMock {
@@ -88,15 +148,31 @@ class MapViewSteps {
             self.imageViewBoundToBackground = self.boundImageView
         }
 
+        viewModel.observeMarkerImageImp = { observer in
+
+            observer(UIImageMock())
+            self.imageViewBoundToMarker = self.boundImageView
+        }
+
+        viewModel.observeMarkerPositionImp = { observer in
+
+            self.updateMarkerPositionObserver = observer
+        }
+
         return viewModel
     }
 
-    func mapViewIsCreated(backgroundImageView: UIImageView = UIImageView(), viewModel: MapViewModelMock = MapViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> MapView {
+    func mapViewIsCreated(backgroundImageView: UIImageView = UIImageView(), markerImageView: UIImageView = UIImageView(), viewModel: MapViewModelMock = MapViewModelMock(), binder: ViewBinderMock = ViewBinderMock()) -> MapViewImp {
 
-        MapViewImp(backgroundImageView: backgroundImageView, viewModel: viewModel, binder: binder)
+        MapViewImp(backgroundImageView: backgroundImageView, markerImageView: markerImageView, viewModel: viewModel, binder: binder)
     }
 
-    func backgroundImageView(_ backgroundImageView: UIImageView, isViewOf mapView: MapView) {
+    func viewModel(_ viewModel: MapViewModelMock, updatesMarkerPositionTo position: CGPoint) {
+
+        updateMarkerPositionObserver?(position)
+    }
+
+    func backgroundImageView(_ backgroundImageView: UIImageView, isViewOf mapView: MapViewImp) {
 
         XCTAssertEqual(backgroundImageView, mapView.view, "MapView's view is not the background image")
     }
@@ -104,5 +180,31 @@ class MapViewSteps {
     func backgroundImageView(_ backgroundImageView: UIImageView, isBoundTo viewModel: MapViewModelMock) {
 
         XCTAssertEqual(imageViewBoundToBackground, backgroundImageView, "Background Image View was not bound to view model")
+    }
+
+    func markerImageView(_ markerImageView: UIImageView, isBoundTo viewModel: MapViewModelMock) {
+
+        XCTAssertEqual(imageViewBoundToMarker, markerImageView, "Marker Image View was not bound to view model")
+    }
+
+    func autoResizeMaskIsDisabled(for view: UIView) {
+
+        XCTAssertFalse(view.translatesAutoresizingMaskIntoConstraints, "Autoresizing mask is not disabled")
+    }
+
+    func markerImageView(_ markerImageView: UIImageView, isConstrainedToSize size: CGSize, in mapView: MapViewImp) {
+
+        let expectedConstraints = [markerImageView.widthAnchor.constraint(equalToConstant: size.width),
+                                   markerImageView.heightAnchor.constraint(equalToConstant: size.height)]
+
+        ViewConstraintValidator.validateThatView(mapView.view, hasConstraints: expectedConstraints, message: "Marker Image view is not correctly sized")
+    }
+
+    func markerImageView(_ markerImageView: UIImageView, isPositionedIn mapView: MapViewImp, at position: CGPoint) {
+
+        let expectedConstraints = [markerImageView.leftAnchor.constraint(equalTo: mapView.view.leftAnchor, constant: position.x),
+                                   markerImageView.bottomAnchor.constraint(equalTo: mapView.view.topAnchor, constant: position.y)]
+
+        ViewConstraintValidator.validateThatView(mapView.view, hasConstraints: expectedConstraints, message: "Marker Image view is not correctly positioned")
     }
 }

@@ -7,7 +7,9 @@ import UIKit
 
 protocol MapViewModel: class {
 
-    func observeBackgroundImage(_ observer: ValueUpdate<UIImage>)
+    func observeBackgroundImage(_ observer: @escaping ValueUpdate<UIImage>)
+    func observeMarkerImage(_ observer: @escaping ValueUpdate<UIImage>)
+    func observeMarkerPosition(_ observer: @escaping ValueUpdate<CGPoint>)
 }
 
 class MapViewModelImp: MapViewModel {
@@ -23,8 +25,18 @@ class MapViewModelImp: MapViewModel {
 
     }
 
-    func observeBackgroundImage(_ observer: ValueUpdate<UIImage>) {
+    func observeBackgroundImage(_ observer: @escaping ValueUpdate<UIImage>) {
 
         observer(backgroundImage)
+    }
+
+    func observeMarkerImage(_ observer: @escaping ValueUpdate<UIImage>) {
+
+
+    }
+
+    func observeMarkerPosition(_ observer: @escaping ValueUpdate<CGPoint>) {
+
+
     }
 }

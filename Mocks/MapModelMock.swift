@@ -6,4 +6,6 @@
 import Foundation
 
 class MapModelMock: MapModel {
+
+
 }
