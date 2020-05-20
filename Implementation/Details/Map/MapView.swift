@@ -40,12 +40,17 @@ class MapViewImp: MapView {
 
         viewModel.observeBackgroundImage(binder.bindImage(imageView: backgroundImageView))
         viewModel.observeMarkerImage(binder.bindImage(imageView: markerImageView))
-        viewModel.observeMarkerFrame(binder.bindFrame(view: markerImageView))
+        viewModel.observeMarkerFrame(mapUpdate(binder.bindFrame(view: markerImageView), MapViewImp.transformFrame(self)))
     }
 
     private func setupView() {
 
         view.addSubview(markerImageView)
         markerImageView.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func transformFrame(_ frame: CGRect) -> CGRect {
+
+        CGRect(origin: CGPoint(x: frame.origin.x * view.frame.size.width, y: frame.origin.y * view.frame.size.height + frame.size.height), size: frame.size)
     }
 }

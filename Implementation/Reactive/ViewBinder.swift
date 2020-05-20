@@ -50,8 +50,28 @@ class ViewBinderImp: ViewBinder {
 
     func bindFrame(view: UIView) -> ValueUpdate<CGRect> {
 
-        { (frame) in
+        // This is a risky API.  It assumes the view hierarch won't change, and that no other conflicting constraints are added. It should be used carefully.  AutoLayout and manual frame updating (which is what this ultimately is) don't mix well.
+        guard let superview = view.superview else { return { frame in } }
 
+        let xConstraint = view.leftAnchor.constraint(equalTo: superview.leftAnchor, constant: 0.0)
+        let yConstraint = view.topAnchor.constraint(equalTo: superview.topAnchor, constant: 0.0)
+        let widthConstraint = view.widthAnchor.constraint(equalToConstant: 0.0)
+        let heightConstraint = view.heightAnchor.constraint(equalToConstant: 0.0)
+
+        var installed = false
+
+        return { (frame) in
+
+            xConstraint.constant = frame.origin.x
+            yConstraint.constant = frame.origin.y
+            widthConstraint.constant = frame.size.width
+            heightConstraint.constant = frame.size.height
+
+            if !installed {
+
+                superview.addConstraints([xConstraint, yConstraint, widthConstraint, heightConstraint])
+                installed = true
+            }
         }
     }
 }
