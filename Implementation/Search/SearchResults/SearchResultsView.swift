@@ -16,16 +16,8 @@ class SearchResultsViewImp : SearchResultsView {
 
     var view: UIView { collectionView }
 
-//    var model: SearchResultsModel { viewModel.model }
-
     private let collectionView: UICollectionView
     private let viewModel: SearchResultsViewModel
-
-    convenience init(model: SearchResultsModel) {
-
-        let viewModel = SearchResultsViewModelImp(model: model, viewModelFactory: CitySearchResultViewModelFactoryImp())
-        self.init(viewModel: viewModel)
-    }
 
     convenience init(viewModel: SearchResultsViewModel) {
 

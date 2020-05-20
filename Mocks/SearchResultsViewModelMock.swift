@@ -3,7 +3,7 @@
 // Copyright (c) 2020 Daniel Coleman. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class SearchResultsViewModelMock: SearchResultsViewModel {
 
@@ -13,5 +13,11 @@ class SearchResultsViewModelMock: SearchResultsViewModel {
     func observeResultsViewModels(_ observer: @escaping ValueUpdate<CollectionViewModel<CitySearchResultViewModel>>) {
 
         observeResultsViewModelsImp(observer)
+    }
+
+    var observeContentOffsetImp: (_ observer: @escaping ValueUpdate<CGPoint>) -> Void = { observer in }
+    func observeContentOffset(_ observer: @escaping ValueUpdate<CGPoint>) {
+
+        observeContentOffsetImp(observer)
     }
 }

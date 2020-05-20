@@ -7,9 +7,9 @@ import Foundation
 
 class SearchResultsViewFactoryMock: SearchResultsViewFactory {
 
-    var searchResultsViewImp: (_ model: SearchResultsModel) -> SearchResultsView = { (model) in SearchResultsViewMock() }
-    func searchResultsView(model: SearchResultsModel) -> SearchResultsView {
+    var searchResultsViewImp: (_ viewModel: SearchResultsViewModel) -> SearchResultsView = { (viewModel) in SearchResultsViewMock() }
+    func searchResultsView(viewModel: SearchResultsViewModel) -> SearchResultsView {
 
-        searchResultsViewImp(model)
+        searchResultsViewImp(viewModel)
     }
 }

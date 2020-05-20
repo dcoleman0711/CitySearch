@@ -10,6 +10,8 @@ protocol SearchResultsViewModel {
     var model: SearchResultsModel { get }
 
     func observeResultsViewModels(_ observer: @escaping ValueUpdate<CollectionViewModel<CitySearchResultViewModel>>)
+
+    func observeContentOffset(_ observer: @escaping ValueUpdate<CGPoint>)
 }
 
 class SearchResultsViewModelImp: SearchResultsViewModel {
@@ -31,6 +33,11 @@ class SearchResultsViewModelImp: SearchResultsViewModel {
     func observeResultsViewModels(_ observer: @escaping ValueUpdate<CollectionViewModel<CitySearchResultViewModel>>) {
 
         self.model.observeResultsModels(mapUpdate(observer, SearchResultsViewModelImp.mapResults(self)))
+    }
+
+    func observeContentOffset(_ observer: @escaping ValueUpdate<CGPoint>) {
+
+
     }
 
     private func mapResults(models: [CitySearchResultModel]) -> CollectionViewModel<CitySearchResultViewModel> {

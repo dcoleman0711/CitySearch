@@ -14,10 +14,14 @@ class SearchViewImp: UIViewController, SearchView {
     private let parallaxView: ParallaxView
     private let searchResultsView: SearchResultsView
 
-    init(parallaxView: ParallaxView, searchResultsView: SearchResultsView, model: SearchModel) {
+    private let viewModel: SearchViewModel
+
+    init(parallaxView: ParallaxView, searchResultsView: SearchResultsView, viewModel: SearchViewModel) {
 
         self.parallaxView = parallaxView
         self.searchResultsView = searchResultsView
+
+        self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -74,20 +78,32 @@ class SearchViewImp: UIViewController, SearchView {
 class SearchViewBuilder {
 
     var initialData = CitySearchResults.emptyResults()
+
+    var parallaxViewFactory: ParallaxViewFactory = ParallaxViewFactoryImp()
+    var parallaxViewModelFactory: ParallaxViewModelFactory = ParallaxViewModelFactoryImp()
+
     var searchResultsModelFactory: SearchResultsModelFactory = SearchResultsModelFactoryImp()
+    var searchResultsViewModelFactory: SearchResultsViewModelFactory = SearchResultsViewModelFactoryImp()
     var searchResultsViewFactory: SearchResultsViewFactory = SearchResultsViewFactoryImp()
+
     var modelFactory: SearchModelFactory = SearchModelFactoryImp()
+    var viewModelFactory: SearchViewModelFactory = SearchViewModelFactoryImp()
+
     var cityDetailsViewFactory: CityDetailsViewFactory = CityDetailsViewFactoryImp()
-    var parallaxView: ParallaxView = ParallaxViewImp()
 
     func build() -> SearchView {
 
+        let parallaxViewModel = parallaxViewModelFactory.parallaxViewModel()
+        let parallaxView = parallaxViewFactory.parallaxView(viewModel: parallaxViewModel)
+
         let openDetailsCommandFactory = OpenDetailsCommandFactoryImp(cityDetailsViewFactory: cityDetailsViewFactory)
         let searchResultsModel = searchResultsModelFactory.searchResultsModel(openDetailsCommandFactory: openDetailsCommandFactory)
-        let searchResultsView = searchResultsViewFactory.searchResultsView(model: searchResultsModel)
+        let searchResultsViewModel = searchResultsViewModelFactory.searchResultsViewModel(model: searchResultsModel, viewModelFactory: CitySearchResultViewModelFactoryImp())
+        let searchResultsView = searchResultsViewFactory.searchResultsView(viewModel: searchResultsViewModel)
 
         let model = modelFactory.searchModel(searchResultsModel: searchResultsModel)
-        let searchView = SearchViewImp(parallaxView: parallaxView, searchResultsView: searchResultsView, model: model)
+        let viewModel = viewModelFactory.searchViewModel(model: model, parallaxViewModel: parallaxViewModel, searchResultsViewModel: searchResultsViewModel)
+        let searchView = SearchViewImp(parallaxView: parallaxView, searchResultsView: searchResultsView, viewModel: viewModel)
 
         openDetailsCommandFactory.searchView = searchView
 

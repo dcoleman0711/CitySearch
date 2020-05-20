@@ -13,4 +13,13 @@ protocol ParallaxView {
 class ParallaxViewImp: ParallaxView {
 
     let view = UIView()
+
+    convenience init() {
+
+        self.init(viewModel: ParallaxViewModelImp())
+    }
+
+    init(viewModel: ParallaxViewModel) {
+
+    }
 }

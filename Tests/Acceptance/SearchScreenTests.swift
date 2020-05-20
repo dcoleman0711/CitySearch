@@ -55,6 +55,19 @@ class SearchScreenTests: XCTestCase {
         then.parallaxView(parallaxView, isFullScreenIn: searchScreen)
     }
 
+    func testParallaxOffset() {
+
+        let parallaxView = given.parallaxView()
+        let searchResults = given.searchResults()
+        let searchScreen = given.searchScreen(parallaxView: parallaxView, searchResults: searchResults)
+        given.searchScreenIsLoaded(searchScreen)
+        let contentOffset = given.contentOffset()
+
+        when.searchResults(searchScreen, scrollsTo: contentOffset)
+
+        then.parallaxView(parallaxView, contentOffsetIs: contentOffset)
+    }
+
     func testOrientations() {
 
         let searchScreen = given.searchScreen()
@@ -106,7 +119,9 @@ class SearchScreenTests: XCTestCase {
 class SearchScreenSteps {
 
     private let navigationStack = UINavigationControllerMock()
+    private let parallaxViewModel = ParallaxViewModelMock()
     private let searchResultsModel = SearchResultsModelMock()
+    private let searchResultsViewModel = SearchResultsViewModelMock()
     private let cityDetailsViewFactory = CityDetailsViewFactoryMock()
 
     private var displayedSearchResults: CitySearchResults?
@@ -119,12 +134,34 @@ class SearchScreenSteps {
 
     private var openDetailsCommands: [String: OpenDetailsCommand] = [:]
 
+    private var parallaxViewContentOffset = CGPoint.zero
+    private var searchResultsContentOffsetObserver: ValueUpdate<CGPoint>?
+
     init() {
+
+        parallaxViewModel.subscribeToContentOffsetImp = {
+
+            { contentOffset in
+
+                self.parallaxViewContentOffset = contentOffset
+            }
+        }
 
         searchResultsModel.setResultsImp = { (results) in
 
             self.displayedSearchResults = results
             self.openDetailsCommands = [String: OpenDetailsCommand](uniqueKeysWithValues: results.results.map { result -> (String, OpenDetailsCommand) in (result.name, self.openDetailsCommandFactory.openDetailsCommand(for: result)) })
+        }
+
+        // We're wrapping a production view model inside a mock one, because we want the real behavior (these are high-level integration tests), but we want to capture some of the messages being sent to the real view model.  The mock intercepts messages, stores them, then forwards them to the production view model
+        let realViewModel = SearchResultsViewModelImp(model: searchResultsModel, viewModelFactory: CitySearchResultViewModelFactoryImp())
+
+        searchResultsViewModel.observeResultsViewModelsImp = { observer in realViewModel.observeResultsViewModels(observer) }
+
+        searchResultsViewModel.observeContentOffsetImp = { observer in
+
+            self.searchResultsContentOffsetObserver = observer
+            realViewModel.observeContentOffset(observer)
         }
 
         navigationStack.pushViewControllerImp = { viewController, animated in
@@ -148,18 +185,28 @@ class SearchScreenSteps {
         UIInterfaceOrientationMask.landscape
     }
 
+    func contentOffset() -> CGPoint {
+
+        CGPoint(x: 10.0, y: 0.0)
+    }
+
     func searchResults() -> SearchResultsView {
 
-        let viewModel = SearchResultsViewModelImp(model: searchResultsModel, viewModelFactory: CitySearchResultViewModelFactoryImp())
-        return SearchResultsViewImp(viewModel: viewModel)
+        SearchResultsViewImp(viewModel: searchResultsViewModel)
     }
 
     func parallaxView() -> ParallaxView {
 
-        ParallaxViewImp()
+        ParallaxViewImp(viewModel: parallaxViewModel)
     }
 
-    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(model: SearchResultsModelMock()), parallaxView: ParallaxView = ParallaxViewImp(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchView {
+    func searchScreen(parallaxView: ParallaxView = ParallaxViewImp(), searchResults: SearchResultsView = SearchResultsViewImp(viewModel: SearchResultsViewModelMock()), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchView {
+
+        let parallaxViewModelFactory = ParallaxViewModelFactoryMock()
+        parallaxViewModelFactory.parallaxViewModelImp = { self.parallaxViewModel }
+
+        let parallaxViewFactory = ParallaxViewFactoryMock()
+        parallaxViewFactory.parallaxViewImp = { viewModel in parallaxView}
 
         let searchResultsModelFactory = SearchResultsModelFactoryMock()
 
@@ -169,13 +216,18 @@ class SearchScreenSteps {
             return self.searchResultsModel
         }
 
+        let searchResultsViewModelFactory = SearchResultsViewModelFactoryMock()
+        searchResultsViewModelFactory.searchResultsViewModelImp = { model, resultViewModelFactory in self.searchResultsViewModel }
+
         let searchResultsViewFactory = SearchResultsViewFactoryMock()
-        searchResultsViewFactory.searchResultsViewImp = { model in searchResults }
+        searchResultsViewFactory.searchResultsViewImp = { viewModel in searchResults }
 
         let builder = SearchViewBuilder()
         builder.initialData = initialData
-        builder.parallaxView = parallaxView
+        builder.parallaxViewModelFactory = parallaxViewModelFactory
+        builder.parallaxViewFactory = parallaxViewFactory
         builder.searchResultsViewFactory = searchResultsViewFactory
+        builder.searchResultsViewModelFactory = searchResultsViewModelFactory
         builder.searchResultsModelFactory = searchResultsModelFactory
         builder.cityDetailsViewFactory = cityDetailsViewFactory
 
@@ -192,6 +244,11 @@ class SearchScreenSteps {
     func searchViewAppearsOnScreen(_ searchView: SearchView) {
 
         SafeAreaLayoutTest.layoutInWindow(searchView, andCaptureSafeAreaTo: &self.safeAreaFrame)
+    }
+
+    func searchResults(_ searchScreen: SearchView, scrollsTo contentOffset: CGPoint) {
+
+        searchResultsContentOffsetObserver?(contentOffset)
     }
 
     func searchResult(in searchResults: CitySearchResults) -> CitySearchResult {
@@ -221,6 +278,11 @@ class SearchScreenSteps {
     func invoke(_ openDetailsCommand: OpenDetailsCommand) {
 
         openDetailsCommand.invoke()
+    }
+
+    func parallaxView(_ parallaxView: ParallaxView, contentOffsetIs contentOffset: CGPoint) {
+
+        XCTAssertEqual(self.parallaxViewContentOffset, contentOffset, "Parallax view content offset is not correct")
     }
 
     func searchResults(_ searchResults: SearchResultsView, isDisplayedIn searchView: SearchView) {

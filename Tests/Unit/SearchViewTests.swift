@@ -123,7 +123,7 @@ class SearchViewSteps {
 
     func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), parallaxView: ParallaxViewMock = ParallaxViewMock(), model: SearchModelMock = SearchModelMock()) -> SearchViewImp {
 
-        SearchViewImp(parallaxView: parallaxView, searchResultsView: searchResultsView, model: model)
+        SearchViewImp(parallaxView: parallaxView, searchResultsView: searchResultsView, viewModel: SearchViewModelMock())
     }
 
     func searchViewIsLoaded(_ searchView: SearchViewImp) {
