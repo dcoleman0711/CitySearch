@@ -5,7 +5,7 @@
 
 import UIKit
 
-struct ParallaxLayer {
+struct ParallaxLayer: Equatable {
 
     public let distance: CGFloat
 }
@@ -13,12 +13,21 @@ struct ParallaxLayer {
 protocol ParallaxModel {
 
     func observeLayers(_ observer: @escaping ValueUpdate<[ParallaxLayer]>)
+
+    func setLayers(_ layers: [ParallaxLayer])
 }
 
 class ParallaxModelImp: ParallaxModel {
 
+    private let layers = Observable<[ParallaxLayer]>([])
+
     func observeLayers(_ observer: @escaping ValueUpdate<[ParallaxLayer]>) {
 
+        layers.subscribe(observer, updateImmediately: true)
+    }
 
+    func setLayers(_ layers: [ParallaxLayer]) {
+
+        self.layers.value = layers
     }
 }

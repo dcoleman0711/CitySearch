@@ -12,4 +12,10 @@ class ParallaxModelMock: ParallaxModel {
 
         observeLayersImp(observer)
     }
+
+    var setLayersImp: (_ layers: [ParallaxLayer]) -> Void = { layers in }
+    func setLayers(_ layers: [ParallaxLayer]) {
+
+        setLayersImp(layers)
+    }
 }
