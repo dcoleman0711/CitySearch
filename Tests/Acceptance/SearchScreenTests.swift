@@ -44,13 +44,15 @@ class SearchScreenTests: XCTestCase {
         then.searchResults(searchResults, isDisplayedIn: searchView)
     }
 
-    func testBackgroundIsWhite() {
+    func testParallaxFullScreen() {
 
-        let searchScreen = given.searchScreen()
+        let parallaxView = given.parallaxView()
+        let searchScreen = given.searchScreen(parallaxView: parallaxView)
+        given.searchScreenIsLoaded(searchScreen)
 
-        when.searchScreenIsLoaded(searchScreen)
+        when.searchViewAppearsOnScreen(searchScreen)
 
-        then.searchScreenBackgroundIsWhite(searchScreen)
+        then.parallaxView(parallaxView, isFullScreenIn: searchScreen)
     }
 
     func testOrientations() {
@@ -152,7 +154,12 @@ class SearchScreenSteps {
         return SearchResultsViewImp(viewModel: viewModel)
     }
 
-    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(model: SearchResultsModelMock()), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchView {
+    func parallaxView() -> ParallaxView {
+
+        ParallaxViewImp()
+    }
+
+    func searchScreen(searchResults: SearchResultsView = SearchResultsViewImp(model: SearchResultsModelMock()), parallaxView: ParallaxView = ParallaxViewImp(), initialData: CitySearchResults = CitySearchResults.emptyResults()) -> SearchView {
 
         let searchResultsModelFactory = SearchResultsModelFactoryMock()
 
@@ -167,6 +174,7 @@ class SearchScreenSteps {
 
         let builder = SearchViewBuilder()
         builder.initialData = initialData
+        builder.parallaxView = parallaxView
         builder.searchResultsViewFactory = searchResultsViewFactory
         builder.searchResultsModelFactory = searchResultsModelFactory
         builder.cityDetailsViewFactory = cityDetailsViewFactory
@@ -232,6 +240,11 @@ class SearchScreenSteps {
         XCTAssertTrue(fillsHorizontally, "Search results do not fill safe area horizontally")
         XCTAssertTrue(centeredVertically, "Search results are not centered vertically")
         XCTAssertTrue(correctHeight, "Search results does not have correct height")
+    }
+
+    func parallaxView(_ parallaxView: ParallaxView, isFullScreenIn searchScreen: SearchView) {
+
+        XCTAssertEqual(parallaxView.view.frame, searchScreen.view.bounds, "Parallax view is not full screen in search screen")
     }
 
     func searchScreenBackgroundIsWhite(_ searchScreen: SearchView) {

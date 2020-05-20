@@ -28,6 +28,27 @@ class SearchViewTests: XCTestCase {
         super.tearDown()
     }
 
+    func testParallaxViewAutoResizeMaskDisabled() {
+
+        let parallaxView = given.parallaxView()
+        let searchView = given.searchViewIsCreated(parallaxView: parallaxView)
+
+        when.searchViewIsLoaded(searchView)
+
+        then.autoResizeMaskIsDisabled(parallaxView.view)
+    }
+
+    func testParallaxViewFillsHorizontallyAndIsCenteredVerticallyInParentSafeArea() {
+
+        let parallaxView = given.parallaxView()
+        let searchView = given.searchViewIsCreated(parallaxView: parallaxView)
+        let expectedConstraints = given.constraintsFor(parallaxView.view, toFillParent: searchView)
+
+        when.searchViewIsLoaded(searchView)
+
+        then.searchView(searchView, hasConstraints: expectedConstraints)
+    }
+
     func testSearchResultsViewIsOnSearchView() {
 
         let searchResultsView = given.searchResultsView()
@@ -79,6 +100,11 @@ class SearchViewSteps {
         return searchResultsView
     }
 
+    func parallaxView() -> ParallaxViewMock {
+
+        ParallaxViewMock()
+    }
+
     func constraintsFor(_ view: UIView, toFillHorizontallyAndCenterVerticallyInParentSafeArea searchView: SearchViewImp) -> [NSLayoutConstraint] {
 
         [view.leftAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.leftAnchor),
@@ -87,9 +113,17 @@ class SearchViewSteps {
          view.heightAnchor.constraint(equalToConstant: SearchScreenTestConstants.resultsHeight)]
     }
 
-    func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), model: SearchModelMock = SearchModelMock()) -> SearchViewImp {
+    func constraintsFor(_ view: UIView, toFillParent searchView: SearchViewImp) -> [NSLayoutConstraint] {
 
-        SearchViewImp(searchResultsView: searchResultsView, model: model)
+        [view.leftAnchor.constraint(equalTo: searchView.view.leftAnchor),
+         view.rightAnchor.constraint(equalTo: searchView.view.rightAnchor),
+         view.topAnchor.constraint(equalTo: searchView.view.topAnchor),
+         view.bottomAnchor.constraint(equalTo: searchView.view.bottomAnchor)]
+    }
+
+    func searchViewIsCreated(searchResultsView: SearchResultsViewMock = SearchResultsViewMock(), parallaxView: ParallaxViewMock = ParallaxViewMock(), model: SearchModelMock = SearchModelMock()) -> SearchViewImp {
+
+        SearchViewImp(parallaxView: parallaxView, searchResultsView: searchResultsView, model: model)
     }
 
     func searchViewIsLoaded(_ searchView: SearchViewImp) {

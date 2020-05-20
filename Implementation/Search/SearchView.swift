@@ -11,10 +11,12 @@ protocol SearchView where Self: UIViewController {
 
 class SearchViewImp: UIViewController, SearchView {
 
+    private let parallaxView: ParallaxView
     private let searchResultsView: SearchResultsView
 
-    init(searchResultsView: SearchResultsView, model: SearchModel) {
+    init(parallaxView: ParallaxView, searchResultsView: SearchResultsView, model: SearchModel) {
 
+        self.parallaxView = parallaxView
         self.searchResultsView = searchResultsView
 
         super.init(nibName: nil, bundle: nil)
@@ -42,19 +44,28 @@ class SearchViewImp: UIViewController, SearchView {
 
         view.backgroundColor = UIColor.white
 
+        view.addSubview(parallaxView.view)
+        parallaxView.view.translatesAutoresizingMaskIntoConstraints = false
+
         view.addSubview(searchResultsView.view)
         searchResultsView.view.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buildLayout() {
 
-        // App Title
+        // Parallax
+        let parallaxViewConstraints = [parallaxView.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+                                       parallaxView.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+                                       parallaxView.view.topAnchor.constraint(equalTo: view.topAnchor),
+                                       parallaxView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
+
+        // Search Results
         let searchResultsViewContraints = [searchResultsView.view.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
                                            searchResultsView.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
                                            searchResultsView.view.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                                            searchResultsView.view.heightAnchor.constraint(equalToConstant: 256.0)]
 
-        let constraints = [NSLayoutConstraint]([searchResultsViewContraints].joined())
+        let constraints = [NSLayoutConstraint]([parallaxViewConstraints, searchResultsViewContraints].joined())
 
         view.addConstraints(constraints)
     }
@@ -67,6 +78,7 @@ class SearchViewBuilder {
     var searchResultsViewFactory: SearchResultsViewFactory = SearchResultsViewFactoryImp()
     var modelFactory: SearchModelFactory = SearchModelFactoryImp()
     var cityDetailsViewFactory: CityDetailsViewFactory = CityDetailsViewFactoryImp()
+    var parallaxView: ParallaxView = ParallaxViewImp()
 
     func build() -> SearchView {
 
@@ -75,7 +87,7 @@ class SearchViewBuilder {
         let searchResultsView = searchResultsViewFactory.searchResultsView(model: searchResultsModel)
 
         let model = modelFactory.searchModel(searchResultsModel: searchResultsModel)
-        let searchView = SearchViewImp(searchResultsView: searchResultsView, model: model)
+        let searchView = SearchViewImp(parallaxView: parallaxView, searchResultsView: searchResultsView, model: model)
 
         openDetailsCommandFactory.searchView = searchView
 
