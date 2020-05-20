@@ -12,7 +12,7 @@ func mapUpdate<In, Out>(_ out: @escaping ValueUpdate<Out>, _ mapFunction: @escap
     { inValue in out(mapFunction(inValue)) }
 }
 
-func zipUpdate<T1, T2>(_ out: @escaping ValueUpdate<(T1, T2)>) -> (ValueUpdate<T1>, ValueUpdate<T2>) {
+func combineLatestUpdate<T1, T2>(_ out: @escaping ValueUpdate<(T1, T2)>) -> (ValueUpdate<T1>, ValueUpdate<T2>) {
 
     var lastT1: T1?
     var lastT2: T2?

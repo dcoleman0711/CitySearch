@@ -53,7 +53,7 @@ class ParallaxModelSteps {
 
     func parallaxLayers() -> [ParallaxLayer] {
 
-        (0..<5).map { index in ParallaxLayer(distance: 10.0 / CGFloat(index + 1)) }
+        (0..<5).map { index in ParallaxLayer(distance: 10.0 / CGFloat(index + 1), image: UIImageMock()) }
     }
 
     func layersObserver() -> ValueUpdate<[ParallaxLayer]> {

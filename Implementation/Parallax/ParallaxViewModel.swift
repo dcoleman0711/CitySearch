@@ -37,12 +37,12 @@ class ParallaxViewModelImp: ParallaxViewModel {
 
     func observeImages(_ observer: @escaping ValueUpdate<[UIImage]>) {
 
-
+        self.model.observeLayers(mapUpdate(observer, ParallaxViewModelImp.mapLayers(self)))
     }
 
     func observeOffsets(_ observer: @escaping ValueUpdate<[CGPoint]>) {
 
-        let (offsetUpdate, layerUpdate) = zipUpdate(mapUpdate(observer, ParallaxViewModelImp.merge(self)))
+        let (offsetUpdate, layerUpdate) = combineLatestUpdate(mapUpdate(observer, ParallaxViewModelImp.merge(self)))
 
         self.contentOffset.subscribe(offsetUpdate)
         self.model.observeLayers(layerUpdate)
@@ -51,6 +51,11 @@ class ParallaxViewModelImp: ParallaxViewModel {
     func merge(_ offset: CGPoint, _ layers: [ParallaxLayer]) -> [CGPoint] {
 
         layers.map { layer in CGPoint(x: offset.x / layer.distance, y: offset.y / layer.distance) }
+    }
+
+    private func mapLayers(_ layers: [ParallaxLayer]) -> [UIImage] {
+
+        layers.map { layer in layer.image }
     }
 }
 

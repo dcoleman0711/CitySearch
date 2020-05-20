@@ -44,6 +44,20 @@ class ParallaxViewModelTests: XCTestCase {
 
         then.offsetsObserver(offsetsObserver, isUpdatedWith: expectedOffsets)
     }
+
+    func testImages() {
+
+        let model = given.model()
+        let parallaxLayers = given.parallaxLayers()
+        let viewModel = given.detailsViewModel(model: model)
+        let images = given.images(for: parallaxLayers)
+        let imagesObserver = given.imagesObserver()
+        given.imagesObserver(imagesObserver, isSubscribedTo: viewModel)
+
+        when.model(model, publishes: parallaxLayers)
+
+        then.imagesObserver(imagesObserver, isUpdatedWith: images)
+    }
 }
 
 class ParallaxViewModelSteps {
@@ -53,6 +67,7 @@ class ParallaxViewModelSteps {
     private var updatedParallaxLayers: [ParallaxLayer]?
 
     private var updatedOffsets: [CGPoint]?
+    private var observedImages: [UIImage]?
 
     func model() -> ParallaxModelMock {
 
@@ -69,7 +84,28 @@ class ParallaxViewModelSteps {
 
     func parallaxLayers() -> [ParallaxLayer] {
 
-        (0..<5).map { index in ParallaxLayer(distance: 10.0 / CGFloat(index + 1)) }
+        (0..<5).map { index in ParallaxLayer(distance: 10.0 / CGFloat(index + 1), image: UIImageMock()) }
+    }
+
+    func images(for layers: [ParallaxLayer]) -> [UIImage] {
+
+        layers.map { layer in layer.image }
+    }
+
+    func offsetsObserver() -> ValueUpdate<[CGPoint]> {
+
+        { offsets in
+
+            self.updatedOffsets = offsets
+        }
+    }
+
+    func imagesObserver() -> ValueUpdate<[UIImage]> {
+
+        { images in
+
+            self.observedImages = images
+        }
     }
 
     func model(_ model: ParallaxModelMock, publishes parallaxLayers: [ParallaxLayer]) {
@@ -93,14 +129,6 @@ class ParallaxViewModelSteps {
         layers.map { layer in CGPoint(x: offset.x / layer.distance, y: offset.y / layer.distance) }
     }
 
-    func offsetsObserver() -> ValueUpdate<[CGPoint]> {
-
-        { offsets in
-
-            self.updatedOffsets = offsets
-        }
-    }
-
     func detailsViewModel(_ viewModel: ParallaxViewModelImp, offsetIsUpdatedTo offset: CGPoint) {
 
         let observer = viewModel.subscribeToContentOffset()
@@ -112,8 +140,18 @@ class ParallaxViewModelSteps {
         viewModel.observeOffsets(offsetsObserver)
     }
 
+    func imagesObserver(_ imagesObserver: @escaping ValueUpdate<[UIImage]>, isSubscribedTo viewModel: ParallaxViewModelImp) {
+
+        viewModel.observeImages(imagesObserver)
+    }
+
     func offsetsObserver(_ offsetsObserver: ValueUpdate<[CGPoint]>, isUpdatedWith expectedOffsets: [CGPoint]) {
 
         XCTAssertEqual(updatedOffsets, expectedOffsets, "Offsets were not updated correctly")
+    }
+
+    func imagesObserver(_ imagesObserver: ValueUpdate<[UIImage]>, isUpdatedWith expectedImages: [UIImage]) {
+
+        XCTAssertTrue(observedImages?.elementsEqual(expectedImages, by: UIImage.compareImages) ?? false, "Images were not updated correctly")
     }
 }

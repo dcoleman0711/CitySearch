@@ -8,6 +8,12 @@ import UIKit
 struct ParallaxLayer: Equatable {
 
     public let distance: CGFloat
+    public let image: UIImage
+
+    static func ==(lhs: ParallaxLayer, rhs: ParallaxLayer) -> Bool {
+
+        lhs.distance == rhs.distance && UIImage.compareImages(lhs: lhs.image, rhs: rhs.image)
+    }
 }
 
 protocol ParallaxModel {

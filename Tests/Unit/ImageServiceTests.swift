@@ -97,19 +97,3 @@ class ImageServiceSteps {
         XCTAssertTrue(UIImage.compareImages(lhs: result, rhs: expectedResult), "Result is not the expected result")
     }
 }
-
-extension UIImage {
-
-    static func compareImages(lhs: UIImage?, rhs: UIImage?) -> Bool {
-
-        guard let first = lhs,
-              let firstPng = first.pngData(),
-              let second = rhs,
-              let secondPng = second.pngData() else {
-
-            return lhs == rhs
-        }
-
-        return firstPng == secondPng
-    }
-}
