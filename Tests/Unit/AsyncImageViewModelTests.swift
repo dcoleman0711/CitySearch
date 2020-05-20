@@ -102,15 +102,15 @@ class AsyncImageViewModelSteps {
         return model
     }
 
-    func model(_ model: AsyncImageModelMock, updatedImageTo image: UIImageMock) {
+    func model(_ model: AsyncImageModelMock, updatedImageTo image: UIImage) {
 
         self.updatedImage = image
         modelObserver?(image)
     }
 
-    func image() -> UIImageMock {
+    func image() -> UIImage {
 
-        UIImageMock()
+        ImageLoader.loadImage(name: "TestImage.jpg")!
     }
 
     func observeImage(_ viewModel: AsyncImageViewModelImp, _ observer: @escaping ValueUpdate<UIImage?>) {
@@ -125,7 +125,7 @@ class AsyncImageViewModelSteps {
             return
         }
 
-        XCTAssertTrue(image === expectedValue, "Observer was not notified of correct results")
+        XCTAssertEqual(image, expectedValue, "Observer was not notified of correct results")
     }
 
     func observerIsNotifiedWithNil(_ observer: ValueUpdate<UIImage?>) {

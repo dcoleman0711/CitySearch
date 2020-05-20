@@ -14,6 +14,6 @@ class AsyncImageModelFactoryImp: AsyncImageModelFactory {
 
     func imageModel(for url: URL) -> AsyncImageModel {
 
-        AsyncImageModelImp()
+        AsyncImageModelImp(imageURL: url, imageService: ImageServiceImp())
     }
 }
