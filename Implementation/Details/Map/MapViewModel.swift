@@ -12,8 +12,19 @@ protocol MapViewModel: class {
 
 class MapViewModelImp: MapViewModel {
 
+    private let backgroundImage = ImageLoader.loadImage(name: "MapBackground.jpg")!
+
+    convenience init() {
+
+        self.init(model: MapModelImp())
+    }
+
+    init(model: MapModel) {
+
+    }
+
     func observeBackgroundImage(_ observer: ValueUpdate<UIImage>) {
 
-
+        observer(backgroundImage)
     }
 }
