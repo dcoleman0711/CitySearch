@@ -4,10 +4,17 @@
 //
 
 import Foundation
+import CoreLocation
 
 protocol MapModel: class {
+
+    func observeGeoCoordinates(_ observer: @escaping ValueUpdate<CLLocationCoordinate2D>)
 }
 
 class MapModelImp: MapModel {
 
+    func observeGeoCoordinates(_ observer: @escaping ValueUpdate<CLLocationCoordinate2D>) {
+
+
+    }
 }

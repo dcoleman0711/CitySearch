@@ -4,8 +4,13 @@
 //
 
 import Foundation
+import CoreLocation
 
 class MapModelMock: MapModel {
 
+    var observeGeoCoordinatesImp: (_ observer: @escaping ValueUpdate<CLLocationCoordinate2D>) -> Void = { observer in }
+    func observeGeoCoordinates(_ observer: @escaping ValueUpdate<CLLocationCoordinate2D>) {
 
+        observeGeoCoordinatesImp(observer)
+    }
 }

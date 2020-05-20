@@ -216,8 +216,8 @@
 		CEEC6DC624750C4B00DB0785 /* City4.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DBE24750C4B00DB0785 /* City4.png */; };
 		CEEC6DC92475442A00DB0785 /* MapBackground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DC82475442900DB0785 /* MapBackground.jpg */; };
 		CEEC6DCA2475442A00DB0785 /* MapBackground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DC82475442900DB0785 /* MapBackground.jpg */; };
-		CEEC6DCC24754BCE00DB0785 /* MapPin.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DCB24754BCD00DB0785 /* MapPin.png */; };
-		CEEC6DCD24754BCE00DB0785 /* MapPin.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DCB24754BCD00DB0785 /* MapPin.png */; };
+		CEEC6DCF2475565D00DB0785 /* MapMarker.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DCE2475565C00DB0785 /* MapMarker.png */; };
+		CEEC6DD02475565D00DB0785 /* MapMarker.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEC6DCE2475565C00DB0785 /* MapMarker.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -384,7 +384,7 @@
 		CEEC6DBD24750C4B00DB0785 /* City3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = City3.png; sourceTree = "<group>"; };
 		CEEC6DBE24750C4B00DB0785 /* City4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = City4.png; sourceTree = "<group>"; };
 		CEEC6DC82475442900DB0785 /* MapBackground.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MapBackground.jpg; sourceTree = "<group>"; };
-		CEEC6DCB24754BCD00DB0785 /* MapPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapPin.png; sourceTree = "<group>"; };
+		CEEC6DCE2475565C00DB0785 /* MapMarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapMarker.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -608,7 +608,7 @@
 				CE5D9D792472C76300A45702 /* TestImage.jpg */,
 				CEEC6DB52474B59A00DB0785 /* TestCityImage.jpg */,
 				CEEC6DC82475442900DB0785 /* MapBackground.jpg */,
-				CEEC6DCB24754BCD00DB0785 /* MapPin.png */,
+				CEEC6DCE2475565C00DB0785 /* MapMarker.png */,
 				CEEC6DBA24750C4B00DB0785 /* Icons */,
 				CE2C62F4246E137100C1D25A /* Info.plist */,
 				CE3967BD246EDBB300478E39 /* TestInfo.plist */,
@@ -833,9 +833,9 @@
 				CEEC6DC524750C4B00DB0785 /* City4.png in Resources */,
 				CEEC6DC324750C4B00DB0785 /* City3.png in Resources */,
 				CEEC6DC124750C4B00DB0785 /* City2.png in Resources */,
-				CEEC6DCC24754BCE00DB0785 /* MapPin.png in Resources */,
 				CEEC6DB32474B55300DB0785 /* MissingImage.jpg in Resources */,
 				CEEC6DC92475442A00DB0785 /* MapBackground.jpg in Resources */,
+				CEEC6DCF2475565D00DB0785 /* MapMarker.png in Resources */,
 				CE2C62F3246E137100C1D25A /* LaunchScreen.storyboard in Resources */,
 				CE2C62F0246E137100C1D25A /* Assets.xcassets in Resources */,
 				CEEC6DBF24750C4B00DB0785 /* City1.png in Resources */,
@@ -850,9 +850,9 @@
 				CEEC6DC624750C4B00DB0785 /* City4.png in Resources */,
 				CEEC6DC424750C4B00DB0785 /* City3.png in Resources */,
 				CEEC6DC224750C4B00DB0785 /* City2.png in Resources */,
-				CEEC6DCD24754BCE00DB0785 /* MapPin.png in Resources */,
 				CEEC6DA72473330900DB0785 /* stubCityResponse.json in Resources */,
 				CEEC6DCA2475442A00DB0785 /* MapBackground.jpg in Resources */,
+				CEEC6DD02475565D00DB0785 /* MapMarker.png in Resources */,
 				CE5D9D7B2472CC1800A45702 /* TestImage.jpg in Resources */,
 				CC89DDF7D2B5AB02538EADAE /* stubImageResponse.json in Resources */,
 				CEEC6DC024750C4B00DB0785 /* City1.png in Resources */,

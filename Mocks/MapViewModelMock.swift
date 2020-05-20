@@ -19,9 +19,9 @@ class MapViewModelMock : MapViewModel {
         observeMarkerImageImp(observer)
     }
 
-    var observeMarkerPositionImp: (_ observer: @escaping ValueUpdate<CGPoint>) -> Void = { observer in }
-    func observeMarkerPosition(_ observer: @escaping ValueUpdate<CGPoint>) {
+    var observeMarkerFrameImp: (_ observer: @escaping ValueUpdate<CGRect>) -> Void = { observer in }
+    func observeMarkerFrame(_ observer: @escaping ValueUpdate<CGRect>) {
 
-        observeMarkerPositionImp(observer)
+        observeMarkerFrameImp(observer)
     }
 }

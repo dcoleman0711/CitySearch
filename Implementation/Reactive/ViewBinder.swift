@@ -25,6 +25,8 @@ protocol ViewBinder {
     func bindText(label: UILabel) -> ValueUpdate<LabelViewModel>
 
     func bindImage(imageView: UIImageView) -> ValueUpdate<UIImage?>
+
+    func bindFrame(view: UIView) -> ValueUpdate<CGRect>
 }
 
 class ViewBinderImp: ViewBinder {
@@ -43,6 +45,13 @@ class ViewBinderImp: ViewBinder {
         { (image) in
 
             imageView.image = image
+        }
+    }
+
+    func bindFrame(view: UIView) -> ValueUpdate<CGRect> {
+
+        { (frame) in
+
         }
     }
 }
