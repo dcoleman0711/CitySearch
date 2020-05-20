@@ -7,9 +7,15 @@ import UIKit
 
 class ParallaxViewModelMock : ParallaxViewModel {
 
-    public var subscribeToContentOffsetImp: () -> ValueUpdate<CGPoint> = { { contentOffset in } }
+    var subscribeToContentOffsetImp: () -> ValueUpdate<CGPoint> = { { contentOffset in } }
     func subscribeToContentOffset() -> ValueUpdate<CGPoint> {
 
         subscribeToContentOffsetImp()
+    }
+
+    var observerOffsetsImp: () -> ValueUpdate<[CGPoint]> = { { offsets in } }
+    func observeOffsets(_ observer: @escaping ValueUpdate<[CGPoint]>) {
+
+
     }
 }

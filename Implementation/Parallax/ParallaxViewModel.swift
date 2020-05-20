@@ -8,12 +8,42 @@ import UIKit
 protocol ParallaxViewModel {
 
     func subscribeToContentOffset() -> ValueUpdate<CGPoint>
+
+    func observeOffsets(_ observer: @escaping ValueUpdate<[CGPoint]>)
 }
 
 class ParallaxViewModelImp: ParallaxViewModel {
 
+    private let model: ParallaxModel
+
+    private let contentOffset = Observable<CGPoint>(.zero)
+
+    convenience init() {
+
+        self.init(model: ParallaxModelImp())
+    }
+
+    init(model: ParallaxModel) {
+
+        self.model = model
+    }
+
     func subscribeToContentOffset() -> ValueUpdate<CGPoint> {
 
-        { contentOffset in }
+        { contentOffset in self.contentOffset.value = contentOffset }
+    }
+
+    func observeOffsets(_ observer: @escaping ValueUpdate<[CGPoint]>) {
+
+        let (offsetUpdate, layerUpdate) = zipUpdate(mapUpdate(observer, ParallaxViewModelImp.merge(self)))
+
+        self.contentOffset.subscribe(offsetUpdate)
+        self.model.observeLayers(layerUpdate)
+    }
+
+    func merge(_ offset: CGPoint, _ layers: [ParallaxLayer]) -> [CGPoint] {
+
+        layers.map { layer in CGPoint(x: offset.x / layer.distance, y: offset.y / layer.distance) }
     }
 }
+

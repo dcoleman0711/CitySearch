@@ -5,13 +5,6 @@
 
 import UIKit
 
-typealias ValueUpdate<T> = (_ value: T) -> Void
-
-func mapUpdate<In, Out>(_ out: @escaping ValueUpdate<Out>, _ mapFunction: @escaping (In) -> Out) -> ValueUpdate<In> {
-
-    { inValue in out(mapFunction(inValue)) }
-}
-
 struct LabelViewModel: Equatable {
 
     static let emptyData = LabelViewModel(text: "", font: .systemFont(ofSize: 12.0))
