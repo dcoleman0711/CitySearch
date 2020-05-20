@@ -16,18 +16,20 @@ protocol CityDetailsModel {
 class CityDetailsModelImp: CityDetailsModel {
 
     private let searchResult: CitySearchResult
+    private let imageCarouselModel: ImageCarouselModel
 
     private let titleText: Observable<String>
     private let population: Observable<Int>
 
     convenience init(searchResult: CitySearchResult) {
 
-        self.init(searchResult: searchResult, imageSearchService: ImageSearchServiceImp(), titleText: Observable<String>(""), population: Observable<Int>(0))
+        self.init(searchResult: searchResult, imageCarouselModel: ImageCarouselModelImp(), imageSearchService: ImageSearchServiceImp(), titleText: Observable<String>(""), population: Observable<Int>(0))
     }
 
-    init(searchResult: CitySearchResult, imageSearchService: ImageSearchService, titleText: Observable<String>, population: Observable<Int>) {
+    init(searchResult: CitySearchResult, imageCarouselModel: ImageCarouselModel, imageSearchService: ImageSearchService, titleText: Observable<String>, population: Observable<Int>) {
 
         self.searchResult = searchResult
+        self.imageCarouselModel = imageCarouselModel
 
         self.titleText = titleText
         self.population = population
@@ -56,6 +58,7 @@ class CityDetailsModelImp: CityDetailsModel {
         var publisher: AnyCancellable?
         publisher = imageURLs.sink(receiveCompletion: { completion in }, receiveValue: { imageURLs in
 
+            self.imageCarouselModel.setResults(imageURLs)
             publisher = nil
         })
     }
