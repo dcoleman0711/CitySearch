@@ -192,6 +192,17 @@ class DetailsScreenTests: XCTestCase {
 
         then.imageCarousel(imageCarousel, isWidthOfWithCorrectHeight: detailsScreen)
     }
+
+    func testContentSize() {
+
+        let imageCarousel = given.imageCarousel()
+        let detailsScreen = given.detailsScreen(imageCarousel: imageCarousel)
+        given.detailsScreenIsLoaded(detailsScreen)
+
+        when.detailsViewAppearsOnScreen(detailsScreen)
+
+        then.detailsScreen(detailsScreen, contentSizeExtendsToBottomOf: imageCarousel)
+    }
 }
 
 class DetailsScreenSteps {
@@ -268,7 +279,7 @@ class DetailsScreenSteps {
         // TODO: Use Builder
         let model = CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: ImageCarouselModelImp())
         let viewModel = CityDetailsViewModelImp(model: model)
-        return CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: map, imageCarouselView: imageCarousel, viewModel: viewModel, binder: ViewBinderImp())
+        return CityDetailsViewImp(contentView: UIView(), titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: map, imageCarouselView: imageCarousel, viewModel: viewModel, binder: ViewBinderImp())
     }
 
     func detailsScreenIsLoaded(_ detailsScreen: CityDetailsView) {
@@ -334,5 +345,16 @@ class DetailsScreenSteps {
 
         XCTAssertEqual(imageCarousel.view.frame.width, safeAreaFrame.width, "Image carousel is not width of details screen safe area")
         XCTAssertEqual(imageCarousel.view.frame.height, 256.0, "Image carousel does not have the correct height")
+    }
+
+    func detailsScreen(_ detailsScreen: CityDetailsView, contentSizeExtendsToBottomOf imageCarousel: ImageCarouselViewMock) {
+
+        guard let scrollView = detailsScreen.view as? UIScrollView else {
+            XCTFail("Details screen is not scrollable")
+            return
+        }
+
+        XCTAssertEqual(scrollView.contentSize.width, detailsScreen.view.frame.size.width, "Details screen should not scroll horizontally")
+        XCTAssertEqual(scrollView.contentSize.height, imageCarousel.view.frame.maxY, "Details screen content bottom is not image carousel bottom")
     }
 }

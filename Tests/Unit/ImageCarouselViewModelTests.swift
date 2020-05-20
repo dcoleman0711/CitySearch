@@ -63,8 +63,6 @@ class ImageCarouselViewModelTests: XCTestCase {
 
 class ImageCarouselViewModelSteps {
 
-    private var isOnResultsQueue = false
-
     private let resultViewModelFactory = AsyncImageViewModelFactoryMock()
 
     private var valuePassedToObserver: [CellData<AsyncImageViewModel>]?
@@ -72,6 +70,7 @@ class ImageCarouselViewModelSteps {
 
     private var images: [ObjectIdentifier: UIImageMock] = [:]
 
+    private var isOnResultsQueue = false
     private var valuePassedOnResultsQueue = false
 
     func resultViewModels(for resultModels: [AsyncImageModelMock]) -> [AsyncImageViewModelMock] {

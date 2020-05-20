@@ -29,21 +29,43 @@ class DetailsViewTests: XCTestCase {
         super.tearDown()
     }
 
+    func testContentViewAutoResizeMaskDisabled() {
+
+        let contentView = given.contentView()
+        let detailsView = given.detailsView(contentView: contentView)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.autoResizeMaskIsDisabled(contentView)
+    }
+
+    func testContentViewConstraints() {
+
+        let contentView = given.contentView()
+        let detailsView = given.detailsView(contentView: contentView)
+        let expectedConstraints = given.contentView(contentView, constraintsToFillParent: detailsView)
+
+        when.detailsViewIsLoaded(detailsView)
+
+        then.detailsView(detailsView, hasExpectedConstraints: expectedConstraints)
+    }
+
     func testTitleLabelAutoResizeMaskDisabled() {
 
-    let titleLabel = given.titleLabel()
-    let detailsView = given.detailsView(titleLabel: titleLabel)
+        let titleLabel = given.titleLabel()
+        let detailsView = given.detailsView(titleLabel: titleLabel)
 
-    when.detailsViewIsLoaded(detailsView)
+        when.detailsViewIsLoaded(detailsView)
 
-    then.autoResizeMaskIsDisabled(titleLabel)
-}
+        then.autoResizeMaskIsDisabled(titleLabel)
+    }
 
     func testTitlePositionConstraints() {
 
         let titleLabel = given.titleLabel()
-        let detailsView = given.detailsView(titleLabel: titleLabel)
-        let expectedConstraints = given.titleLabel(titleLabel, constraintsToTopLeftSafeAreaOf: detailsView)
+        let contentView = given.contentView()
+        let detailsView = given.detailsView(contentView: contentView, titleLabel: titleLabel)
+        let expectedConstraints = given.titleLabel(titleLabel, constraintsToTopLeftSafeAreaOf: contentView)
 
         when.detailsViewIsLoaded(detailsView)
 
@@ -76,7 +98,8 @@ class DetailsViewTests: XCTestCase {
 
         let populationTitleLabel = given.populationTitleLabel()
         let titleLabel = given.titleLabel()
-        let detailsView = given.detailsView(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel)
+        let contentView = given.contentView()
+        let detailsView = given.detailsView(contentView: contentView, titleLabel: titleLabel, populationTitleLabel: populationTitleLabel)
         let expectedConstraints = given.populationTitleLabel(populationTitleLabel, constraintsToLeftAlignAndSpaceBelow: titleLabel)
 
         when.detailsViewIsLoaded(detailsView)
@@ -110,7 +133,8 @@ class DetailsViewTests: XCTestCase {
 
         let populationLabel = given.populationLabel()
         let populationTitleLabel = given.populationTitleLabel()
-        let detailsView = given.detailsView(populationTitleLabel: populationTitleLabel, populationLabel: populationLabel)
+        let contentView = given.contentView()
+        let detailsView = given.detailsView(contentView: contentView, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel)
         let expectedConstraints = given.populationLabel(populationLabel, constraintsToRightAndVerticallyCenteredWith: populationTitleLabel)
 
         when.detailsViewIsLoaded(detailsView)
@@ -143,8 +167,9 @@ class DetailsViewTests: XCTestCase {
     func testMapViewPositionConstraints() {
 
         let mapView = given.mapView()
-        let detailsView = given.detailsView(mapView: mapView)
-        let expectedConstraints = given.mapView(mapView, constraintsToTopRightWithHalfWidthAnd2to1AspectRatio: detailsView)
+        let contentView = given.contentView()
+        let detailsView = given.detailsView(contentView: contentView, mapView: mapView)
+        let expectedConstraints = given.mapView(mapView, constraintsToTopRightWithHalfWidthAnd2to1AspectRatio: contentView)
 
         when.detailsViewIsLoaded(detailsView)
 
@@ -165,8 +190,9 @@ class DetailsViewTests: XCTestCase {
 
         let imageCarouselView = given.imageCarouselView()
         let mapView = given.mapView()
-        let detailsView = given.detailsView(mapView: mapView, imageCarouselView: imageCarouselView)
-        let expectedConstraints = given.imageCarouselView(imageCarouselView, constraintsToSafeAreaEdgesOf: detailsView, andSpacedBelowWithCorrectHeight: mapView)
+        let contentView = given.contentView()
+        let detailsView = given.detailsView(contentView: contentView, mapView: mapView, imageCarouselView: imageCarouselView)
+        let expectedConstraints = given.imageCarouselView(imageCarouselView, constraintsSafeAreaBottomAndEdgesOf: contentView, andSpacedBelowWithCorrectHeight: mapView)
 
         when.detailsViewIsLoaded(detailsView)
 
@@ -181,6 +207,11 @@ class DetailsViewSteps {
     private var boundTitleLabel: UILabel?
     private var boundPopulationTitleLabel: UILabel?
     private var boundPopulationLabel: UILabel?
+
+    func contentView() -> UIView {
+
+        UIView()
+    }
 
     func titleLabel() -> UILabel {
 
@@ -247,7 +278,8 @@ class DetailsViewSteps {
         return binder
     }
 
-    func detailsView(titleLabel: UILabel = UILabel(),
+    func detailsView(contentView: UIView = UIView(),
+                     titleLabel: UILabel = UILabel(),
                      populationTitleLabel: UILabel = UILabel(),
                      populationLabel: UILabel = UILabel(),
                      mapView: MapViewMock = MapViewMock(), 
@@ -255,7 +287,7 @@ class DetailsViewSteps {
                      viewModel: CityDetailsViewModelMock = CityDetailsViewModelMock(),
                      binder: ViewBinderMock = ViewBinderMock()) -> CityDetailsViewImp {
 
-        CityDetailsViewImp(titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: mapView, imageCarouselView: imageCarouselView, viewModel: viewModel, binder: binder)
+        CityDetailsViewImp(contentView: contentView, titleLabel: titleLabel, populationTitleLabel: populationTitleLabel, populationLabel: populationLabel, mapView: mapView, imageCarouselView: imageCarouselView, viewModel: viewModel, binder: binder)
     }
 
     func detailsViewIsLoaded(_ detailsView: CityDetailsViewImp) {
@@ -263,10 +295,18 @@ class DetailsViewSteps {
         detailsView.loadViewIfNeeded()
     }
 
-    func titleLabel(_ titleLabel: UILabel, constraintsToTopLeftSafeAreaOf detailsView: CityDetailsViewImp) -> [NSLayoutConstraint] {
+    func contentView(_ contentView: UIView, constraintsToFillParent detailsView: CityDetailsViewImp) -> [NSLayoutConstraint] {
 
-        [titleLabel.leftAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.leftAnchor),
-         titleLabel.topAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.topAnchor)]
+        [contentView.leftAnchor.constraint(equalTo: detailsView.view.leftAnchor),
+         contentView.topAnchor.constraint(equalTo: detailsView.view.topAnchor),
+         contentView.rightAnchor.constraint(equalTo: detailsView.view.rightAnchor),
+         contentView.bottomAnchor.constraint(equalTo: detailsView.view.bottomAnchor)]
+    }
+
+    func titleLabel(_ titleLabel: UILabel, constraintsToTopLeftSafeAreaOf contentView: UIView) -> [NSLayoutConstraint] {
+
+        [titleLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor),
+         titleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor)]
     }
 
     func populationTitleLabel(_ populationTitleLabel: UILabel, constraintsToLeftAlignAndSpaceBelow titleLabel: UILabel) -> [NSLayoutConstraint] {
@@ -281,19 +321,20 @@ class DetailsViewSteps {
          populationLabel.centerYAnchor.constraint(equalTo: populationTitleLabel.centerYAnchor)]
     }
 
-    func mapView(_ mapView: MapViewMock, constraintsToTopRightWithHalfWidthAnd2to1AspectRatio detailsView: CityDetailsViewImp) -> [NSLayoutConstraint] {
+    func mapView(_ mapView: MapViewMock, constraintsToTopRightWithHalfWidthAnd2to1AspectRatio contentView: UIView) -> [NSLayoutConstraint] {
 
-        [mapView.view.rightAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.rightAnchor),
-         mapView.view.topAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.topAnchor),
-         mapView.view.leftAnchor.constraint(equalTo: detailsView.view.centerXAnchor),
+        [mapView.view.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
+         mapView.view.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+         mapView.view.leftAnchor.constraint(equalTo: contentView.centerXAnchor),
          mapView.view.widthAnchor.constraint(equalTo: mapView.view.heightAnchor, multiplier: 2.0)]
     }
 
-    func imageCarouselView(_ imageCarouselView: ImageCarouselViewMock, constraintsToSafeAreaEdgesOf detailsView: CityDetailsViewImp, andSpacedBelowWithCorrectHeight mapView: MapViewMock) -> [NSLayoutConstraint] {
+    func imageCarouselView(_ imageCarouselView: ImageCarouselViewMock, constraintsSafeAreaBottomAndEdgesOf contentView: UIView, andSpacedBelowWithCorrectHeight mapView: MapViewMock) -> [NSLayoutConstraint] {
 
-        [imageCarouselView.view.leftAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.leftAnchor),
-         imageCarouselView.view.rightAnchor.constraint(equalTo: detailsView.view.safeAreaLayoutGuide.rightAnchor),
+        [imageCarouselView.view.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor),
+         imageCarouselView.view.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
          imageCarouselView.view.topAnchor.constraint(equalTo: mapView.view.bottomAnchor, constant: 16.0),
+         imageCarouselView.view.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
          imageCarouselView.view.heightAnchor.constraint(equalToConstant: 256.0)]
     }
 

@@ -12,6 +12,8 @@ protocol CityDetailsView where Self: UIViewController {
 
 class CityDetailsViewImp : UIViewController, CityDetailsView {
 
+    private let contentView: UIView
+
     private let titleLabel: UILabel
     private let populationTitleLabel: UILabel
     private let populationLabel: UILabel
@@ -21,7 +23,9 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
     private let viewModel: CityDetailsViewModel
     private let binder: ViewBinder
 
-    init(titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, mapView: MapView, imageCarouselView: ImageCarouselView, viewModel: CityDetailsViewModel, binder: ViewBinder) {
+    init(contentView: UIView, titleLabel: UILabel, populationTitleLabel: UILabel, populationLabel: UILabel, mapView: MapView, imageCarouselView: ImageCarouselView, viewModel: CityDetailsViewModel, binder: ViewBinder) {
+
+        self.contentView = contentView
 
         self.titleLabel = titleLabel
         self.populationTitleLabel = populationTitleLabel
@@ -40,6 +44,11 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
     required init?(coder: NSCoder) {
 
         fatalError("No interface builder!")
+    }
+
+    override func loadView() {
+
+        self.view = UIScrollView()
     }
 
     override func viewDidLoad() {
@@ -66,54 +75,66 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
         view.backgroundColor = .white
 
-        view.addSubview(titleLabel)
+        view.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        contentView.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        view.addSubview(populationTitleLabel)
+        contentView.addSubview(populationTitleLabel)
         populationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        view.addSubview(populationLabel)
+        contentView.addSubview(populationLabel)
         populationLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        view.addSubview(mapView.view)
+        contentView.addSubview(mapView.view)
         mapView.view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.addSubview(imageCarouselView.view)
+        contentView.addSubview(imageCarouselView.view)
         imageCarouselView.view.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buildLayout() {
 
+        // Content View
+        let contentViewConstraints = [contentView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                                      contentView.topAnchor.constraint(equalTo: view.topAnchor),
+                                      contentView.rightAnchor.constraint(equalTo: view.rightAnchor),
+                                      contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                                      contentView.widthAnchor.constraint(equalTo: view.widthAnchor)]
+
         // Title Label
-        let titleLabelXConstraint = titleLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor)
-        let titleLabelYConstraint = titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let titleLabelConstraints = [titleLabelXConstraint, titleLabelYConstraint]
+        let titleLabelConstraints = [titleLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor),
+                                     titleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor)]
 
         // Population Title Label
-        let populationTitleLabelXConstraint = populationTitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor)
-        let populationTitleLabelYConstraint = populationTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32.0)
-        let populationTitleLabelConstraints = [populationTitleLabelXConstraint, populationTitleLabelYConstraint]
+        let populationTitleLabelConstraints = [populationTitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
+                                               populationTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32.0)]
 
         // Population Label
-        let populationLabelXConstraint = populationLabel.leftAnchor.constraint(equalTo: populationTitleLabel.rightAnchor, constant: 8.0)
-        let populationLabelYConstraint = populationLabel.centerYAnchor.constraint(equalTo: populationTitleLabel.centerYAnchor)
-        let populationLabelConstraints = [populationLabelXConstraint, populationLabelYConstraint]
+        let populationLabelConstraints = [populationLabel.leftAnchor.constraint(equalTo: populationTitleLabel.rightAnchor, constant: 8.0),
+                                          populationLabel.centerYAnchor.constraint(equalTo: populationTitleLabel.centerYAnchor)]
 
         // Map View
-        let mapViewXConstraint = mapView.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
-        let mapViewYConstraint = mapView.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let mapViewWidthConstraint = mapView.view.leftAnchor.constraint(equalTo: view.centerXAnchor)
-        let mapViewAspectRatioConstraint = mapView.view.widthAnchor.constraint(equalTo: mapView.view.heightAnchor, multiplier: 2.0)
-        let mapViewConstraints = [mapViewXConstraint, mapViewYConstraint, mapViewWidthConstraint, mapViewAspectRatioConstraint]
+        let mapViewConstraints = [mapView.view.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
+                                  mapView.view.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+                                  mapView.view.leftAnchor.constraint(equalTo: contentView.centerXAnchor),
+                                  mapView.view.widthAnchor.constraint(equalTo: mapView.view.heightAnchor, multiplier: 2.0)]
 
         // Image Carousel View
-        let imageCarouselViewLeftConstraint = imageCarouselView.view.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor)
-        let imageCarouselViewRightConstraint = imageCarouselView.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
-        let imageCarouselViewTopConstraint = imageCarouselView.view.topAnchor.constraint(equalTo: mapView.view.bottomAnchor, constant: 16.0)
-        let imageCarouselViewHeightConstraint = imageCarouselView.view.heightAnchor.constraint(equalToConstant: 256.0)
-        let imageCarouselViewConstraints = [imageCarouselViewLeftConstraint, imageCarouselViewRightConstraint, imageCarouselViewTopConstraint, imageCarouselViewHeightConstraint]
+        let imageCarouselViewConstraints = [imageCarouselView.view.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor),
+                                            imageCarouselView.view.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
+                                            imageCarouselView.view.topAnchor.constraint(equalTo: mapView.view.bottomAnchor, constant: 16.0),
+                                            imageCarouselView.view.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
+                                            imageCarouselView.view.heightAnchor.constraint(equalToConstant: 256.0)]
 
-        let constraints = [NSLayoutConstraint]([titleLabelConstraints, populationTitleLabelConstraints, populationLabelConstraints, mapViewConstraints, imageCarouselViewConstraints].joined())
+        let constraints = [NSLayoutConstraint]([contentViewConstraints,
+                                                titleLabelConstraints,
+                                                populationTitleLabelConstraints,
+                                                populationLabelConstraints,
+                                                mapViewConstraints,
+                                                imageCarouselViewConstraints]
+                .joined())
 
         view.addConstraints(constraints)
     }
@@ -129,6 +150,6 @@ class CityDetailsViewBuilder {
 
         let model = CityDetailsModelImp(searchResult: searchResult, imageCarouselModel: carouselModel)
         let viewModel = CityDetailsViewModelImp(model: model)
-        return CityDetailsViewImp(titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(), imageCarouselView: carouselView, viewModel: viewModel, binder: ViewBinderImp())
+        return CityDetailsViewImp(contentView: UIView(), titleLabel: UILabel(), populationTitleLabel: UILabel(), populationLabel: UILabel(), mapView: MapViewImp(), imageCarouselView: carouselView, viewModel: viewModel, binder: ViewBinderImp())
     }
 }
