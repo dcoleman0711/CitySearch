@@ -93,11 +93,7 @@ class SearchViewSteps {
 
     func searchResultsView(_ searchResultsModel: SearchResultsModelMock = SearchResultsModelMock()) -> SearchResultsViewMock {
 
-        let searchResultsView = SearchResultsViewMock()
-
-        searchResultsView.model = searchResultsModel
-
-        return searchResultsView
+        SearchResultsViewMock()
     }
 
     func parallaxView() -> ParallaxViewMock {

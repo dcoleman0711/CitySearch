@@ -8,8 +8,6 @@ import UIKit
 protocol SearchResultsView {
 
     var view: UIView { get }
-
-//    var model: SearchResultsModel { get }
 }
 
 class SearchResultsViewImp : SearchResultsView {

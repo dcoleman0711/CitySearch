@@ -8,6 +8,4 @@ import UIKit
 class SearchResultsViewMock : SearchResultsView {
 
     var view = UIView()
-
-    var model: SearchResultsModel = SearchResultsModelMock()
 }
