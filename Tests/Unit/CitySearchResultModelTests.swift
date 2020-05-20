@@ -7,19 +7,19 @@ import XCTest
 
 import UIKit
 
-class CitySearchResultViewModelTests: XCTestCase {
+class CitySearchResultModelTests: XCTestCase {
 
-    var steps: CitySearchResultViewModelSteps!
+    var steps: CitySearchResultModelSteps!
 
-    var given: CitySearchResultViewModelSteps { steps }
-    var when: CitySearchResultViewModelSteps { steps }
-    var then: CitySearchResultViewModelSteps { steps }
+    var given: CitySearchResultModelSteps { steps }
+    var when: CitySearchResultModelSteps { steps }
+    var then: CitySearchResultModelSteps { steps }
 
     override func setUp() {
 
         super.setUp()
 
-        steps = CitySearchResultViewModelSteps()
+        steps = CitySearchResultModelSteps()
     }
 
     override func tearDown() {
@@ -60,7 +60,7 @@ class CitySearchResultViewModelTests: XCTestCase {
     }
 }
 
-class CitySearchResultViewModelSteps {
+class CitySearchResultModelSteps {
 
     func searchResult() -> CitySearchResult {
 
