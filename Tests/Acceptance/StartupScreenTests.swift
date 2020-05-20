@@ -10,7 +10,7 @@ import UIKit
 class StartupScreenTestConstants {
 
     static let appTitle = "City Search"
-    static let appTitleFont = UIFont.systemFont(ofSize: 48.0)
+    static let appTitleFont = UIFont.systemFont(ofSize: 64.0)
     static let maximumTransitionStartInterval = 4.5
     static let minimumTransitionStartInterval = 3.5
 }

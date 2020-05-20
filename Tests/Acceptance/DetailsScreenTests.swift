@@ -42,7 +42,7 @@ class DetailsScreenTests: XCTestCase {
 
         when.detailsScreenIsLoaded(detailsScreen)
 
-        then.detailsScreenBackgroundIsWhite(detailsScreen)
+        then.detailsScreenBackgroundIsLightGrayWhite(detailsScreen)
     }
 
     func testTitlePosition() {
@@ -293,9 +293,9 @@ class DetailsScreenSteps {
         SafeAreaLayoutTest.layoutInWindow(detailsScreen, andCaptureSafeAreaTo: &self.safeAreaFrame)
     }
 
-    func detailsScreenBackgroundIsWhite(_ detailsScreen: CityDetailsView) {
+    func detailsScreenBackgroundIsLightGrayWhite(_ detailsScreen: CityDetailsView) {
 
-        XCTAssertEqual(detailsScreen.view.backgroundColor, UIColor.white, "Details screen background is not white")
+        XCTAssertEqual(detailsScreen.view.backgroundColor, UIColor(white: 0.8, alpha: 1.0), "Details screen background is not white")
     }
 
     func titleLabel(_ titleLabel: UILabel, isInTopLeftCornerOfSafeAreaOf: CityDetailsView) {

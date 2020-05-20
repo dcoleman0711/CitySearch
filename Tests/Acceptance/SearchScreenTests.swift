@@ -9,7 +9,7 @@ import UIKit
 
 class SearchScreenTestConstants {
 
-    static let resultsHeight: CGFloat = 256.0
+    static let resultsHeight: CGFloat = 312.0
 }
 
 class SearchScreenTests: XCTestCase {

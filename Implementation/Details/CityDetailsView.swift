@@ -73,7 +73,7 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
 
     private func setupView() {
 
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(white: 0.8, alpha: 1.0)
 
         view.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,8 +122,8 @@ class CityDetailsViewImp : UIViewController, CityDetailsView {
                                   mapView.view.widthAnchor.constraint(equalTo: mapView.view.heightAnchor, multiplier: 2.0)]
 
         // Image Carousel View
-        let imageCarouselViewConstraints = [imageCarouselView.view.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor),
-                                            imageCarouselView.view.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
+        let imageCarouselViewConstraints = [imageCarouselView.view.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+                                            imageCarouselView.view.rightAnchor.constraint(equalTo: contentView.rightAnchor),
                                             imageCarouselView.view.topAnchor.constraint(equalTo: mapView.view.bottomAnchor, constant: 16.0),
                                             imageCarouselView.view.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
                                             imageCarouselView.view.heightAnchor.constraint(equalToConstant: 256.0)]

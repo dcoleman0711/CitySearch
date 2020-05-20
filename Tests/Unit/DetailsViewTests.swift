@@ -331,8 +331,8 @@ class DetailsViewSteps {
 
     func imageCarouselView(_ imageCarouselView: ImageCarouselViewMock, constraintsSafeAreaBottomAndEdgesOf contentView: UIView, andSpacedBelowWithCorrectHeight mapView: MapViewMock) -> [NSLayoutConstraint] {
 
-        [imageCarouselView.view.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor),
-         imageCarouselView.view.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
+        [imageCarouselView.view.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+         imageCarouselView.view.rightAnchor.constraint(equalTo: contentView.rightAnchor),
          imageCarouselView.view.topAnchor.constraint(equalTo: mapView.view.bottomAnchor, constant: 16.0),
          imageCarouselView.view.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
          imageCarouselView.view.heightAnchor.constraint(equalToConstant: 256.0)]

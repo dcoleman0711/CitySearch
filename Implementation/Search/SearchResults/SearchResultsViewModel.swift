@@ -24,7 +24,7 @@ class SearchResultsViewModelImp: SearchResultsViewModel {
 
     private let cellSize = CGSize(width: 128.0, height: 128.0)
     private let itemSpacing: CGFloat = 0.0
-    private let lineSpacing: CGFloat = 0.0
+    private let lineSpacing: CGFloat = 16.0
 
     private let contentOffset = Observable<CGPoint>(.zero)
 

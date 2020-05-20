@@ -56,7 +56,11 @@ class CityDetailsModelImp: CityDetailsModel {
     private func loadImages(imageSearchService: ImageSearchService) {
 
         let imageSearch = imageSearchService.imageSearch(query: searchResult.name)
-        let imageURLs = imageSearch.map { results in results.images_results.compactMap({ result in URL(string: result.original) }) }
+        let imageURLs = imageSearch
+            .map { results in results
+                .images_results
+                .compactMap({ result in result.original
+                    .map({ original in URL(string: original) }) ?? nil }) }
 
         var publisher: AnyCancellable?
         publisher = imageURLs.sink(receiveCompletion: { completion in }, receiveValue: { imageURLs in

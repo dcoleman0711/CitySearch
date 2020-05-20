@@ -12,5 +12,5 @@ struct ImageSearchResults: Codable, Equatable {
 
 struct ImageSearchResult: Codable, Equatable {
 
-    var original: String
+    var original: String?
 }

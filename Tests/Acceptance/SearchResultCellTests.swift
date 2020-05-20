@@ -70,7 +70,7 @@ class SearchResultCellTests: XCTestCase {
 
         when.cellSizeBecomes(searchResultCell, cellSize)
 
-        then.titleLabelFitsText(titleLabel)
+        then.titleLabelFitsWidth(titleLabel, of: searchResultCell)
     }
 
     func testCellTitleLabelText() {
@@ -198,7 +198,7 @@ class SearchResultCellSteps {
 
     func cornerRadius() -> CGFloat {
 
-        32.0
+        52.0
     }
 
     func cellSizes() -> [CGSize] {
@@ -242,9 +242,9 @@ class SearchResultCellSteps {
         XCTAssertEqual(titleLabel.frame.maxY, cell.bounds.maxY, "Title label is not in bottom of frame")
     }
 
-    func titleLabelFitsText(_ titleLabel: UILabel) {
+    func titleLabelFitsWidth(_ titleLabel: UILabel, of cell: CitySearchResultCell) {
 
-        XCTAssertEqual(titleLabel.frame.size, titleLabel.sizeThatFits(CGSize.zero), "Title label size does not fit text")
+        XCTAssertEqual(titleLabel.frame.size.width, cell.frame.size.width, "Title label size does not fit cell width")
     }
 
     func imageViewIsSquare(_ imageView: UIImageView) {

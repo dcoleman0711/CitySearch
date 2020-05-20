@@ -184,7 +184,7 @@ class DetailsModelSteps {
 
     func imageURLs(for imageResults: ImageSearchResults) -> [URL] {
 
-        imageResults.images_results.compactMap { result in URL(string: result.original) }
+        imageResults.images_results.compactMap { result in result.original.map({ original in URL(string: original) }) ?? nil }
     }
 
     func imageService(_ imageSearchService: ImageSearchServiceMock, returns imageResults: ImageSearchResults) {

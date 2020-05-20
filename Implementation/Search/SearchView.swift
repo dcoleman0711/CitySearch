@@ -64,10 +64,10 @@ class SearchViewImp: UIViewController, SearchView {
                                        parallaxView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
 
         // Search Results
-        let searchResultsViewContraints = [searchResultsView.view.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-                                           searchResultsView.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+        let searchResultsViewContraints = [searchResultsView.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+                                           searchResultsView.view.rightAnchor.constraint(equalTo: view.rightAnchor),
                                            searchResultsView.view.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                                           searchResultsView.view.heightAnchor.constraint(equalToConstant: 256.0)]
+                                           searchResultsView.view.heightAnchor.constraint(equalToConstant: 312.0)]
 
         let constraints = [NSLayoutConstraint]([parallaxViewConstraints, searchResultsViewContraints].joined())
 

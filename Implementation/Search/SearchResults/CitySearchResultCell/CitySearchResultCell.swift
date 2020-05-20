@@ -48,21 +48,27 @@ class CitySearchResultCell : MVVMCollectionViewCell<CitySearchResultViewModel> {
 
         self.contentView.addSubview(self.titleLabel)
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.titleLabel.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
+        self.titleLabel.backgroundColor = UIColor.white.withAlphaComponent(0.8)
+        self.titleLabel.layer.cornerRadius = 8.0
+        self.titleLabel.layer.borderWidth = 1.0
+        self.titleLabel.layer.masksToBounds = true
+        self.titleLabel.textAlignment = .center
 
         self.contentView.addSubview(self.imageView)
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
         self.imageView.layer.masksToBounds = true
-        self.imageView.layer.cornerRadius = 32.0
+        self.imageView.layer.cornerRadius = 52.0
+        self.imageView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         self.imageView.contentMode = .scaleAspectFill
     }
 
     private func buildLayout() {
 
         // Title Label
-        let titleLabelXConstraint = titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-        let titleLabelYConstraint = titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        let titleLabelConstraints = [titleLabelXConstraint, titleLabelYConstraint]
+        let titleLabelConstraints = [titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
+                                     titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
+                                     titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+                                     titleLabel.heightAnchor.constraint(equalToConstant: 24.0)]
 
         // ImageView
         let imageViewAspectRatioConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)

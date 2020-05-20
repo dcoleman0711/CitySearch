@@ -73,7 +73,7 @@ class SearchViewTests: XCTestCase {
 
         let searchResultsView = given.searchResultsView()
         let searchView = given.searchViewIsCreated(searchResultsView: searchResultsView)
-        let expectedConstraints = given.constraintsFor(searchResultsView.view, toFillHorizontallyAndCenterVerticallyInParentSafeArea: searchView)
+        let expectedConstraints = given.constraintsFor(searchResultsView.view, toFillHorizontallyAndCenterVerticallyInParent: searchView)
 
         when.searchViewIsLoaded(searchView)
 
@@ -101,10 +101,10 @@ class SearchViewSteps {
         ParallaxViewMock()
     }
 
-    func constraintsFor(_ view: UIView, toFillHorizontallyAndCenterVerticallyInParentSafeArea searchView: SearchViewImp) -> [NSLayoutConstraint] {
+    func constraintsFor(_ view: UIView, toFillHorizontallyAndCenterVerticallyInParent searchView: SearchViewImp) -> [NSLayoutConstraint] {
 
-        [view.leftAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.leftAnchor),
-         view.rightAnchor.constraint(equalTo: searchView.view.safeAreaLayoutGuide.rightAnchor),
+        [view.leftAnchor.constraint(equalTo: searchView.view.leftAnchor),
+         view.rightAnchor.constraint(equalTo: searchView.view.rightAnchor),
          view.centerYAnchor.constraint(equalTo: searchView.view.centerYAnchor),
          view.heightAnchor.constraint(equalToConstant: SearchScreenTestConstants.resultsHeight)]
     }

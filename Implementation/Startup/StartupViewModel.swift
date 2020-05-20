@@ -16,6 +16,8 @@ class StartupViewModelImp: StartupViewModel {
 
     let model: StartupModel
 
+    private let titleFont = UIFont.systemFont(ofSize: 64.0)
+
     private var appTitleObserver: ValueUpdate<LabelViewModel>?
 
     private var appTitle: LabelViewModel = LabelViewModel.emptyData {
@@ -39,6 +41,6 @@ class StartupViewModelImp: StartupViewModel {
 
     private func appTextUpdated(appTitleText: String) {
 
-        self.appTitle = LabelViewModel(text: appTitleText, font: UIFont.systemFont(ofSize: 48.0))
+        self.appTitle = LabelViewModel(text: appTitleText, font: titleFont)
     }
 }

@@ -39,8 +39,8 @@ class CitySearchServiceImp : CitySearchService {
 
         SearchFuture({ promise in
 
-            let start = 0
-            let count = 10
+            let start = 4000
+            let count = 80
 
             let urlStr = CitySearchServiceImp.baseURL + "?skip=\(start)&limit=\(count)";
             let url = URL(string: urlStr)!

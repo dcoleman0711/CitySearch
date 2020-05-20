@@ -479,9 +479,9 @@
 		CC89D1877C2CF6646699D21F /* ImageCarousel */ = {
 			isa = PBXGroup;
 			children = (
+				CC89DB576AAE5DD3F90CCF08 /* AsyncImage */,
 				CC89D6E99D9E707968ACBF69 /* ImageCarouselView.swift */,
 				CC89D975147B3E751262CBE5 /* ImageCarouselViewModel.swift */,
-				CC89DB576AAE5DD3F90CCF08 /* AsyncImage */,
 				CC89D441CB274624731E6CF9 /* ImageCarouselModel.swift */,
 			);
 			path = ImageCarousel;

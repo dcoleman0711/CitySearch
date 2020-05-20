@@ -29,6 +29,32 @@ class CitySearchResultCellTests: XCTestCase {
         super.tearDown()
     }
 
+    func testTitleLabelCornerRadius() {
+
+        let titleLabel = given.titleLabel()
+        let searchResultCell = when.searchResultCellIsCreated(titleLabel: titleLabel)
+        let cornerRadius = given.cornerRadius()
+
+        then.titleLabel(titleLabel, hasCornerRadius: cornerRadius)
+    }
+
+    func testTitleLabelBorderWidth() {
+
+        let titleLabel = given.titleLabel()
+        let searchResultCell = when.searchResultCellIsCreated(titleLabel: titleLabel)
+        let borderWidth = given.borderWidth()
+
+        then.titleLabel(titleLabel, hasBorderWidth: borderWidth)
+    }
+
+    func testTitleLabelWhiteBackground() {
+
+        let titleLabel = given.titleLabel()
+        let searchResultCell = when.searchResultCellIsCreated(titleLabel: titleLabel)
+
+        then.titleLabelHasTranslucentWhiteBackground(titleLabel)
+    }
+
     func testTitleLabelData() {
 
         let titleData = given.titleData()
@@ -133,6 +159,16 @@ class CitySearchResultCellSteps {
         LabelViewModel(text: "Test Title", font: .systemFont(ofSize: 12.0))
     }
 
+    func cornerRadius() -> CGFloat {
+
+        8.0
+    }
+
+    func borderWidth() -> CGFloat {
+
+        1.0
+    }
+
     func titleLabel() -> UILabel {
 
         UILabel()
@@ -173,12 +209,29 @@ class CitySearchResultCellSteps {
         XCTAssertEqual(labelBindings[label], expectedData, "Title label text is not correct")
     }
 
+    func titleLabelHasTranslucentWhiteBackground(_ titleLabel: UILabel) {
+
+        XCTAssertEqual(titleLabel.backgroundColor, UIColor.white.withAlphaComponent(0.8), "Title label does not have white background")
+    }
+
+    func titleLabel(_ titleLabel: UILabel, hasCornerRadius expectedCornerRadius: CGFloat) {
+
+        XCTAssertEqual(titleLabel.layer.cornerRadius, expectedCornerRadius, "Title label does not have the correct corner radius")
+    }
+
+    func titleLabel(_ titleLabel: UILabel, hasBorderWidth expectedBorderWidth: CGFloat) {
+
+        XCTAssertEqual(titleLabel.layer.borderWidth, expectedBorderWidth, "Title label does not have the correct border width")
+    }
+
     func titleLabel(_ titleLabel: UILabel, isConstrainedToBottomCenterOf cell: CitySearchResultCell) {
 
-        let expectedConstraints = [titleLabel.centerXAnchor.constraint(equalTo: cell.centerXAnchor),
-                                   titleLabel.bottomAnchor.constraint(equalTo: cell.bottomAnchor)]
+        let expectedConstraints = [titleLabel.leftAnchor.constraint(equalTo: cell.leftAnchor),
+                                   titleLabel.rightAnchor.constraint(equalTo: cell.rightAnchor),
+                                   titleLabel.bottomAnchor.constraint(equalTo: cell.bottomAnchor),
+                                   titleLabel.heightAnchor.constraint(equalToConstant: 24.0),]
 
-        validateConstraints(expectedConstraints: expectedConstraints, cell: cell, message: "Title label is not constrained to bottom center of cell")
+        ViewConstraintValidator.validateThatView(cell, hasConstraints: expectedConstraints, message: "Title label is not constrained to bottom center of cell")
     }
 
     func autoResizeMaskIsDisabled(for view: UIView) {
@@ -190,7 +243,7 @@ class CitySearchResultCellSteps {
 
         let expectedConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 1.0)
 
-        validateConstraints(expectedConstraints: [expectedConstraint], cell: cell, message: "Image view is not constrained to be square")
+        ViewConstraintValidator.validateThatView(cell, hasConstraints: [expectedConstraint], message: "Image view is not constrained to be square")
     }
 
     func imageView(_ imageView: UIImageView, isCenteredAndFittedIn cell: CitySearchResultCell, above titleLabel: UILabel) {
@@ -199,17 +252,11 @@ class CitySearchResultCellSteps {
                                    imageView.topAnchor.constraint(equalTo: cell.topAnchor),
                                    imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor)]
 
-        validateConstraints(expectedConstraints: expectedConstraints, cell: cell, message: "Image view is not constrained to horizontal center and above title label")
+        ViewConstraintValidator.validateThatView(cell, hasConstraints: expectedConstraints, message: "Image view is not constrained to horizontal center and above title label")
     }
 
     func imageView(_ imageView: UIImageView, isBoundTo viewModel: CitySearchResultViewModelMock) {
 
         XCTAssertEqual(imageViewBoundToIcon, imageView, "Icon Image View was not bound to view model")
     }
-
-    private func validateConstraints(expectedConstraints: [NSLayoutConstraint], cell: CitySearchResultCell, message: String) {
-
-        XCTAssertTrue(expectedConstraints.allSatisfy( { (first) in cell.constraints.contains(where: { (second) in first.isEqualToConstraint(second)}) }), message)
-    }
-
 }
