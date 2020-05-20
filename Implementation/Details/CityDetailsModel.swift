@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import Combine
 
 protocol CityDetailsModel {
 
@@ -21,10 +22,10 @@ class CityDetailsModelImp: CityDetailsModel {
 
     convenience init(searchResult: CitySearchResult) {
 
-        self.init(searchResult: searchResult, titleText: Observable<String>(""), population: Observable<Int>(0))
+        self.init(searchResult: searchResult, imageSearchService: ImageSearchServiceImp(), titleText: Observable<String>(""), population: Observable<Int>(0))
     }
 
-    init(searchResult: CitySearchResult, titleText: Observable<String>, population: Observable<Int>) {
+    init(searchResult: CitySearchResult, imageSearchService: ImageSearchService, titleText: Observable<String>, population: Observable<Int>) {
 
         self.searchResult = searchResult
 
@@ -33,6 +34,8 @@ class CityDetailsModelImp: CityDetailsModel {
 
         self.titleText.value = searchResult.name
         self.population.value = searchResult.population
+
+        loadImages(imageSearchService: imageSearchService)
     }
 
     func observeTitleText(_ update: @escaping ValueUpdate<String>) {
@@ -43,5 +46,17 @@ class CityDetailsModelImp: CityDetailsModel {
     func observePopulation(_ update: @escaping ValueUpdate<Int>) {
 
         population.subscribe(update, updateImmediately: true)
+    }
+
+    private func loadImages(imageSearchService: ImageSearchService) {
+
+        let imageSearch = imageSearchService.imageSearch(query: searchResult.name)
+        let imageURLs = imageSearch.map { results in results.images_results.compactMap({ result in URL(string: result.original) }) }
+
+        var publisher: AnyCancellable?
+        publisher = imageURLs.sink(receiveCompletion: { completion in }, receiveValue: { imageURLs in
+
+            publisher = nil
+        })
     }
 }

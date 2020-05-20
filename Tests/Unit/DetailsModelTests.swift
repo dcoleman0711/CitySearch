@@ -6,6 +6,7 @@
 import XCTest
 
 import UIKit
+import Combine
 
 class DetailsModelTests: XCTestCase {
 
@@ -52,6 +53,17 @@ class DetailsModelTests: XCTestCase {
 
         then.observedInt(on: intObserver, isEqualTo: population)
     }
+
+    func testRequestImageSearch() {
+
+        let searchResult = given.searchResult()
+        let imageSearchService = given.imageSearchService()
+        let query = given.imageSearchQuery(for: searchResult)
+
+        let detailsModel = when.detailsModelIsCreated(for: searchResult, imageSearchService: imageSearchService)
+
+        then.imageSearch(for: query, isRequestedWith: imageSearchService)
+    }
 }
 
 class DetailsModelSteps {
@@ -61,6 +73,8 @@ class DetailsModelSteps {
 
     private var observedText: String?
     private var observedInt: Int?
+
+    private var imageSearchQuery: String?
 
     init() {
 
@@ -104,9 +118,28 @@ class DetailsModelSteps {
         searchResult.population
     }
 
-    func detailsModelIsCreated(for searchResult: CitySearchResult) -> CityDetailsModelImp {
+    func imageSearchService() -> ImageSearchServiceMock {
 
-        CityDetailsModelImp(searchResult: searchResult, titleText: titleTextObservable, population: populationObservable)
+        let searchService = ImageSearchServiceMock()
+
+        searchService.imageSearchImp = { query in
+
+            self.imageSearchQuery = query
+
+            return Future<ImageSearchResults, Error>({ promise in }).eraseToAnyPublisher()
+        }
+
+        return searchService
+    }
+
+    func imageSearchQuery(for city: CitySearchResult) -> String {
+
+        city.name
+    }
+
+    func detailsModelIsCreated(for searchResult: CitySearchResult, imageSearchService: ImageSearchServiceMock = ImageSearchServiceMock()) -> CityDetailsModelImp {
+
+        CityDetailsModelImp(searchResult: searchResult, imageSearchService: imageSearchService, titleText: titleTextObservable, population: populationObservable)
     }
 
     func textObserver() -> ValueUpdate<String> {
@@ -143,5 +176,10 @@ class DetailsModelSteps {
     func observedInt(on observer: ValueUpdate<Int>, isEqualTo expectedInt: Int) {
 
         XCTAssertEqual(observedInt, expectedInt, "Observed int is not correct")
+    }
+
+    func imageSearch(for expectedQuery: String, isRequestedWith searchService: ImageSearchServiceMock) {
+
+        XCTAssertEqual(imageSearchQuery, expectedQuery, "Image search request was not made with expected query")
     }
 }

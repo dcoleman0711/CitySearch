@@ -22,6 +22,11 @@ class ImageSearchServiceImp: ImageSearchService {
 
     private let urlSession: URLSession
 
+    convenience init() {
+
+        self.init(urlSession: URLSession.shared)
+    }
+
     init(urlSession: URLSession) {
 
         self.urlSession = urlSession
